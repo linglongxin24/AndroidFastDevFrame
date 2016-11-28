@@ -12,7 +12,6 @@ import java.util.TimerTask;
 
 /**
  * 自定义倒计时按钮
- * <p/>
  *
  * @author Dylan
  *         [佛祖保佑 永无BUG]
