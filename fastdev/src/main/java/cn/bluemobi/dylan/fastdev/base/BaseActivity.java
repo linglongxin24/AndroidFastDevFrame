@@ -171,7 +171,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      *
      * @param drawable
      */
-    public void setBackwardButtonBackgroundDrawable(Drawable drawable, LinearLayout.LayoutParams layoutParams) {
+    public void setLeftViewBackgroundDrawable(Drawable drawable, LinearLayout.LayoutParams layoutParams) {
         mBackwardbButton.setImageDrawable(drawable);
         mBackwardbButton.setLayoutParams(layoutParams);
         AutoUtils.auto(mBackwardbButton);
@@ -182,7 +182,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      *
      * @param drawable
      */
-    public void setBackwardButtonBackgroundDrawable(Drawable drawable) {
+    public void setLeftViewBackgroundDrawable(Drawable drawable) {
         mBackwardbButton.setImageDrawable(drawable);
     }
 
