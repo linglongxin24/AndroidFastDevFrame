@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/net_error"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="270px"
+        android:layout_height="118px"
+        android:background="@drawable/reload"
+        android:button="@null"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1160px"
+        android:id="@+id/bt_reload" />
+</RelativeLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#313a49"
+    android:id="@+id/llRoot"
+    style="@style/immersion_status"
+    android:orientation="vertical">
+<!-- style="@style/immersion_status"-->
+    <!-- Title -->
+
+    <include layout="@layout/public_titlebar" />
+
+    <FrameLayout
+        android:background="#eeeeee"
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       ></FrameLayout>
+    <ViewStub
+        android:id="@+id/vs"
+        android:layout_width="match_parent"
+        android:layout="@layout/pub_net_error"
+        android:layout_height="match_parent" />
+</LinearLayout>
