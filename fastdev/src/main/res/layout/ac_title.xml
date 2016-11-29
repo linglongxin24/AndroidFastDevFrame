@@ -9,7 +9,7 @@
 <!-- style="@style/immersion_status"-->
     <!-- Title -->
 
-    <include layout="@layout/public_titlebar" />
+    <include layout="@layout/public_titlebar_750x1334" />
 
     <FrameLayout
         android:background="#eeeeee"
