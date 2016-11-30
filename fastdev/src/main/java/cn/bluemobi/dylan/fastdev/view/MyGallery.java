@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Gallery;
@@ -132,11 +133,14 @@ public class MyGallery extends Gallery implements OnItemSelectedListener {
             ImageView.ScaleType localScaleType = ImageView.ScaleType.FIT_XY;
             localImageView.setScaleType(localScaleType);
             LinearLayout.LayoutParams localLayoutParams = new LinearLayout.LayoutParams(
-                    155, 11);
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             localLayoutParams.weight = 1;
+            localLayoutParams.setMargins(10,10,10,10);
             localImageView.setLayoutParams(localLayoutParams);
             localImageView.setPadding(0, 0, 0, 0);
-            localImageView.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
+            localImageView.setImageDrawable(getContext()
+                    .getResources().getDrawable(
+                            R.drawable.dot_normal));
             ll_focus_indicator_container.addView(localImageView);
         }
     }
@@ -160,14 +164,16 @@ public class MyGallery extends Gallery implements OnItemSelectedListener {
         if (preSelImg == null) {
             return;
         }
-        preSelImg.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
+        preSelImg.setImageDrawable(getContext()
+                .getResources().getDrawable(
+                        R.drawable.dot_normal));
         //修改当前选中项的背景
         ImageView curSelImg = (ImageView) ll_focus_indicator_container
                 .findViewById(selIndex);
         curSelImg
                 .setImageDrawable(getContext()
                         .getResources().getDrawable(
-                                R.drawable.dots_focus));
+                                R.drawable.dot_focus));
         preSelImgIndex = selIndex;
     }
 

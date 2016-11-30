@@ -23,15 +23,66 @@ import cn.bluemobi.dylan.fastdev.view.LoadingDialog;
  * Created by yuandl on 2016/8/31 0031.
  */
 public class HttpUtils implements HttpRequest {
+    /**
+     * 请求接口返回码
+     */
     private String code = "code";
+    /**
+     * 请求接口返回信息
+     */
     private String msg = "msg";
+    /**
+     * 请求接口返回数据
+     */
     private String data = "data";
+    /**
+     * 请求接口成功的响应码
+     */
     private int successCode = 1;
+    /**
+     * 配置请求接口的全局参数
+     */
     private Map<String, String> globalParameters = new ArrayMap<>();
 
+    /**
+     * 初始化各种参数
+     *
+     * @param code             请求接口返回码
+     * @param data             请求接口返回数据
+     * @param msg              请求接口返回信息
+     * @param successCode      请求接口成功的响应码
+     * @param globalParameters 配置请求接口的全局参数
+     */
+    public void init(String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
+        this.code = code;
+        this.data = data;
+        this.msg = msg;
+        this.successCode = successCode;
+        this.globalParameters = globalParameters;
+    }
 
-    //    private String prams = "tableCode";
-//    private String value = "0001";
+    public String getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+
+    public String getData() {
+        return data;
+    }
+
+
+    public int getSuccessCode() {
+        return successCode;
+    }
+
+    public Map<String, String> getGlobalParameters() {
+        return globalParameters;
+    }
+
     private volatile static HttpUtils httpUtils;
 
 
@@ -79,10 +130,12 @@ public class HttpUtils implements HttpRequest {
         } else {
             loadingDialog = null;
         }
-        Set<String> set = globalParameters.keySet();
+        Set<String> set = getGlobalParameters().keySet();
         for (String key : set) {
-            requestParams.addBodyParameter(key, globalParameters.get(key));
+            requestParams.addBodyParameter(key, getGlobalParameters().get(key));
         }
+
+
         List<KeyValue> params = requestParams.getStringParams();
         String requestParamstr = "url=" + requestParams.getUri();
         for (KeyValue keyValue : params) {
@@ -98,50 +151,4 @@ public class HttpUtils implements HttpRequest {
         return cancelable;
     }
 
-    public void init(String code, String data, String msg, int successCode) {
-        this.code = code;
-        this.data = data;
-        this.msg = msg;
-        this.successCode = successCode;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public int getSuccessCode() {
-        return successCode;
-    }
-
-    public void setSuccessCode(int successCode) {
-        this.successCode = successCode;
-    }
-
-    public Map<String, String> getGlobalParameters() {
-        return globalParameters;
-    }
-
-    public void setGlobalParameters(Map<String, String> globalParameters) {
-        this.globalParameters = globalParameters;
-    }
 }

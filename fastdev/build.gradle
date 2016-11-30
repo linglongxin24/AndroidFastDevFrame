@@ -27,6 +27,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:design:23.3.0'
     compile 'com.orhanobut:logger:1.8'
     compile 'org.xutils:xutils:3.3.34'
 //    compile 'com.linglongxin24:UncaughtExceptionSendEmail:1.0.0'
@@ -54,7 +55,7 @@ group = "cn.bluemobi.dylan"
 //发布到JCenter上的项目名字，必须填写
 def libName = "AndroidFastDevFrame"
 // 版本号，下次更新是只需要更改版本号即可
-version = "0.1"
+version = "0.4.4"
 /**上面配置后上传至jcenter后的编译路径是这样的： compile 'cn.bluemobi.dylan:fastdev:0.1'**/
 
 
