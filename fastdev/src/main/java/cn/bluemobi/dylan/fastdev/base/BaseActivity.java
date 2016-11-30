@@ -34,6 +34,7 @@ import java.util.Map;
 import cn.bluemobi.dylan.fastdev.R;
 import cn.bluemobi.dylan.fastdev.autolayout.AutoLayoutActivity;
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
+import cn.bluemobi.dylan.fastdev.config.TitleBarColor;
 import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 import cn.bluemobi.dylan.fastdev.utils.AppManager;
@@ -145,6 +146,13 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
         mContentLayout = (FrameLayout) findViewById(R.id.layout_content);
         mBackwardbButton = (ImageView) findViewById(R.id.button_backward);
         mForwardButton = (TextView) findViewById(R.id.button_forward);
+        int backgroundColorId = TitleBarColor.backgroundColor;
+        setTitleBarBackground(getResources().getColor(backgroundColorId));
+
+        int textColorId = TitleBarColor.textColor;
+        setTitleColor(getResources().getColor(textColorId));
+
+        setLeftViewBackgroundDrawable(getResources().getDrawable(TitleBarColor.arrowBack));
     }
 
     /**
@@ -178,7 +186,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
     }
 
     /**
-     * 设置返回按钮背景图片（含沉浸式状态栏）
+     * 设置返回按钮背景图片
      *
      * @param drawable
      */

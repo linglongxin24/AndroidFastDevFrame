@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:background="#313a49"
     android:id="@+id/llRoot"
+    android:fitsSystemWindows="true"
     style="@style/immersion_status"
     android:orientation="vertical">
 <!-- style="@style/immersion_status"-->
     <!-- Title -->
 
-    <include layout="@layout/public_titlebar_750x1334" />
+    <include layout="@layout/public_titlebar" />
 
     <FrameLayout
         android:background="#eeeeee"

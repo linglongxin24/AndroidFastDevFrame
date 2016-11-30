@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_titlebar"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="148px"
     android:background="#313a49"
     android:fitsSystemWindows="true"
     android:orientation="horizontal">
@@ -14,10 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:paddingLeft="11dp"
-        android:paddingRight="11dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:paddingLeft="33px"
+        android:paddingRight="33px"
+        android:paddingTop="48px"
+        android:paddingBottom="48px"
         android:gravity="center"
         android:onClick="onLeft"
         android:src="@drawable/arrow_back_write"
@@ -32,7 +32,7 @@
         android:singleLine="true"
         android:text="标题栏"
         android:textColor="#FFFFFF"
-        android:textSize="20dp" />
+        android:textSize="58px" />
 
     <TextView
         android:id="@+id/button_forward"
@@ -42,14 +42,14 @@
         android:ellipsize="end"
         android:gravity="center"
         android:onClick="onRight"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="30px"
+        android:paddingRight="33px"
         android:singleLine="true"
-        android:minWidth="33dp"
+        android:minWidth="100px"
 
         android:text="提交"
         android:textColor="#000000"
-        android:textSize="16dp"
+        android:textSize="50px"
         android:visibility="invisible" />
 
 </LinearLayout>

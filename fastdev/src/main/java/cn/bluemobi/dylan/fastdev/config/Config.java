@@ -2,6 +2,8 @@ package cn.bluemobi.dylan.fastdev.config;
 
 
 import android.app.Application;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import com.orhanobut.logger.Logger;
 
@@ -12,22 +14,27 @@ import java.util.Map;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 
 /**
+ * 配置类
  * Created by yuandl on 2016/9/1 0001.
  */
+
 public class Config {
+    /**
+     * 初始化配置
+     *
+     * @param application 应用的application
+     */
+    public static void init(Application application) {
+        x.Ext.init(application);
+    }
 
     /**
-     * 初始化网络请求的各种参数
+     * 初始化日志TAG
      *
-     * @param code             请求接口返回码
-     * @param data             请求接口返回数据
-     * @param msg              请求接口返回信息
-     * @param successCode      请求接口成功的响应码
-     * @param globalParameters 配置请求接口的全局参数
+     * @param tag 日志TAG
      */
-    public static void initHttp(Application application, String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
-        x.Ext.init(application);
-        HttpUtils.getInstance().init(code, data, msg, successCode, globalParameters);
+    public static void initLog(String tag) {
+        Logger.init(tag);
     }
 
     /**
@@ -40,20 +47,29 @@ public class Config {
     }
 
     /**
-     * 初始化标题栏背景颜色
+     * 初始化标题栏
      *
-     * @param color 标题栏背景色
+     * @param backgroundColor 背景颜色id
+     * @param textColor       字体颜色id
+     * @param arrowBack       返回箭头图标id
      */
-    public static void initTitleBarColor(int color) {
-        TitleBarColor.color = color;
+    public static void initTitleBar(int backgroundColor, int textColor, int arrowBack) {
+        TitleBarColor.backgroundColor = backgroundColor;
+        TitleBarColor.textColor = textColor;
+        TitleBarColor.arrowBack = arrowBack;
     }
 
     /**
-     * 初始化日志TAG
+     * 初始化网络请求的各种参数
      *
-     * @param tag 日志TAG
+     * @param code             请求接口返回码
+     * @param data             请求接口返回数据
+     * @param msg              请求接口返回信息
+     * @param successCode      请求接口成功的响应码
+     * @param globalParameters 配置请求接口的全局参数
      */
-    public static void initLog(String tag) {
-        Logger.init(tag);
+    public static void initHttp(String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
+        HttpUtils.getInstance().init(code, data, msg, successCode, globalParameters);
     }
+
 }

@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dylanfastdev">
-    <application android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+
+    <application
         android:name=".Myapplication"
         android:label="@string/app_name"
-        >
-        <activity android:name="MainActivity" >
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <meta-data
+            android:name="design_width"
+            android:value="750"
+            tools:replace="android:value" />
+        <meta-data
+            android:name="design_height"
+            android:value="1334"
+            tools:replace="android:value" />
+
+        <activity android:name="MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

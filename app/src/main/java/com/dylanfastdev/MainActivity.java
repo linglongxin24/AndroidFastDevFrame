@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
+import cn.bluemobi.dylan.fastdev.config.Config;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
@@ -35,8 +36,6 @@ public class MainActivity extends BasePhotoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        x.Ext.init(getApplication());
-        Logger.init("yanhao");
         setMyRatingBar();
         showCircleImage();
         showCycleViewPager();
