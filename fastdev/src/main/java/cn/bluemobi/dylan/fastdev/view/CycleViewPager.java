@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bluemobi.dylan.fastdev.R;
+import cn.bluemobi.dylan.fastdev.utils.Tools;
 
 /**
  * Created by yuandl on 2016-11-30.
@@ -202,8 +203,8 @@ public class CycleViewPager extends FrameLayout
         mIndicatorLayout.removeAllViews();
         for (int i = 0; i < mIndicators.length; i++) {
             mIndicators[i] = new ImageView(mContext);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mIndicators[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Tools.DPtoPX(10,getContext()),Tools.DPtoPX(10,getContext()));
             lp.setMargins(10, 0, 10, 0);
             mIndicators[i].setLayoutParams(lp);
             mIndicatorLayout.addView(mIndicators[i]);
