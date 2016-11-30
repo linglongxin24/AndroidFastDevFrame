@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.orhanobut.logger.Logger;
+
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -23,23 +25,45 @@ import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
+import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 
 public class MainActivity extends BasePhotoActivity {
     private WebView webView;
+    private CycleViewPager cycle_view_pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        x.Ext.init(getApplication());
+        Logger.init("yanhao");
         setMyRatingBar();
         showCircleImage();
+        showCycleViewPager();
 
+    }
+
+    private void showCycleViewPager() {
+        cycle_view_pager = (CycleViewPager) findViewById(R.id.cv);
+        //设置选中和未选中时的图片
+        assert cycle_view_pager != null;
+        cycle_view_pager.setIndicators(R.mipmap.dot_focus, R.mipmap.dot_normal);
+        List<String> urls = new ArrayList<>();
+        urls.add("http://pic.58pic.com/58pic/15/37/32/458PICq58PICPd4_1024.jpg");
+        urls.add("http://pic8.nipic.com/20100627/1614097_004848992811_2.jpg");
+        urls.add("http://pic.58pic.com/58pic/15/35/53/14t58PICUJv_1024.jpg");
+        cycle_view_pager.setData(urls, new CycleViewPager.ImageCycleViewListener() {
+            @Override
+            public void onImageClick(String url, int position, View imageView) {
+
+            }
+        });
     }
 
     private void showCircleImage() {
         String url = "http://img.blog.csdn.net/20161016171244996";
-         CircleImageView circleImageView= (CircleImageView) findViewById(R.id.ci);
-        x.image().bind(circleImageView,url,new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
+        CircleImageView circleImageView = (CircleImageView) findViewById(R.id.ci);
+        x.image().bind(circleImageView, url, new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
     }
 
     private void setMyRatingBar() {

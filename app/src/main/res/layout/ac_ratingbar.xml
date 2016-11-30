@@ -22,9 +22,13 @@
         android:id="@+id/ci"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal"
-        app:border_width="1dp"
+        android:scaleType="centerCrop"
         app:border_color="#FF0000"
-        />
+        app:border_width="1dp" />
+
+    <cn.bluemobi.dylan.fastdev.view.CycleViewPager
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="320px"></cn.bluemobi.dylan.fastdev.view.CycleViewPager>
 </LinearLayout>
