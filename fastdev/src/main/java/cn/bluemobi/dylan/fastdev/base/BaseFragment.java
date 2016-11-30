@@ -47,10 +47,12 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
         isInit = true;
+        initView(view);
         /**初始化的时候去加载数据**/
         isCanLoadData();
         return view;
     }
+
 
     /**
      * 视图是否已经对用户可见，系统的方法
@@ -111,6 +113,13 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
      * @return 布局的layoutId
      */
     protected abstract int setContentView();
+
+    /**
+     * 初始化UI
+     *
+     * @param view
+     */
+    protected abstract void initView(View view);
 
     /**
      * 初始化数据
