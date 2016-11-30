@@ -25,7 +25,7 @@ import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 
 /**
- * com.bm.falvzixun.fragment.BaseFragment
+ * cn.bluemobi.dylan.fastdev.base.BaseFragment
  * * Fragment预加载问题的解决方案：
  * 1.可以懒加载的Fragment
  * 2.切换到其他页面时停止加载数据（可选）
@@ -47,7 +47,6 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
         isInit = true;
-        initData();
         /**初始化的时候去加载数据**/
         isCanLoadData();
         return view;
@@ -143,6 +142,9 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
      * 当视图初始化并且对用户可见的时候去真正的加载数据
      */
     protected void lazyLoad() {
+        if (!isLoad) {
+            initData();
+        }
     }
 
     /**
