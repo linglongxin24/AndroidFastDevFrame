@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <cn.bluemobi.dylan.fastdev.view.RatingBar
+        android:id="@+id/rb"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        app:starCount="5"
+        app:starEmpty="@mipmap/star_grey"
+        app:starFill="@mipmap/star_yellow"
+        app:starHalf="@mipmap/star_half_yellow"
+        app:starImageSize="40dp"
+        app:starPadding="20dp"
+        app:starStep="1.5"
+        app:stepSize="Half"></cn.bluemobi.dylan.fastdev.view.RatingBar>
+
+    <cn.bluemobi.dylan.fastdev.view.CircleImageView
+        android:id="@+id/ci"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        app:border_color="#FF0000"
+        app:border_width="1dp" />
+
+    <cn.bluemobi.dylan.fastdev.view.CycleViewPager
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="320px"></cn.bluemobi.dylan.fastdev.view.CycleViewPager>
+</LinearLayout>
