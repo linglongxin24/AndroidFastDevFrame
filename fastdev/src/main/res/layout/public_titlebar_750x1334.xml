@@ -20,7 +20,7 @@
         android:paddingBottom="30px"
         android:gravity="center"
         android:onClick="onLeft"
-        android:src="@drawable/arrow_back_black"
+        android:src="@drawable/pub_arrow_back_black"
         android:visibility="visible" />
     <TextView
         android:id="@+id/text_title"

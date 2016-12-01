@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     style="@style/immersion_status"
     android:orientation="vertical">
-<!-- style="@style/immersion_status"-->
+    <!-- style="@style/immersion_status"-->
     <!-- Title -->
 
     <include layout="@layout/public_titlebar" />
@@ -17,7 +17,7 @@
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       ></FrameLayout>
+        ></FrameLayout>
     <ViewStub
         android:id="@+id/vs"
         android:layout_width="match_parent"

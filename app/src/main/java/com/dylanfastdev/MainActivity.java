@@ -10,8 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.orhanobut.logger.Logger;
-
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
-import cn.bluemobi.dylan.fastdev.config.Config;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
@@ -83,7 +80,7 @@ public class MainActivity extends BasePhotoActivity {
      * 普通适配器的方法
      */
     private void myAdapterTest() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.pub_activity_main);
         ListView listView = (ListView) findViewById(R.id.listview);
         List<String> datas = new ArrayList<>();
         datas.add("普通适配器测试1");
@@ -97,7 +94,7 @@ public class MainActivity extends BasePhotoActivity {
      * 万能适配器的方法
      */
     private void commonAdapterTest() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.pub_activity_main);
         ListView listView = (ListView) findViewById(R.id.listview);
         List<String> datas = new ArrayList<>();
         for (int i = 0; i < 18; i++) {
@@ -201,7 +198,7 @@ public class MainActivity extends BasePhotoActivity {
     @Override
     public void initViews() {
 
-//        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.pub_activity_main);
 
     }
 

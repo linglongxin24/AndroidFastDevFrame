@@ -138,7 +138,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      * 加载 activity_title 布局 ，并获取标题及两侧按钮
      */
     private void setupViews() {
-        super.setContentView(R.layout.ac_title);
+        super.setContentView(R.layout.pub_activity_main);
         llRoot = (LinearLayout) findViewById(R.id.llRoot);
 //        AutoUtils.auto(llRoot);
         layout_titlebar = (LinearLayout) findViewById(R.id.layout_titlebar);

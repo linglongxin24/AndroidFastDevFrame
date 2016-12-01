@@ -8,7 +8,7 @@
         android:layout_height="150dp"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:background="@drawable/loading_bg">
+        android:background="@drawable/pub_loading_bg">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -21,5 +21,5 @@ public class TitleBarColor {
     /**
      * 标题返回箭头：默认白色返回箭头
      */
-    public static int arrowBack = R.drawable.arrow_back_write;
+    public static int arrowBack = R.drawable.pub_arrow_back_write;
 }

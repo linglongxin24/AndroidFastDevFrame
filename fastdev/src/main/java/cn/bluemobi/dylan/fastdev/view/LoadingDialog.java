@@ -27,7 +27,7 @@ public class LoadingDialog {
     }
 
     public Dialog show(String message) {
-        View view = LayoutInflater.from(context).inflate(R.layout.loading, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
         tv_text = (TextView) view.findViewById(R.id.tv_text);
         tv_text.setText(message);
         if(dialog==null){

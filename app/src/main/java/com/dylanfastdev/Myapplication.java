@@ -17,6 +17,6 @@ public class Myapplication extends Application {
         super.onCreate();
         x.Ext.init(this);
         Logger.init("yanhao");
-        Config.initTitleBar(R.color.colorAccent,android.R.color.white,R.drawable.arrow_back_write);
+        Config.initTitleBar(R.color.colorAccent,android.R.color.white,R.drawable.pub_arrow_back_write);
     }
 }

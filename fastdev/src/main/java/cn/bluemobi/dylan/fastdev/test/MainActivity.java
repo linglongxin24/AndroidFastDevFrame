@@ -14,7 +14,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initViews() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.pub_activity_main);
     }
 
     @Override

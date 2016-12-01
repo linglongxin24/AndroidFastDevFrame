@@ -107,7 +107,7 @@ public class CycleViewPager extends FrameLayout
      * 初始化View
      */
     private void initView() {
-        LayoutInflater.from(mContext).inflate(R.layout.layout_cycle_view, this, true);
+        LayoutInflater.from(mContext).inflate(R.layout.pub_layout_cycle_view, this, true);
         mViewPager = (ViewPager) findViewById(R.id.cycle_view_pager);
         mTitle = (TextView) findViewById(R.id.cycle_title);
         mIndicatorLayout = (LinearLayout) findViewById(R.id.cycle_indicator);
@@ -204,7 +204,7 @@ public class CycleViewPager extends FrameLayout
         for (int i = 0; i < mIndicators.length; i++) {
             mIndicators[i] = new ImageView(mContext);
             mIndicators[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Tools.DPtoPX(10,getContext()),Tools.DPtoPX(10,getContext()));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Tools.DPtoPX(10, getContext()), Tools.DPtoPX(10, getContext()));
             lp.setMargins(10, 0, 10, 0);
             mIndicators[i].setLayoutParams(lp);
             mIndicatorLayout.addView(mIndicators[i]);
@@ -447,8 +447,7 @@ public class CycleViewPager extends FrameLayout
 
         /**
          * 单击图片事件
-         *
-         * @param info
+         * @param url
          * @param position
          * @param imageView
          */

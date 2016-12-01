@@ -41,7 +41,7 @@ public abstract class BasePhotoActivity extends BaseActivity  {
 
     public void showdialog() {
         View localView = LayoutInflater.from(context).inflate(
-                R.layout.dialog_add_picture, null);
+                R.layout.pub_dialog_add_picture, null);
         AutoUtils.auto(localView.getRootView());
         TextView tv_camera = (TextView) localView.findViewById(R.id.tv_camera);
         TextView tv_gallery = (TextView) localView.findViewById(R.id.tv_gallery);

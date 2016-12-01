@@ -1,8 +1,6 @@
 package cn.bluemobi.dylan.fastdev.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -140,7 +138,7 @@ public class MyGallery extends Gallery implements OnItemSelectedListener {
             localImageView.setPadding(0, 0, 0, 0);
             localImageView.setImageDrawable(getContext()
                     .getResources().getDrawable(
-                            R.drawable.dot_normal));
+                            R.drawable.pub_dot_normal));
             ll_focus_indicator_container.addView(localImageView);
         }
     }
@@ -166,14 +164,14 @@ public class MyGallery extends Gallery implements OnItemSelectedListener {
         }
         preSelImg.setImageDrawable(getContext()
                 .getResources().getDrawable(
-                        R.drawable.dot_normal));
+                        R.drawable.pub_dot_normal));
         //修改当前选中项的背景
         ImageView curSelImg = (ImageView) ll_focus_indicator_container
                 .findViewById(selIndex);
         curSelImg
                 .setImageDrawable(getContext()
                         .getResources().getDrawable(
-                                R.drawable.dot_focus));
+                                R.drawable.pub_dot_focus));
         preSelImgIndex = selIndex;
     }
 
