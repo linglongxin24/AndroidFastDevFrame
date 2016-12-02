@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.orhanobut.logger.Logger;
+
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -60,7 +62,7 @@ public class MainActivity extends BasePhotoActivity {
                     protected void convertView(View item, String s) {
 
                     }
-                }, fm);
+                }, cycle_view_pager,fm);
                 selectPopupWind.show();
             }
         });
@@ -79,7 +81,7 @@ public class MainActivity extends BasePhotoActivity {
         cycle_view_pager.setData(urls, new CycleViewPager.ImageCycleViewListener() {
             @Override
             public void onImageClick(String url, int position, View imageView) {
-
+                Logger.d("点击了=" + position);
             }
         });
     }

@@ -13,6 +13,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.orhanobut.logger.Logger;
+
 import cn.bluemobi.dylan.fastdev.utils.Tools;
 
 /**
@@ -27,6 +29,7 @@ public class SelectPopupWindow extends PopupWindow {
     private ListAdapter listAdapter;
     private PopupWindow popupWindow;
     private ListView listView;
+    private View outsideView;
 
     /**
      * 初始化一个选择下拉框
@@ -35,11 +38,12 @@ public class SelectPopupWindow extends PopupWindow {
      * @param listAdapter        下拉列表数据适配器
      * @param outsideFrameLayout 外部含有遮罩层的FrameLayout
      */
-    public SelectPopupWindow(View showAsDropDownView, ListAdapter listAdapter, FrameLayout outsideFrameLayout) {
+    public SelectPopupWindow(View showAsDropDownView, ListAdapter listAdapter, View outsideView, FrameLayout outsideFrameLayout) {
         this.showAsDropDownView = showAsDropDownView;
         this.outsideFrameLayout = outsideFrameLayout;
         this.context = showAsDropDownView.getContext();
         this.listAdapter = listAdapter;
+        this.outsideView = outsideView;
         init();
     }
 
@@ -58,19 +62,28 @@ public class SelectPopupWindow extends PopupWindow {
         popupWindow.setContentView(listView);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    popupWindow.dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Logger.d("event.getAction() == MotionEvent.ACTION_OUTSIDE=" + (event.getAction() == MotionEvent.ACTION_OUTSIDE));
+//                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+//                    popupWindow.dismiss();
+//                    Logger.d("return true;");
+//                    return true;
+//                } else {
+//                    Logger.d("return false;");
+//                    return false;
+//                }
+//            }
+//        });
         popupWindow.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
+                if (outsideView != null) {
+                    outsideView.setClickable(true);
+                    outsideView.setFocusable(true);
+                    outsideView.setFocusableInTouchMode(true);
+                }
                 if (outsideFrameLayout != null) {
                     outsideFrameLayout.setForeground(new ColorDrawable(Color.TRANSPARENT));
                 }
@@ -88,6 +101,18 @@ public class SelectPopupWindow extends PopupWindow {
         }
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
+            if (outsideView != null) {
+                outsideView.setEnabled(false);
+                outsideView.setClickable(false);
+                outsideView.setFocusable(false);
+                outsideView.setFocusableInTouchMode(false);
+                outsideView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+            }
             if (outsideFrameLayout != null) {
                 outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#7F4c4c4c")));
             }
