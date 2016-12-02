@@ -88,7 +88,7 @@ public class SelectPopupWindow extends PopupWindow {
      *
      * @param onItemClickListener
      */
-    public SelectPopupWindow setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+    public SelectPopupWindow setOnItemClickListener(final AdapterView.OnItemClickListener onItemClickListener) {
         if (popupWindow == null) {
             init();
         }
@@ -96,7 +96,13 @@ public class SelectPopupWindow extends PopupWindow {
             return this;
         }
         if (onItemClickListener != null) {
-            listView.setOnItemClickListener(onItemClickListener);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    popupWindow.dismiss();
+                    onItemClickListener.onItemClick(parent, view, position, id);
+                }
+            });
         }
         return this;
     }
