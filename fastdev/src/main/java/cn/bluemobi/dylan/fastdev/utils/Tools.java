@@ -17,8 +17,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1259,4 +1261,56 @@ public class Tools {
         imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
 
     }
+    /**
+     * 验证用户只能输入小数点后后两位并且第一位输入.的时候前面自动补0；
+     *
+     * @param editText
+     */
+    public void setPricePoint(final EditText editText, final int pointCount) {//
+        editText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s=editText.getText().toString();
+                // TODO Auto-generated method stub
+                if (s.contains(".")) {
+                    if (s.length() - 1 - s.toString().indexOf(".") > pointCount) {
+                        s = s.substring(0,
+                                s.indexOf(".") + pointCount+1);
+                        editText.setText(s);
+                        editText.setSelection(s.length());
+                    }
+                }
+                if (s.toString().trim().substring(0).equals(".")) {
+                    s = "0" + s;
+                    editText.setText(s);
+                    editText.setSelection(2);
+                }
+
+                if (s.toString().startsWith("0")
+                        && s.toString().trim().length() > 1) {
+                    if (!s.toString().substring(1, 2).equals(".")) {
+                        editText.setText(s.subSequence(0, 1));
+                        editText.setSelection(1);
+                        return;
+                    }
+                }
+            }
+
+        });
+
+    }
+
 }
