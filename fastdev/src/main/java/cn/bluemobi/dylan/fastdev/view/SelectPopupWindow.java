@@ -59,7 +59,9 @@ public class SelectPopupWindow extends PopupWindow {
         popupWindow.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
-                outsideFrameLayout.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                if (outsideFrameLayout != null) {
+                    outsideFrameLayout.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                }
             }
         });
 
@@ -74,10 +76,9 @@ public class SelectPopupWindow extends PopupWindow {
         }
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
-            if (outsideFrameLayout == null) {
-                return this;
+            if (outsideFrameLayout != null) {
+                outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#e05f5f5f")));
             }
-            outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#e05f5f5f")));
         }
         return this;
     }
