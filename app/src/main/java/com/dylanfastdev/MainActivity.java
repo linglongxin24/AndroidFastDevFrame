@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,10 +27,12 @@ import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
+import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 
 public class MainActivity extends BasePhotoActivity {
     private WebView webView;
     private CycleViewPager cycle_view_pager;
+    private FrameLayout fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,30 @@ public class MainActivity extends BasePhotoActivity {
         setMyRatingBar();
         showCircleImage();
         showCycleViewPager();
+        showSelectPopupWindow();
+
+    }
+
+    private void showSelectPopupWindow() {
+        final Button bt = (Button) findViewById(R.id.bt);
+        fm = (FrameLayout) findViewById(R.id.fm);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> datas = new ArrayList<>();
+                datas.add("选择1");
+                datas.add("选择2");
+                datas.add("选择3");
+                datas.add("选择4");
+                SelectPopupWindow selectPopupWind = new SelectPopupWindow(bt, new CommonAdapter<String>(context, datas, R.layout.item) {
+                    @Override
+                    protected void convertView(View item, String s) {
+
+                    }
+                }, fm);
+                selectPopupWind.show();
+            }
+        });
 
     }
 

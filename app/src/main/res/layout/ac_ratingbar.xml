@@ -27,8 +27,20 @@
         app:border_color="#FF0000"
         app:border_width="1dp" />
 
-    <cn.bluemobi.dylan.fastdev.view.CycleViewPager
-        android:id="@+id/cv"
+    <FrameLayout
+        android:id="@+id/fm"
         android:layout_width="match_parent"
-        android:layout_height="320px"></cn.bluemobi.dylan.fastdev.view.CycleViewPager>
+        android:layout_height="wrap_content">
+
+        <cn.bluemobi.dylan.fastdev.view.CycleViewPager
+            android:id="@+id/cv"
+            android:layout_width="match_parent"
+            android:layout_height="320px"></cn.bluemobi.dylan.fastdev.view.CycleViewPager>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击选择" />
 </LinearLayout>
