@@ -1,7 +1,6 @@
 package cn.bluemobi.dylan.fastdev.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -69,18 +68,18 @@ public class SelectPopupWindow extends PopupWindow {
     /**
      * 显示PopupWindow
      */
-    public PopupWindow show() {
+    public SelectPopupWindow show() {
         if (popupWindow == null) {
             init();
         }
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
             if (outsideFrameLayout == null) {
-                return popupWindow;
+                return this;
             }
             outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#e05f5f5f")));
         }
-        return popupWindow;
+        return this;
     }
 
     /**
@@ -88,16 +87,16 @@ public class SelectPopupWindow extends PopupWindow {
      *
      * @param onItemClickListener
      */
-    public PopupWindow setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+    public SelectPopupWindow setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         if (popupWindow == null) {
             init();
         }
         if (listView == null) {
-            return popupWindow;
+            return this;
         }
         if (onItemClickListener != null) {
             listView.setOnItemClickListener(onItemClickListener);
         }
-        return popupWindow;
+        return this;
     }
 }

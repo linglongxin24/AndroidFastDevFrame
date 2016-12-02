@@ -7,3 +7,8 @@
 /build
 /captures
 .externalNativeBuild
+/Vegetables.iml
+/gradle.properties
+/.gradle
+/.idea
+/app/app.iml
