@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -53,9 +54,20 @@ public class SelectPopupWindow extends PopupWindow {
         listView.setDividerHeight(Tools.DPtoPX(1, context));
         listView.setBackgroundColor(Color.WHITE);
         listView.setAdapter(listAdapter);
+        setOnItemClickListener(null);
         popupWindow.setContentView(listView);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+                return false;
+            }
+        });
         popupWindow.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -77,7 +89,7 @@ public class SelectPopupWindow extends PopupWindow {
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
             if (outsideFrameLayout != null) {
-                outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#e05f5f5f")));
+                outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#7F4c4c4c")));
             }
         }
         return this;
@@ -95,15 +107,15 @@ public class SelectPopupWindow extends PopupWindow {
         if (listView == null) {
             return this;
         }
-        if (onItemClickListener != null) {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    popupWindow.dismiss();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                popupWindow.dismiss();
+                if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(parent, view, position, id);
                 }
-            });
-        }
+            }
+        });
         return this;
     }
 }

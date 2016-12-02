@@ -13,11 +13,11 @@ public class TitleBarColor {
     /**
      * 标题栏背景颜色：默认黑色
      */
-    public static int backgroundColor = Color.BLACK;
+    public static int backgroundColor = android.R.color.black;
     /**
      * 标题栏文字颜色：默认白色
      */
-    public static int textColor = Color.WHITE;
+    public static int textColor =android.R.color.white;
     /**
      * 标题返回箭头：默认白色返回箭头
      */
