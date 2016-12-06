@@ -3,6 +3,7 @@ package cn.bluemobi.dylan.fastdev.adapter;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.orhanobut.logger.Logger;
@@ -16,21 +17,21 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
 
     private List<Fragment> fragments; // 一个tab页面对应一个Fragment
     private TabLayout tabLayout; // 用于切换tab
-    private FragmentActivity fragmentActivity; // Fragment所属的Activity
+    private FragmentManager fragmentManager; // Fragment所属的Activity
     private int fragmentContentId; // Activity中所要被替换的区域的id
 
     private int currentTab = 0;// 当前Tab页面索引
 
     private OnRgsExtraCheckedChangedListener onRgsExtraCheckedChangedListener; // 用于让调用者在切换tab时候增加新的功能
 
-    public FragmentTabAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, TabLayout tabLayout) {
+    public FragmentTabAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, TabLayout tabLayout) {
         this.fragments = fragments;
         this.tabLayout = tabLayout;
-        this.fragmentActivity = fragmentActivity;
+        this.fragmentManager = fragmentManager;
         this.fragmentContentId = fragmentContentId;
 
         // 默认显示第一页
-        FragmentTransaction ft = fragmentActivity.getSupportFragmentManager()
+        FragmentTransaction ft = fragmentManager
                 .beginTransaction();
         ft.add(fragmentContentId, fragments.get(currentTab), String.valueOf(currentTab));
         ft.commitAllowingStateLoss();
@@ -73,7 +74,7 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
      * @return
      */
     private FragmentTransaction obtainFragmentTransaction(int index) {
-        FragmentTransaction ft = fragmentActivity.getSupportFragmentManager()
+        FragmentTransaction ft =fragmentManager
                 .beginTransaction();
 
         return ft;
