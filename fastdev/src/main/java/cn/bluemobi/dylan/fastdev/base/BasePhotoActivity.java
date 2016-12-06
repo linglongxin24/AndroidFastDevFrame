@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -24,6 +26,8 @@ import java.io.File;
 import cn.bluemobi.dylan.fastdev.R;
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
 import cn.bluemobi.dylan.fastdev.config.FilePath;
+import cn.bluemobi.dylan.fastdev.luban.Luban;
+import cn.bluemobi.dylan.fastdev.luban.OnCompressListener;
 import cn.bluemobi.dylan.fastdev.utils.NativeUtil;
 
 /**
@@ -170,7 +174,8 @@ public abstract class BasePhotoActivity extends BaseActivity {
                     cursor.moveToFirst();
                     //最后根据索引值获取图片路径
                     String path = cursor.getString(column_index);
-                    compressImage(path);
+//                    compressImage(path);
+                    compressWithLuban(new File(path));
                 }
 
             } else if (requestCode == PHOTO_REQUEST_CAMERA) {
@@ -178,7 +183,8 @@ public abstract class BasePhotoActivity extends BaseActivity {
                     /**从相机返回的数据**/
                     if (hasSdcard()) {
                         if (tempFile != null) {
-                            compressImage(tempFile.getPath());
+//                            compressImage(tempFile.getPath());
+                            compressWithLuban(new File(tempFile.getPath()));
                         } else {
                             Toast.makeText(context, "相机异常请稍后再试！", Toast.LENGTH_SHORT).show();
                         }
@@ -229,10 +235,52 @@ public abstract class BasePhotoActivity extends BaseActivity {
     }
 
     /**
+     * 压缩单张图片 Listener 方式
+     */
+    private void compressWithLuban(final File file) {
+        Luban.get(this)
+                .load(file)
+                .putGear(Luban.THIRD_GEAR)
+                .setFilename(System.currentTimeMillis() + "")
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                        photoCompressStart(file.getAbsolutePath());
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        Logger.d("压缩文件路径" + file.getAbsolutePath());
+                        photoPath(file);
+                        photoPath(file.getAbsolutePath());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                }).launch();
+    }
+
+    /**
+     * 回调压缩后的图片路径
+     */
+    public void photoCompressStart(String path) {
+    }
+
+    /**
      * 回调压缩后的图片路径
      *
      * @param path 图片路径
      */
     public void photoPath(String path) {
+    }
+
+    /**
+     * 回调压缩后的图片路径
+     *
+     * @param file 图片文件
+     */
+    public void photoPath(File file) {
     }
 }

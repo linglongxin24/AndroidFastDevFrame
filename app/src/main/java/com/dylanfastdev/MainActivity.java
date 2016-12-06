@@ -65,10 +65,19 @@ public class MainActivity extends BasePhotoActivity {
             }
         });
     }
-    public void photoPath(String path) {
+
+    @Override
+    public void photoCompressStart(String path) {
+        super.photoCompressStart(path);
         paths.add(path);
         gridViewAddImgesAdpter.notifyDataSetChanged();
     }
+
+    public void photoPath(String path) {
+        paths.set(paths.size() - 1, path);
+        gridViewAddImgesAdpter.notifyDataSetChanged();
+    }
+
     private void showSelectPopupWindow() {
         final Button bt = (Button) findViewById(R.id.bt);
         fm = (FrameLayout) findViewById(R.id.fm);
@@ -85,7 +94,7 @@ public class MainActivity extends BasePhotoActivity {
                     protected void convertView(View item, String s) {
 
                     }
-                }, cycle_view_pager,fm);
+                }, cycle_view_pager, fm);
                 selectPopupWind.show();
             }
         });
