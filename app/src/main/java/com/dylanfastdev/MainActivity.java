@@ -7,6 +7,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,9 +21,11 @@ import org.xutils.x;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
@@ -35,6 +38,9 @@ public class MainActivity extends BasePhotoActivity {
     private WebView webView;
     private CycleViewPager cycle_view_pager;
     private FrameLayout fm;
+    private List<String> paths;
+    private GridView gv;
+    private GridViewAddImagesAdapter gridViewAddImgesAdpter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +49,26 @@ public class MainActivity extends BasePhotoActivity {
         showCircleImage();
         showCycleViewPager();
         showSelectPopupWindow();
+        showAddImageDialog();
 
     }
 
+    private void showAddImageDialog() {
+        gv = (GridView) findViewById(R.id.gv);
+        paths = new ArrayList<>();
+        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context);
+        gv.setAdapter(gridViewAddImgesAdpter);
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                showDialog();
+            }
+        });
+    }
+    public void photoPath(String path) {
+        paths.add(path);
+        gridViewAddImgesAdpter.notifyDataSetChanged();
+    }
     private void showSelectPopupWindow() {
         final Button bt = (Button) findViewById(R.id.bt);
         fm = (FrameLayout) findViewById(R.id.fm);
@@ -141,19 +164,19 @@ public class MainActivity extends BasePhotoActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showdialog();
+                showDialog();
             }
         });
     }
 
-    @Override
-    public void photoPath(String path) {
-        super.photoPath(path);
-        RequestParams requestParams = new RequestParams("http://10.58.178.120:8080/intco/mobi/member/uploadImage");
-        requestParams.addBodyParameter("mId", "1");
-        requestParams.addBodyParameter("imgFile", new File(path));
-        ajax(requestParams);
-    }
+//    @Override
+//    public void photoPath(String path) {
+//        super.photoPath(path);
+//        RequestParams requestParams = new RequestParams("http://10.58.178.120:8080/intco/mobi/member/uploadImage");
+//        requestParams.addBodyParameter("mId", "1");
+//        requestParams.addBodyParameter("imgFile", new File(path));
+//        ajax(requestParams);
+//    }
 
     /**
      * 网页测试
