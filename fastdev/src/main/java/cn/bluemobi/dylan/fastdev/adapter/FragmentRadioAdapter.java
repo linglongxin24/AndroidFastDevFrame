@@ -2,6 +2,7 @@ package cn.bluemobi.dylan.fastdev.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -16,21 +17,21 @@ public class FragmentRadioAdapter implements OnCheckedChangeListener {
 
     private List<Fragment> fragments; // 一个tab页面对应一个Fragment
     private RadioGroup rg; // 用于切换tab
-    private FragmentActivity fragmentActivity; // Fragment所属的Activity
+    private FragmentManager fragmentManager; // Fragment所属的Activity
     private int fragmentContentId; // Activity中所要被替换的区域的id
 
     private int currentTab = 0;// 当前Tab页面索引
 
     private OnRgsExtraCheckedChangedListener onRgsExtraCheckedChangedListener; // 用于让调用者在切换tab时候增加新的功能
 
-    public FragmentRadioAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, RadioGroup rg) {
+    public FragmentRadioAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, RadioGroup rg) {
         this.fragments = fragments;
         this.rg = rg;
-        this.fragmentActivity = fragmentActivity;
+        this.fragmentManager = fragmentManager;
         this.fragmentContentId = fragmentContentId;
 
         // 默认显示第一页
-        FragmentTransaction ft = fragmentActivity.getSupportFragmentManager()
+        FragmentTransaction ft = fragmentManager
                 .beginTransaction();
         ft.add(fragmentContentId, fragments.get(currentTab), String.valueOf(currentTab));
         ft.commitAllowingStateLoss();
@@ -120,7 +121,7 @@ public class FragmentRadioAdapter implements OnCheckedChangeListener {
      * @return
      */
     private FragmentTransaction obtainFragmentTransaction(int index) {
-        FragmentTransaction ft = fragmentActivity.getSupportFragmentManager()
+        FragmentTransaction ft = fragmentManager
                 .beginTransaction();
 
         return ft;
