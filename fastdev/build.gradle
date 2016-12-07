@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 52
-        versionName "0.5.2"
+        versionCode 53
+        versionName "0.5.3"
 
     }
     buildTypes {
@@ -63,7 +63,7 @@ group = "cn.bluemobi.dylan"
 //发布到JCenter上的项目名字，必须填写
 def libName = "AndroidFastDevFrame"
 // 版本号，下次更新是只需要更改版本号即可
-version = "0.5.2"
+version = "0.5.3"
 /**上面配置后上传至jcenter后的编译路径是这样的： compile 'cn.bluemobi.dylan:fastdev:0.1'**/
 
 
@@ -129,7 +129,6 @@ install {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 bintray {
-    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
     key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
     configurations = ['archives']
     pkg {
