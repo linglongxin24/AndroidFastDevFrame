@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -24,22 +26,39 @@ import java.io.File;
 import cn.bluemobi.dylan.fastdev.R;
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
 import cn.bluemobi.dylan.fastdev.config.FilePath;
+import cn.bluemobi.dylan.fastdev.luban.Luban;
+import cn.bluemobi.dylan.fastdev.luban.OnCompressListener;
 import cn.bluemobi.dylan.fastdev.utils.NativeUtil;
 
 /**
- * Created by kangfh on 2016/6/1.
+ * Created by dylan on 2016/6/1.
  */
-public abstract class BasePhotoActivity extends BaseActivity  {
+public abstract class BasePhotoActivity extends BaseActivity {
+    /**
+     * 拍照和从手机相册选择的对话框
+     */
     private Dialog dialog;
-    private  final int PHOTO_REQUEST_CAREMA = 1;// 拍照
-    private  final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
+    /**
+     * 拍照请求码
+     */
+    private final int PHOTO_REQUEST_CAMERA = 0x00aa;
+    /**
+     * 从相册选择的请求码
+     */
+    private final int PHOTO_REQUEST_GALLERY = 0x00bb;// 从相册中选择private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
+    /**
+     * 保存拍照文件的临时文件
+     */
     private File tempFile;
-    /* 头像名称 */
+    /**
+     * 拍照文件的文件名称
+     */
     private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
 
-
-
-    public void showdialog() {
+    /**
+     * 弹出选择对话框
+     */
+    public void showDialog() {
         View localView = LayoutInflater.from(context).inflate(
                 R.layout.pub_dialog_add_picture, null);
         AutoUtils.auto(localView.getRootView());
@@ -69,8 +88,7 @@ public abstract class BasePhotoActivity extends BaseActivity  {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                // 拍照
-//                cameraSamsung();
+                /** 拍照**/
                 camera();
             }
         });
@@ -80,48 +98,40 @@ public abstract class BasePhotoActivity extends BaseActivity  {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                // 从系统相册选取照片
+                /** 从系统相册选取照片**/
                 gallery();
             }
         });
     }
 
+    /**
+     * 拍照
+     */
     public void camera() {
-        // 判断存储卡是否可以用，可用进行存储
+        /**判断存储卡是否可以用，可用进行存储**/
         if (hasSdcard()) {
-//            File file = new File(FilePath.IMAGE_DIR + System.currentTimeMillis() + ".jpg");
-//            if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-//            Uri imageUri = Uri.fromFile(file);
-//            getTakePhoto().onEnableCompress(new CompressConfig.Builder().setMaxSize(100 * 1024).setMaxPixel(1280).create(), true).onPicTakeOriginal(imageUri);
-/**
- *
- */
             File dir = new File(FilePath.IMAGE_DIR);
             if (!dir.exists()) {
                 dir.mkdir();
             }
             tempFile = new File(dir,
                     System.currentTimeMillis() + "_" + PHOTO_FILE_NAME);
-            //从文件中创建uri
+            /**从文件中创建uri**/
             Uri uri = Uri.fromFile(tempFile);
             Intent intent = new Intent();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.addCategory(intent.CATEGORY_DEFAULT);
-            // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
-            startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
-        }else{
+
+            /**开启一个带有返回值的Activity，PHOTO_REQUEST_CAMERA**/
+            startActivityForResult(intent, PHOTO_REQUEST_CAMERA);
+        } else {
             Toast.makeText(context, "未找到存储卡，无法拍照！", Toast.LENGTH_SHORT).show();
         }
-//        Intent intent2 = CameraProtectActivity.createIntent(this);
-//     startActivityForResult(intent2, PHOTO_REQUEST_CAREMA);
-//        Intent intent = new Intent(context,
-//                UseCameraActivity.class);
-//        startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
     }
 
-    /*
-    * 判断sdcard是否被挂载
+    /**
+     * 判断sdcard是否被挂载
      */
     public boolean hasSdcard() {
         return Environment.getExternalStorageState().equals(
@@ -129,9 +139,9 @@ public abstract class BasePhotoActivity extends BaseActivity  {
     }
 
 
-    /*
-   * 从相册获取2
-   */
+    /**
+     * 从相册获取
+     */
     public void gallery() {
         Intent intent = new Intent(
                 Intent.ACTION_PICK,
@@ -139,18 +149,24 @@ public abstract class BasePhotoActivity extends BaseActivity  {
         startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
     }
 
-
+    /**
+     * 拍照和从相册选择系统回调
+     *
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        数据
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == PHOTO_REQUEST_GALLERY) {
-                // 从相册返回的数据
+                /** 从相册返回的数据**/
                 if (data != null) {
-                    // 得到图片的全路径
+                    /**得到图片的全路径**/
                     Uri uri = data.getData();
                     String[] proj = {MediaStore.Images.Media.DATA};
-                    //好像是android多媒体数据库的封装接口，具体的看Android文档
+                    /**好像是android多媒体数据库的封装接口，具体的看Android文档**/
                     Cursor cursor = managedQuery(uri, proj, null, null, null);
                     //按我个人理解 这个是获得用户选择的图片的索引值
                     int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -158,28 +174,20 @@ public abstract class BasePhotoActivity extends BaseActivity  {
                     cursor.moveToFirst();
                     //最后根据索引值获取图片路径
                     String path = cursor.getString(column_index);
-//                Logger.d(" uri.getPath()=" + path);
-
-
-                    uploadImage(path);
+//                    compressImage(path);
+                    compressWithLuban(new File(path));
                 }
 
-            } else if (requestCode == PHOTO_REQUEST_CAREMA) {
+            } else if (requestCode == PHOTO_REQUEST_CAMERA) {
                 if (resultCode != RESULT_CANCELED) {
-                    // 从相机返回的数据
+                    /**从相机返回的数据**/
                     if (hasSdcard()) {
-//                        String path = data.getStringExtra(UseCameraActivity.IMAGE_PATH);
-//                        uploadImage(path);
-//                        String path = data.getStringExtra(CameraProtectActivity.EXTRA_IMG_PATH);
-//                        uploadImage(path);
-
                         if (tempFile != null) {
-                            uploadImage(tempFile.getPath());
+//                            compressImage(tempFile.getPath());
+                            compressWithLuban(new File(tempFile.getPath()));
                         } else {
                             Toast.makeText(context, "相机异常请稍后再试！", Toast.LENGTH_SHORT).show();
                         }
-
-                        Logger.i("拿到照片path=" + tempFile.getPath());
                     } else {
                         Toast.makeText(context, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
                     }
@@ -201,59 +209,21 @@ public abstract class BasePhotoActivity extends BaseActivity  {
     };
 
     /**
-     * 上传图片
+     * 压缩图片
      *
      * @param path
      */
-    private void uploadImage(final String path) {
+    private void compressImage(final String path) {
         new Thread() {
             @Override
             public void run() {
-                if(new File(path).exists()){
-                    Logger.d("源文件存在"+path);
-                }else{
-                    Logger.d("源文件不存在"+path);
-                }
-
                 File dir = new File(FilePath.IMAGE_DIR);
                 if (!dir.exists()) {
                     dir.mkdir();
                 }
                 final File file = new File(dir + "/temp_photo" + System.currentTimeMillis() + ".jpg");
-//                /**
-//                 * 获取bitmap
-//                 */
-//                Bitmap bitmap = BitmapFactory.decodeFile(path);
-//                /**
-//                 * 获取图片的旋转角度，有些系统把拍照的图片旋转了，有的没有旋转
-//                 */
-//                int degree = readPictureDegree(path);
-//                bitmap = rotaingBitmap(bitmap, degree);
-//                /**
-//                 * 压缩图片
-//                 */
-//                NativeUtil.compressBitmap(bitmap, 50,
-//                        file.getAbsolutePath(), true);
-//                /**
-//                 * 及时回收bitmap防止内存溢出
-//                 */
-//                if (bitmap != null) {
-//                    bitmap.recycle();
-//                    System.gc();
-//                }
                 NativeUtil.compressBitmap(path, file.getAbsolutePath(), 50);
-                if(file.exists()){
-                    Logger.d("压缩后的文件存在"+file.getAbsolutePath());
-                }else{
-                    Logger.d("压缩后的不存在"+file.getAbsolutePath());
-                }
-                /**
-                 * 删除源文件
-                 */
-//                File oldFile = new File(path);
-//                if (oldFile.getParent().contains("jingzhi")) {
-//                    oldFile.delete();
-//                }
+
                 Message message = new Message();
                 message.what = 0xAAAAAAAA;
                 message.obj = file.getAbsolutePath();
@@ -264,11 +234,53 @@ public abstract class BasePhotoActivity extends BaseActivity  {
 
     }
 
+    /**
+     * 压缩单张图片 Listener 方式
+     */
+    private void compressWithLuban(final File file) {
+        Luban.get(this)
+                .load(file)
+                .putGear(Luban.THIRD_GEAR)
+                .setFilename(System.currentTimeMillis() + "")
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                        photoCompressStart(file.getAbsolutePath());
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        Logger.d("压缩文件路径" + file.getAbsolutePath());
+                        photoPath(file);
+                        photoPath(file.getAbsolutePath());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                }).launch();
+    }
+
+    /**
+     * 回调压缩后的图片路径
+     */
+    public void photoCompressStart(String path) {
+    }
+
+    /**
+     * 回调压缩后的图片路径
+     *
+     * @param path 图片路径
+     */
     public void photoPath(String path) {
-        if(new File(path).exists()){
-            Logger.d("父类photoPath获取的文件存在"+path);
-        }else{
-            Logger.d("父类photoPath获取的文件不存在"+path);
-        }
+    }
+
+    /**
+     * 回调压缩后的图片路径
+     *
+     * @param file 图片文件
+     */
+    public void photoPath(File file) {
     }
 }
