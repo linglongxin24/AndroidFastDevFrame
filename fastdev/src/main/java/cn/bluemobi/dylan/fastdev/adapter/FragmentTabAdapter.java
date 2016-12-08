@@ -74,11 +74,7 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
      * @return
      */
     private FragmentTransaction obtainFragmentTransaction(int index) {
-<<<<<<< HEAD
-        FragmentTransaction ft = fragmentManager
-=======
         FragmentTransaction ft =fragmentManager
->>>>>>> 42a8e4f9a0f93ac45077d7d51625d965e0750e6e
                 .beginTransaction();
 
         return ft;
