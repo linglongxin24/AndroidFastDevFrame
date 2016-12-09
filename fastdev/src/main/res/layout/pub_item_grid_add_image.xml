@@ -10,7 +10,7 @@
         android:gravity="center"
         android:minHeight="70dp"
         android:minWidth="70dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <Button
         android:id="@+id/bt_del"

@@ -51,6 +51,8 @@
         <cn.bluemobi.dylan.fastdev.view.MyGridView
             android:id="@+id/gv"
             android:layout_width="match_parent"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
             android:layout_height="wrap_content"
             android:horizontalSpacing="10dp"
             android:numColumns="4"

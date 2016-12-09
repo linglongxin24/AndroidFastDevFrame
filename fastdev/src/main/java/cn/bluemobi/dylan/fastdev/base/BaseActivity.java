@@ -347,7 +347,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      */
     public void showToast(CharSequence charSequence) {
         if (null == toast) {
-            toast = Toast.makeText(x.app(), charSequence, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(context, charSequence, Toast.LENGTH_SHORT);
         } else {
             toast.setText(charSequence);
         }

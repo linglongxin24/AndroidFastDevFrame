@@ -56,7 +56,7 @@ public class MainActivity extends BasePhotoActivity {
     private void showAddImageDialog() {
         gv = (GridView) findViewById(R.id.gv);
         paths = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context);
+        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context,5,10);
         gv.setAdapter(gridViewAddImgesAdpter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

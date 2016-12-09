@@ -96,18 +96,6 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
     }
 
     /**
-     * 显示Toast的便捷方法
-     *
-     * @param message
-     */
-    protected void showToast(String message) {
-        if (!TextUtils.isEmpty(message)) {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    /**
      * 设置Fragment要显示的布局
      *
      * @return 布局的layoutId

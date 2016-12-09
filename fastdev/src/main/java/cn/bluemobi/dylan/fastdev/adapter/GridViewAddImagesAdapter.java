@@ -27,15 +27,18 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     private List<String> paths;
     private Context context;
     private LayoutInflater inflater;
+    private int itemWidth;
     /**
      * 可以动态设置最多上传几张，之后就不显示+号了，用户也无法上传了
      * 默认9张
      */
     private int maxImages = 9;
 
-    public GridViewAddImagesAdapter(List<String> paths, Context context) {
+    public GridViewAddImagesAdapter(List<String> paths, Context context, int numColumns, int spacing) {
         this.paths = paths;
         this.context = context;
+        int displayWidth = context.getResources().getDisplayMetrics().widthPixels;
+         itemWidth = (displayWidth - spacing * (numColumns + 1)) / numColumns;
         inflater = LayoutInflater.from(context);
     }
 
@@ -60,12 +63,13 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     /**
      * 让GridView中的数据数目加1最后一个显示+号
      * 当到达最大张数时不再显示+号
+     *
      * @return 返回GridView中的数量
      */
     @Override
     public int getCount() {
         int count = paths == null ? 1 : paths.size() + 1;
-        if (count >maxImages) {
+        if (count > maxImages) {
             return paths.size();
         } else {
             return count;
@@ -92,9 +96,10 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
 
-        ViewHolder viewHolder ;
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.pub_item_grid_add_image, parent, false);
+            convertView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemWidth));
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -123,7 +128,6 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
             Glide.with(context)
                     .load(R.drawable.image_add)
                     .priority(Priority.HIGH)
-                    .centerCrop()
                     .into(viewHolder.ivimage);
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.FIT_XY);
             viewHolder.btdel.setVisibility(View.GONE);
