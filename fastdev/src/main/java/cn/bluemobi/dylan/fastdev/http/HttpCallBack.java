@@ -10,11 +10,13 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
 import org.xutils.x;
 
 import java.net.SocketTimeoutException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -144,7 +146,6 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
     private ArrayMap<String, Object> jsonParse(String json) throws JSONException {
         ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
         }.getType());
-
         ArrayMap<String, Object> returnData = new ArrayMap<String, Object>();
         ArrayMap<String, Object> rrData = null;
         String dataStrKey = HttpUtils.getInstance().getData();
@@ -165,8 +166,8 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
             }
         } else {
             rrData = new ArrayMap<>();
-            Set<String> keys = arrayMap.keySet();
-            for (String s : keys) {
+            Set<String> keys2 = arrayMap.keySet();
+            for (String s : keys2) {
                 if (!s.equals(dataStrKey)) {
                     rrData.put(s, arrayMap.get(s));
                 }

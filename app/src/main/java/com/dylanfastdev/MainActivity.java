@@ -11,10 +11,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.orhanobut.logger.Logger;
 
+import org.xutils.common.util.MD5;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -27,14 +29,27 @@ import java.util.Map;
 
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
+import cn.bluemobi.dylan.fastdev.net.NetworkUtil;
+import cn.bluemobi.dylan.fastdev.net.RetrofitClient;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
+import cn.bluemobi.dylan.httputils.ApiService;
+import cn.bluemobi.dylan.httputils.HttpCallBack;
+import cn.bluemobi.dylan.httputils.HttpUtils;
+import cn.bluemobi.dylan.httputils.MD5Utils;
+import okhttp3.ResponseBody;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BasePhotoActivity {
+
+    private final String TAG = "MainActivity";
     private WebView webView;
     private CycleViewPager cycle_view_pager;
     private FrameLayout fm;
@@ -50,13 +65,69 @@ public class MainActivity extends BasePhotoActivity {
         showCycleViewPager();
         showSelectPopupWindow();
         showAddImageDialog();
+        testHttp();
 
     }
+
+    /**
+     * retrofit测试
+     */
+    private void testHttp() {
+
+        HttpUtils httpUtils = HttpUtils.getInstance();
+        httpUtils.init("status","data","msg",0,null);
+        httpUtils.initRetrofit();
+        ApiService service = httpUtils.getApiService(ApiService.class);
+
+        String s = "Advert" + "GetAdvert" + ApiService.secret;
+//        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
+        String sign = MD5Utils.md5(s);
+        Subscription post = httpUtils.post(context, true, service.getTopMove("Advert", "GetAdvert"), new HttpCallBack() {
+            @Override
+            public void netOnSuccess(Map<String, Object> data) {
+                Logger.d("data=" + data);
+            }
+        });
+
+//        subscriber.unsubscribe();
+//        service.getTopMove(0, 10)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Map<String, Object>>() {
+//                    @Override
+//                    public void onStart() {
+//                        super.onStart();
+//                        Log.d(TAG, "onStart");
+//                        if (!NetworkUtil.isNetworkAvailable(context)) {
+//                            Toast.makeText(context, "无网络，读取缓存数据", Toast.LENGTH_SHORT).show();
+//                            onCompleted();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.d(TAG, "onCompleted");
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.d(TAG, "onError");
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Map<String, Object> moveEntry) {
+//                        Log.d(TAG, moveEntry.toString());
+//                    }
+//                });
+    }
+
 
     private void showAddImageDialog() {
         gv = (GridView) findViewById(R.id.gv);
         paths = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context,5,10);
+        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context, 5, 10);
         gv.setAdapter(gridViewAddImgesAdpter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -121,6 +192,7 @@ public class MainActivity extends BasePhotoActivity {
     private void showCircleImage() {
         String url = "http://img.blog.csdn.net/20161016171244996";
         CircleImageView circleImageView = (CircleImageView) findViewById(R.id.ci);
+        x.Ext.init(getApplication());
         x.image().bind(circleImageView, url, new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
     }
 
