@@ -270,7 +270,9 @@ public class HttpUtils {
         if (arrayMap.containsKey(dataStrKey)) {
             Object data = arrayMap.get(dataStrKey);
             if (data instanceof String) {
-                returnData.put(dataStrKey, data.toString());
+                rrData = new ArrayMap<String, Object>();
+                rrData.put(dataStrKey, data.toString());
+                returnData.put(dataStrKey, rrData);
             } else if (data instanceof JSONArray) {
                 rrData = new ArrayMap<String, Object>();
                 rrData.put(dataStrKey, data);
