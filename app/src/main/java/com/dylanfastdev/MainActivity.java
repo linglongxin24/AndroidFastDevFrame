@@ -11,26 +11,19 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.orhanobut.logger.Logger;
 
-import org.xutils.common.util.MD5;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
-import cn.bluemobi.dylan.fastdev.net.NetworkUtil;
-import cn.bluemobi.dylan.fastdev.net.RetrofitClient;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
@@ -41,11 +34,6 @@ import cn.bluemobi.dylan.httputils.ApiService;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
-import okhttp3.ResponseBody;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends BasePhotoActivity {
 
@@ -75,52 +63,20 @@ public class MainActivity extends BasePhotoActivity {
     private void testHttp() {
 
         HttpUtils httpUtils = HttpUtils.getInstance();
-        httpUtils.init("status","data","msg",0,null);
-        httpUtils.initRetrofit();
-        ApiService service = httpUtils.getApiService(ApiService.class);
+        httpUtils.init("status", "data", "msg", 0, null);
 
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
         String sign = MD5Utils.md5(s);
-        Subscription post = httpUtils.post(context, true, service.getTopMove("Advert", "GetAdvert"), new HttpCallBack() {
-            @Override
-            public void netOnSuccess(Map<String, Object> data) {
-                Logger.d("data=" + data);
-            }
-        });
+        HttpUtils.getInstance().post(context,
+                HttpUtils.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"),
+                new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+                        Logger.d("data=" + data);
+                    }
+                });
 
-//        subscriber.unsubscribe();
-//        service.getTopMove(0, 10)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<Map<String, Object>>() {
-//                    @Override
-//                    public void onStart() {
-//                        super.onStart();
-//                        Log.d(TAG, "onStart");
-//                        if (!NetworkUtil.isNetworkAvailable(context)) {
-//                            Toast.makeText(context, "无网络，读取缓存数据", Toast.LENGTH_SHORT).show();
-//                            onCompleted();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.d(TAG, "onCompleted");
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.d(TAG, "onError");
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Map<String, Object> moveEntry) {
-//                        Log.d(TAG, moveEntry.toString());
-//                    }
-//                });
     }
 
 

@@ -29,6 +29,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Http请求工具类
  * Created by yuandl on 2016-12-27.
@@ -41,7 +43,7 @@ public class HttpUtils {
      */
     private volatile static HttpUtils httpUtils;
     private OkHttpClient mOkHttpClient;
-    private Retrofit retrofit;
+    private static Retrofit retrofit;
 
     /**
      * 构造函数私有化
@@ -120,7 +122,7 @@ public class HttpUtils {
         initRetrofit();
     }
 
-    public void initRetrofit() {
+    private void initRetrofit() {
         mOkHttpClient = new OkHttpClient();
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
@@ -173,12 +175,15 @@ public class HttpUtils {
                 .build();
     }
 
-    public <T> T getApiService(Class<T> clazz) {
-
+    public static <T> T getApiService(Class<T> clazz) {
         return retrofit.create(clazz);
     }
+//
+//    private static LoadingDialog loadingDialog;
 
-    private static LoadingDialog loadingDialog;
+    public static Subscription post(final Context context, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
+        return post(context, true, mapObservable, httpResponse);
+    }
 
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
 
@@ -188,30 +193,32 @@ public class HttpUtils {
             return null;
         }
 
+        LoadingDialog loadingDialog = null;
         if (isShowLoadingDialog) {
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialog(context);
-            } else {
-                loadingDialog.setContext(context);
             }
+        } else {
+            loadingDialog = null;
         }
 
+        final LoadingDialog finalLoadingDialog = loadingDialog;
         Subscription subscribe = mapObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
 
                     @Override
                     public void onStart() {
-                        if (loadingDialog != null) {
-                            loadingDialog.show("Loading...");
+                        if (finalLoadingDialog != null) {
+                            finalLoadingDialog.show("");
                         }
                         httpResponse.netOnStart();
                     }
 
                     @Override
                     public void onCompleted() {
-                        if (loadingDialog != null) {
-                            loadingDialog.dismiss();
+                        if (finalLoadingDialog != null) {
+                            finalLoadingDialog.dismiss();
                         }
 
                         httpResponse.netOnFinish();
