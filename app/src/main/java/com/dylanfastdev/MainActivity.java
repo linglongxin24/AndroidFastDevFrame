@@ -30,7 +30,6 @@ import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
-import cn.bluemobi.dylan.httputils.ApiService;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
@@ -63,7 +62,7 @@ public class MainActivity extends BasePhotoActivity {
     private void testHttp() {
 
         HttpUtils httpUtils = HttpUtils.getInstance();
-        httpUtils.init("status", "data", "msg", 0, null);
+        httpUtils.init(ApiService.baseUrl,"status", "data", "msg", 0, null);
 
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";

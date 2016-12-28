@@ -104,6 +104,7 @@ public class HttpUtils {
         return successCode;
     }
 
+
     /**
      * 初始化各种参数
      *
@@ -113,16 +114,16 @@ public class HttpUtils {
      * @param successCode      请求接口成功的响应码
      * @param globalParameters 配置请求接口的全局参数
      */
-    public void init(String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
+    public void init(String baseUrl,String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
         this.code = code;
         this.data = data;
         this.msg = msg;
         this.successCode = successCode;
         this.globalParameters = globalParameters;
-        initRetrofit();
+        initRetrofit(baseUrl);
     }
 
-    private void initRetrofit() {
+    private void initRetrofit(String baseUrl) {
         mOkHttpClient = new OkHttpClient();
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
@@ -154,7 +155,8 @@ public class HttpUtils {
                         }
                         newFormBody.addEncoded(name, value);
                     }
-                    newFormBody.add("sign", MD5Utils.md5(appName + className + ApiService.secret));
+                    String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
+                    newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
                     requestBuilder.method(original.method(), newFormBody.build());
                 }
 
@@ -169,7 +171,7 @@ public class HttpUtils {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(ApiService.baseUrl)
+                .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(mOkHttpClient)
                 .build();
