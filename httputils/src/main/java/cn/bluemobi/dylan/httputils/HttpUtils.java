@@ -114,7 +114,7 @@ public class HttpUtils {
      * @param successCode      请求接口成功的响应码
      * @param globalParameters 配置请求接口的全局参数
      */
-    public void init(String baseUrl,String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
+    public void init(String baseUrl, String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
         this.code = code;
         this.data = data;
         this.msg = msg;
@@ -190,7 +190,7 @@ public class HttpUtils {
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
 
         if (!NetworkUtil.isNetworkAvailable(context)) {
-            Toast.makeText(context, "网络不可用，请检查网络连接！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Network  unusual", Toast.LENGTH_SHORT).show();
             httpResponse.netOnFailure(new Exception("网络不可用"));
             return null;
         }
@@ -229,9 +229,14 @@ public class HttpUtils {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (finalLoadingDialog != null) {
+                            finalLoadingDialog.dismiss();
+                        }
+
                         e.printStackTrace();
-                        Toast.makeText(context, "服务器异常！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Network  error", Toast.LENGTH_SHORT).show();
                         httpResponse.netOnFailure(e);
+
 
                     }
 
@@ -243,9 +248,9 @@ public class HttpUtils {
                             String msg = getValue(jsonBean, HttpUtils.getInstance().getMsg());
                             int code = Integer.parseInt(getValue(jsonBean, HttpUtils.getInstance().getCode()));
 
-                            if (msg != null && !msg.isEmpty()) {
-                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                            }
+//                            if (msg != null && !msg.isEmpty()) {
+//                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+//                            }
                             if (code == HttpUtils.getInstance().getSuccessCode()) {
                                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(HttpUtils.getInstance().getData());
                                 httpResponse.netOnSuccess(data);
