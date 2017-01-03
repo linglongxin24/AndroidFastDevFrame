@@ -130,11 +130,12 @@ public class HttpUtils implements HttpRequest {
         } else {
             loadingDialog = null;
         }
-        Set<String> set = getGlobalParameters().keySet();
-        for (String key : set) {
-            requestParams.addBodyParameter(key, getGlobalParameters().get(key));
+        if (getGlobalParameters() != null) {
+            Set<String> set = getGlobalParameters().keySet();
+            for (String key : set) {
+                requestParams.addBodyParameter(key, getGlobalParameters().get(key));
+            }
         }
-
 
         List<KeyValue> params = requestParams.getStringParams();
         String requestParamstr = "url=" + requestParams.getUri();
