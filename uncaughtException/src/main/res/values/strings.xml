@@ -1,0 +1,27 @@
+<resources>
+    <!-- From: file:/E:/RTSoft/git/CustomActivityOnCrash/library/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">CustomActivityOnCrash sample</string>
+    <string name="close_app">Close app</string>
+    <string name="crash_background_thread">Crash background thread</string>
+    <string name="crash_main_thread">Crash main thread</string>
+    <string name="crash_with_delay">Crash with delay (5s)</string>
+    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
+    <string name="customactivityoncrash_error_activity_error_details">错误信息</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">错误信息</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">关闭</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied">已复制到剪切板</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">复制到剪切板</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">错误信息</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">应用程序发生意外错误\n对不起给您带来不便！</string>
+    <string name="customactivityoncrash_error_activity_restart_app">重启应用</string>
+    <string name="customactivityoncrash_error_activity_unknown_exception">Unknown exception</string>
+    <string name="error_details">Error details:</string>
+    <string name="error_occurred">An error occurred. We\'re deeply sorry.</string>
+    <string name="error_title">Something went wrong!</string>
+    <string name="hello">Hello! Press one of the following buttons to crash the app:</string>
+    <string name="report_to_developer">发送给开发者</string>
+    <string name="restart_app">Restart app</string>
+    <string name="unknown_exception">Unknown exception</string>
+    <!-- From: file:/E:/RTSoft/git/CustomActivityOnCrash/library/src/main/res/values/styles.xml -->
+</resources>

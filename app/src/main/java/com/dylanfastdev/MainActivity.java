@@ -62,7 +62,7 @@ public class MainActivity extends BasePhotoActivity {
     private void testHttp() {
 
         HttpUtils httpUtils = HttpUtils.getInstance();
-        httpUtils.init(ApiService.baseUrl,"status", "data", "msg", 0, null);
+        httpUtils.init(ApiService.baseUrl, "status", "data", "msg", 0, null);
 
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
@@ -203,6 +203,10 @@ public class MainActivity extends BasePhotoActivity {
                 showDialog();
             }
         });
+    }
+
+    public void textException(View v) {
+        throw new RuntimeException("测试异常");
     }
 
 //    @Override

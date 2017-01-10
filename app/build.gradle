@@ -40,4 +40,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':fastdev')
     compile project(':httputils')
+    compile project(':uncaughtException')
 }

@@ -2,6 +2,7 @@ package com.dylanfastdev;
 
 import android.app.Application;
 
+import com.kejiang.yuandl.mylibrary.CustomActivityOnCrash;
 import com.orhanobut.logger.Logger;
 
 import org.xutils.x;
@@ -18,5 +19,8 @@ public class Myapplication extends Application {
         x.Ext.init(this);
         Logger.init("yanhao");
         Config.initTitleBar(R.color.colorAccent,android.R.color.white,R.drawable.pub_arrow_back_write);
+        CustomActivityOnCrash.install(this);
+        CustomActivityOnCrash.setEmailTo(new String[]{"yuandl@bluemobi.cn"});
+
     }
 }

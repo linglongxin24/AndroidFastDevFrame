@@ -1,1 +1,1 @@
-include ':app', ':fastdev', ':httputils'
+include ':app', ':fastdev', ':httputils', ':uncaughtException'

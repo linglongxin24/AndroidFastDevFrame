@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'//添加
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+////添加
+//publish {
+//    userOrg = 'linglongxin24'//bintray.com用户名
+//    groupId = 'com.linglongxin24'//jcenter上的路径
+//    artifactId = 'UncaughtExceptionSendEmail'//项目名称
+//    publishVersion = '1.0.0'//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+//    website = 'https://github.com/hyman/basetools'//网站，不重要
+//}
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.+'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile files('libs/mail.jar')
+}
