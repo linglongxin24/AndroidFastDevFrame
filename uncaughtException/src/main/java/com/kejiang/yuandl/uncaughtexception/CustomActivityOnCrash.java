@@ -1,13 +1,11 @@
-package com.kejiang.yuandl.mylibrary;
+package com.kejiang.yuandl.uncaughtexception;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -20,10 +18,9 @@ import android.os.Looper;
 import android.os.Process;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.kejiang.yuandl.mylibrary.activity.DefaultErrorActivity;
-import com.kejiang.yuandl.mylibrary.email.ReportByEmail;
+import com.kejiang.yuandl.uncaughtexception.activity.DefaultErrorActivity;
+import com.kejiang.yuandl.uncaughtexception.email.ReportByEmail;
 
 import java.io.PrintWriter;
 import java.io.Serializable;

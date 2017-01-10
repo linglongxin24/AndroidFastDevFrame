@@ -2,7 +2,7 @@ package com.dylanfastdev;
 
 import android.app.Application;
 
-import com.kejiang.yuandl.mylibrary.CustomActivityOnCrash;
+import com.kejiang.yuandl.uncaughtexception.CustomActivityOnCrash;
 import com.orhanobut.logger.Logger;
 
 import org.xutils.x;

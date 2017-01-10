@@ -1,4 +1,4 @@
- package com.kejiang.yuandl.mylibrary.email;
+ package com.kejiang.yuandl.uncaughtexception.email;
  
  import java.util.Date;
  import java.util.Properties;

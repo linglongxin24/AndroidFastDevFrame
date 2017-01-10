@@ -1,4 +1,4 @@
-package com.kejiang.yuandl.mylibrary.activity;
+package com.kejiang.yuandl.uncaughtexception.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,11 +6,8 @@ import android.app.AlertDialog.Builder;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kejiang.yuandl.mylibrary.CustomActivityOnCrash;
-import com.kejiang.yuandl.mylibrary.email.ReportByEmail;
+import com.kejiang.yuandl.uncaughtexception.CustomActivityOnCrash;
+import com.kejiang.yuandl.uncaughtexception.email.ReportByEmail;
 
 import cat.ereza.customactivityoncrash.R;
 

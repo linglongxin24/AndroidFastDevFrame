@@ -40,7 +40,7 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name="com.kejiang.yuandl.mylibrary.activity.DefaultErrorActivity"
+            android:name="com.kejiang.yuandl.uncaughtexception.activity.DefaultErrorActivity"
             android:process=":error_activity"
             android:theme="@android:style/Theme.Holo.Light" />
     </application>

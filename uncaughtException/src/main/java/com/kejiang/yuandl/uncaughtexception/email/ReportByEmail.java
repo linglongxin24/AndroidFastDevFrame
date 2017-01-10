@@ -1,8 +1,8 @@
-package com.kejiang.yuandl.mylibrary.email;
+package com.kejiang.yuandl.uncaughtexception.email;
 
 import android.util.Log;
 
-import com.kejiang.yuandl.mylibrary.CustomActivityOnCrash;
+import com.kejiang.yuandl.uncaughtexception.CustomActivityOnCrash;
 
 
 public class ReportByEmail {

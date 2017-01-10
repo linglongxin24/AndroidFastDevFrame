@@ -1,4 +1,4 @@
-package com.kejiang.yuandl.mylibrary;
+package com.kejiang.yuandl.uncaughtexception;
 
 import org.junit.Test;
 
