@@ -306,7 +306,7 @@ public class CycleViewPager extends FrameLayout
 
                     @Override
                     public void onClick(View v) {
-                        mImageCycleViewListener.onImageClick(infos.get(mCurrentPosition - 1), mCurrentPosition, v);
+                        mImageCycleViewListener.onImageClick(infos.get(mCurrentPosition - 1), mCurrentPosition-1, v);
                     }
                 });
             }

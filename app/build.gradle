@@ -41,4 +41,5 @@ dependencies {
     compile project(':fastdev')
     compile project(':httputils')
     compile project(':uncaughtException')
+    compile project(':photoview')
 }

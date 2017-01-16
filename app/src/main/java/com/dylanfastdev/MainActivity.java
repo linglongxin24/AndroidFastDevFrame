@@ -1,5 +1,6 @@
 package com.dylanfastdev;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
+import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 
 public class MainActivity extends BasePhotoActivity {
 
@@ -132,7 +134,7 @@ public class MainActivity extends BasePhotoActivity {
         //设置选中和未选中时的图片
         assert cycle_view_pager != null;
         cycle_view_pager.setIndicators(R.mipmap.dot_focus, R.mipmap.dot_normal);
-        List<String> urls = new ArrayList<>();
+        final List<String> urls = new ArrayList<>();
         urls.add("http://pic.58pic.com/58pic/15/37/32/458PICq58PICPd4_1024.jpg");
         urls.add("http://pic8.nipic.com/20100627/1614097_004848992811_2.jpg");
         urls.add("http://pic.58pic.com/58pic/15/35/53/14t58PICUJv_1024.jpg");
@@ -140,6 +142,14 @@ public class MainActivity extends BasePhotoActivity {
             @Override
             public void onImageClick(String url, int position, View imageView) {
                 Logger.d("点击了=" + position);
+                Intent intent = new Intent(context, ImagePagerActivity.class);
+                // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
+                String [] arr=new String[urls.size()];
+                arr=urls.toArray(arr);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,arr);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+                startActivity(intent);
+                overridePendingTransition(R.anim.zoom_ente, R.anim.zoom_exit);//切换Activity的过渡动
             }
         });
     }

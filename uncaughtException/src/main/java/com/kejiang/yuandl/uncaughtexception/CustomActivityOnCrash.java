@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -126,7 +127,6 @@ public final class CustomActivityOnCrash {
 
                                             }
                                         }).start();
-
 
 
                                     }
@@ -247,7 +247,7 @@ public final class CustomActivityOnCrash {
 
     public static String getAllErrorDetailsFromIntent(Context context, Intent intent) {
         Date currentDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
         String buildDateAsString = getBuildDateAsString(context, dateFormat);
@@ -270,7 +270,7 @@ public final class CustomActivityOnCrash {
 
     public static String getAllErrorDetailsFromContext(Context context, String stackTraceString) {
         Date currentDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
         String buildDateAsString = getBuildDateAsString(context, dateFormat);
