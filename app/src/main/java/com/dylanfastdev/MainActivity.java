@@ -27,6 +27,7 @@ import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
+import cn.bluemobi.dylan.fastdev.utils.StatusBarUtil;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
@@ -53,7 +54,7 @@ public class MainActivity extends BasePhotoActivity {
         showCircleImage();
         showCycleViewPager();
         showSelectPopupWindow();
-        showAddImageDialog();
+//        showAddImageDialog();
         testHttp();
 
     }
@@ -296,6 +297,7 @@ public class MainActivity extends BasePhotoActivity {
 
     @Override
     public void initTitleBar() {
+//        StatusBarUtil.StatusBarLightMode(this);
     }
 
     @Override

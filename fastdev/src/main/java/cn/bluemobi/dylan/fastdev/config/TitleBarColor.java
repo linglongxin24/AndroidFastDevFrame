@@ -15,6 +15,10 @@ public class TitleBarColor {
      */
     public static int backgroundColor = android.R.color.black;
     /**
+     * 状态栏默认颜色
+     */
+    public static int setStatusBarBackground =backgroundColor;
+    /**
      * 标题栏文字颜色：默认白色
      */
     public static int textColor =android.R.color.white;

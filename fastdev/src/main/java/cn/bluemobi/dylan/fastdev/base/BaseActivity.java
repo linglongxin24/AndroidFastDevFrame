@@ -34,6 +34,7 @@ import java.util.Map;
 import cn.bluemobi.dylan.fastdev.R;
 import cn.bluemobi.dylan.fastdev.autolayout.AutoLayoutActivity;
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
+import cn.bluemobi.dylan.fastdev.config.Config;
 import cn.bluemobi.dylan.fastdev.config.TitleBarColor;
 import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
@@ -170,7 +171,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      * @param color
      */
     public void setTitleBarBackground(int color) {
-        setStatusBarBackground(color);
+        setStatusBarBackground(getResources().getColor(TitleBarColor.setStatusBarBackground));
         layout_titlebar.setBackgroundColor(color);
     }
 
