@@ -136,6 +136,9 @@ public class CycleViewPager extends FrameLayout
         };
     }
 
+    private int dotWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private int dotHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+
     /**
      * 设置指示器图片，在setData之前调用
      *
@@ -145,6 +148,17 @@ public class CycleViewPager extends FrameLayout
     public void setIndicators(int select, int unselect) {
         mIndicatorSelected = select;
         mIndicatorUnselected = unselect;
+    }
+
+    /**
+     * 设置指示器图片，在setData之前调用
+     *
+     * @param dotWidth  点的宽度
+     * @param dotHeight 点的高度
+     */
+    public void setIndicatorSize(int dotWidth, int dotHeight) {
+        this.dotWidth = dotWidth;
+        this.dotHeight = dotHeight;
     }
 
     public void setData(List<String> list, ImageCycleViewListener listener) {
@@ -204,7 +218,7 @@ public class CycleViewPager extends FrameLayout
         for (int i = 0; i < mIndicators.length; i++) {
             mIndicators[i] = new ImageView(mContext);
             mIndicators[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Tools.DPtoPX(10, getContext()), Tools.DPtoPX(10, getContext()));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dotWidth, dotHeight);
             lp.setMargins(10, 0, 10, 0);
             mIndicators[i].setLayoutParams(lp);
             mIndicatorLayout.addView(mIndicators[i]);
@@ -243,8 +257,16 @@ public class CycleViewPager extends FrameLayout
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(layoutParams);
-        //使用Picasso来加载图片
-        Glide.with(context).load(url).into(imageView);
+        try {
+            int anInt = Integer.parseInt(url);
+            //使用Picasso来加载图片
+            Glide.with(context).load(anInt).into(imageView);
+        } catch (NumberFormatException e) {
+
+            //使用Picasso来加载图片
+            Glide.with(context).load(url).into(imageView);
+            e.printStackTrace();
+        }
         //在Imageview前添加一个半透明的黑色背景，防止文字和图片混在一起
         ImageView backGround = new ImageView(context);
         backGround.setLayoutParams(layoutParams);
@@ -306,7 +328,7 @@ public class CycleViewPager extends FrameLayout
 
                     @Override
                     public void onClick(View v) {
-                        mImageCycleViewListener.onImageClick(infos.get(mCurrentPosition - 1), mCurrentPosition-1, v);
+                        mImageCycleViewListener.onImageClick(infos.get(mCurrentPosition - 1), mCurrentPosition - 1, v);
                     }
                 });
             }
@@ -447,6 +469,7 @@ public class CycleViewPager extends FrameLayout
 
         /**
          * 单击图片事件
+         *
          * @param url
          * @param position
          * @param imageView

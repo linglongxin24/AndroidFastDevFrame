@@ -53,9 +53,8 @@ public class Config {
      * @param textColor       字体颜色id
      * @param arrowBack       返回箭头图标id
      */
-    public static void initTitleBar(int backgroundColor,int setStatusBarBackground, int textColor, int arrowBack) {
+    public static void initTitleBar(int backgroundColor,int textColor, int arrowBack) {
         TitleBarColor.backgroundColor = backgroundColor;
-        TitleBarColor.setStatusBarBackground = setStatusBarBackground;
         TitleBarColor.textColor = textColor;
         TitleBarColor.arrowBack = arrowBack;
     }

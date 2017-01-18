@@ -39,6 +39,7 @@ import cn.bluemobi.dylan.fastdev.config.TitleBarColor;
 import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 import cn.bluemobi.dylan.fastdev.utils.AppManager;
+import cn.bluemobi.dylan.fastdev.utils.StatusBarUtil;
 
 /**
  * com.bm.falvzixun.activities.BaseActivity;
@@ -171,7 +172,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      * @param color
      */
     public void setTitleBarBackground(int color) {
-        setStatusBarBackground(getResources().getColor(TitleBarColor.setStatusBarBackground));
+        setStatusBarBackground(getResources().getColor(color));
         layout_titlebar.setBackgroundColor(color);
     }
 
@@ -202,6 +203,9 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      */
     public void setStatusBarBackground(int color) {
         llRoot.setBackgroundColor(color);
+        if(color==Color.WHITE){
+            StatusBarUtil.StatusBarLightMode(this);
+        }
     }
 
     /**
