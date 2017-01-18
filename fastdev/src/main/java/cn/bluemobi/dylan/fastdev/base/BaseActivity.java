@@ -172,7 +172,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      * @param color
      */
     public void setTitleBarBackground(int color) {
-        setStatusBarBackground(getResources().getColor(color));
+        setStatusBarBackground(color);
         layout_titlebar.setBackgroundColor(color);
     }
 
