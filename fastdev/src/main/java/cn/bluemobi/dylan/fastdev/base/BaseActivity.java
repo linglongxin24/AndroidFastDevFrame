@@ -202,9 +202,11 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      * @param color
      */
     public void setStatusBarBackground(int color) {
-        llRoot.setBackgroundColor(color);
-        if(color==Color.WHITE){
-            StatusBarUtil.StatusBarLightMode(this);
+        if (TitleBarColor.isImmersionStatus) {
+            llRoot.setBackgroundColor(color);
+            if (color == Color.WHITE) {
+                StatusBarUtil.StatusBarLightMode(this);
+            }
         }
     }
 

@@ -60,6 +60,13 @@ public class Config {
     }
 
     /**
+     * 设置是否启用侵入式状态栏
+     * @param isImmersionStatus
+     */
+    public static void setIsImmersionStatus(boolean isImmersionStatus) {
+        TitleBarColor.isImmersionStatus = isImmersionStatus;
+    }
+    /**
      * 初始化网络请求的各种参数
      *
      * @param code             请求接口返回码

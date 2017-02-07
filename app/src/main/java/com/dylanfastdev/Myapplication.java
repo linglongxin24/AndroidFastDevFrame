@@ -19,6 +19,7 @@ public class Myapplication extends Application {
         x.Ext.init(this);
         Logger.init("yanhao");
         Config.initTitleBar(android.R.color.white,android.R.color.white,R.drawable.pub_arrow_back_write);
+        Config.setIsImmersionStatus(false);
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setEmailTo(new String[]{"yuandl@bluemobi.cn"});
 
