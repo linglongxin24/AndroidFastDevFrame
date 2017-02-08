@@ -10,10 +10,29 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -28,8 +47,6 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Http请求工具类
@@ -123,6 +140,100 @@ public class HttpUtils {
         initRetrofit(baseUrl);
     }
 
+    private SSLSocketFactory factory;
+
+    /**
+     * 设置SSL证书
+     *
+     * @param certificates
+     */
+    public void setSSLSocketFactory(InputStream... certificates) {
+        //载入证书
+        factory = setCertificates(certificates);
+    }
+
+    private boolean overlockCard=true;
+
+    /**
+     * 设置是否忽略证书验证
+     *
+     * @param overlockCard
+     */
+    public void setOverlockCard(boolean overlockCard) {
+        this.overlockCard = overlockCard;
+    }
+
+    /**
+     * 载入证书
+     */
+    private SSLSocketFactory setCertificates(InputStream... certificates) {
+        try {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null);
+            int index = 0;
+            for (InputStream certificate : certificates) {
+                String certificateAlias = Integer.toString(index++);
+                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+                try {
+                    if (certificate != null) {
+                        certificate.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+            sslContext.init(
+                    null,
+                    trustManagerFactory.getTrustManagers(),
+                    new SecureRandom()
+            );
+            return sslContext.getSocketFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 忽略所有https证书
+     */
+    private SSLContext overlockCard() {
+        final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException {
+            }
+
+            @Override
+            public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException {
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                X509Certificate[] x509Certificates = new X509Certificate[0];
+                return x509Certificates;
+            }
+        }};
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts,
+                    new java.security.SecureRandom());
+            return sslContext;
+        } catch (Exception e) {
+            Log.e(TAG, "ssl出现异常");
+        }
+        return null;
+
+    }
+
     private void initRetrofit(String baseUrl) {
         mOkHttpClient = new OkHttpClient();
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -165,11 +276,24 @@ public class HttpUtils {
             }
         };
 
-        mOkHttpClient = new OkHttpClient.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(logInterceptor)
-                .addInterceptor(commParamsIntInterceptor)
-                .build();
+                .addInterceptor(commParamsIntInterceptor);
+        if (overlockCard) {
+            builder.sslSocketFactory(overlockCard().getSocketFactory())
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
+        } else {
+            if (factory != null) {
+                builder.sslSocketFactory(factory);
+            }
+        }
 
+        mOkHttpClient = builder.build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
