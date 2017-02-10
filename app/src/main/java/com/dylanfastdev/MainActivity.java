@@ -78,6 +78,11 @@ public class MainActivity extends BasePhotoActivity {
                         Logger.d("data=" + data);
                     }
                 });
+        cn.bluemobi.dylan.fastdev.http.HttpUtils.getInstance().addSignParameters(true);
+        RequestParams requestParams=new RequestParams(ApiService.baseUrl);
+        requestParams.addBodyParameter("app","Advert");
+        requestParams.addBodyParameter("class","GetAdvert");
+        ajax(requestParams);
 
     }
 

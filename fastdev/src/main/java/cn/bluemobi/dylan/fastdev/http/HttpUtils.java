@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 import cn.bluemobi.dylan.fastdev.utils.CheckNetwork;
+import cn.bluemobi.dylan.fastdev.utils.MD5Utils;
 import cn.bluemobi.dylan.fastdev.view.LoadingDialog;
 
 /**
@@ -100,6 +101,12 @@ public class HttpUtils implements HttpRequest {
         return httpUtils;
     }
 
+    private boolean addSignParameters = false;
+
+    public void addSignParameters(boolean addSignParameters) {
+        this.addSignParameters = addSignParameters;
+    }
+
     @Override
     public Callback.Cancelable ajax(Context context, RequestParams requestParams, HttpResponse httpResponse) {
         return ajax(context, requestParams, -1, true, httpResponse);
@@ -139,11 +146,24 @@ public class HttpUtils implements HttpRequest {
 
         List<KeyValue> params = requestParams.getStringParams();
         String requestParamstr = "url=" + requestParams.getUri();
+        String appName = "";
+        String className = "";
         for (KeyValue keyValue : params) {
             if (keyValue.key.contains(":")) {
                 throw new RuntimeException("参数异常！");
             }
+            if(addSignParameters){
+                if ("app".equals( keyValue.key)) {
+                    appName = keyValue.getValueStr();
+                } else if ("class".equals( keyValue.key)) {
+                    className = keyValue.getValueStr();
+                }
+            }
             requestParamstr += "\n" + keyValue.key + "=" + keyValue.getValueStr();
+        }
+        if(addSignParameters){
+            String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
+            requestParams.addBodyParameter("sign", MD5Utils.md5(appName + className + secret));
         }
 
         Logger.d(requestParamstr);
