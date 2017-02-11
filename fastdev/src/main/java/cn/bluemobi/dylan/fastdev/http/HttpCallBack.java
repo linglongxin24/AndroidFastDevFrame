@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import cn.bluemobi.dylan.fastdev.utils.EncodeUtils;
 import cn.bluemobi.dylan.fastdev.utils.Tools;
 import cn.bluemobi.dylan.fastdev.view.LoadingDialog;
 
@@ -71,7 +72,7 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
 
     @Override
     public void onSuccess(String result) {
-        Logger.json(result);
+        Logger.json(EncodeUtils.convertUnicode(result));
         ArrayMap<String, Object> jsonBean;
         try {
             jsonBean = jsonParse(result);
