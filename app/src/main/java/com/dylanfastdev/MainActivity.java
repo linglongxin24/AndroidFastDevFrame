@@ -84,6 +84,13 @@ public class MainActivity extends BasePhotoActivity {
         requestParams.addBodyParameter("class","GetAdvert");
         ajax(requestParams);
 
+         requestParams=new RequestParams("http://175.102.24.27:8917/api/");
+        requestParams.addBodyParameter("app", "Serve");
+        requestParams.addBodyParameter("class", "Serve_an_ServeContent");
+        requestParams.addBodyParameter("sign", "b6653ef7ec1055ae491e24bd97bde65b");
+        requestParams.addBodyParameter("serve_content_id", "6");
+        requestParams.addBodyParameter("city_id", "142");
+        ajax(requestParams);
     }
 
 

@@ -36,6 +36,7 @@ import cn.bluemobi.dylan.fastdev.autolayout.AutoLayoutActivity;
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
 import cn.bluemobi.dylan.fastdev.config.Config;
 import cn.bluemobi.dylan.fastdev.config.TitleBarColor;
+import cn.bluemobi.dylan.fastdev.http.CommCallBack;
 import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 import cn.bluemobi.dylan.fastdev.utils.AppManager;
@@ -420,6 +421,26 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      */
     protected void ajax(RequestParams requestParams, int requestCode, boolean isShowLoadingDialog) {
         cancelable = HttpUtils.getInstance().ajax(context, requestParams, requestCode, isShowLoadingDialog, this);
+    }
+
+    /**
+     * 异步网络请求类-含有回调
+     *
+     * @param requestParams
+     * @param commCallBack  回掉
+     */
+    protected Callback.Cancelable ajax(RequestParams requestParams, CommCallBack commCallBack) {
+       return cancelable =ajax(requestParams, true, commCallBack);
+    }
+
+    /**
+     * 异步网络请求类-含有回调
+     *
+     * @param requestParams
+     * @param isShowLoadingDialog 区分不同的网络请求
+     */
+    protected Callback.Cancelable ajax(RequestParams requestParams, boolean isShowLoadingDialog, CommCallBack commCallBack) {
+        return   cancelable = HttpUtils.getInstance().ajax(context, requestParams, isShowLoadingDialog, commCallBack);
     }
 
     /**

@@ -15,6 +15,7 @@ import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.util.Iterator;
 import java.util.Map;
@@ -72,16 +73,12 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
 
     @Override
     public void onSuccess(String result) {
-        Logger.json(EncodeUtils.convertUnicode(result));
+        Logger.json(result);
         ArrayMap<String, Object> jsonBean;
         try {
             jsonBean = jsonParse(result);
-            String msg = Tools.getValue(jsonBean, HttpUtils.getInstance().getMsg());
             int code = Integer.parseInt(Tools.getValue(jsonBean, HttpUtils.getInstance().getCode()));
 
-            if (msg != null && !msg.isEmpty()) {
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-            }
             if (code == HttpUtils.getInstance().getSuccessCode()) {
                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(HttpUtils.getInstance().getData());
                 httpResponse.netOnSuccess(data);
@@ -89,13 +86,17 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
                     httpResponse.netOnSuccess(data, requestCode);
                 }
             } else {
+                String msg = Tools.getValue(jsonBean, HttpUtils.getInstance().getMsg());
+                if (msg != null && !msg.isEmpty()) {
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                }
                 httpResponse.netOnOtherStatus(code, msg);
                 if (requestCode != -1) {
                     httpResponse.netOnOtherStatus(code, msg, requestCode);
                 }
             }
         } catch (Exception e) {
-            Logger.d(result);
+            Logger.d(EncodeUtils.ascii2native(result));
             Tools.show(context, "服务器异常！", Toast.LENGTH_SHORT);
             e.printStackTrace();
         } finally {
@@ -105,11 +106,11 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
 
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
+        ex.printStackTrace();
         httpResponse.netOnFailure(ex);
         if (requestCode != -1) {
             httpResponse.netOnFailure(requestCode, ex);
         }
-        Logger.d(ex.getMessage());
         if (ex instanceof HttpException) { // 网络错误
             HttpException httpEx = (HttpException) ex;
             int responseCode = httpEx.getCode();

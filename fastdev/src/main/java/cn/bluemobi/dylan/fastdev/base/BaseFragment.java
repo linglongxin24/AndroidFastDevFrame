@@ -21,6 +21,7 @@ import org.xutils.x;
 
 import java.util.Map;
 
+import cn.bluemobi.dylan.fastdev.http.CommCallBack;
 import cn.bluemobi.dylan.fastdev.http.HttpResponse;
 import cn.bluemobi.dylan.fastdev.http.HttpUtils;
 
@@ -190,7 +191,25 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
     protected void ajax(RequestParams requestParams, int requestCode, boolean isShowLoadingDialog) {
         cancelable = HttpUtils.getInstance().ajax(getContext(), requestParams, requestCode, isShowLoadingDialog, this);
     }
+    /**
+     * 异步网络请求类-含有回调
+     *
+     * @param requestParams
+     * @param commCallBack  回掉
+     */
+    protected Callback.Cancelable ajax(RequestParams requestParams, CommCallBack commCallBack) {
+        return cancelable =ajax(requestParams, true, commCallBack);
+    }
 
+    /**
+     * 异步网络请求类-含有回调
+     *
+     * @param requestParams
+     * @param isShowLoadingDialog 区分不同的网络请求
+     */
+    protected Callback.Cancelable ajax(RequestParams requestParams, boolean isShowLoadingDialog, CommCallBack commCallBack) {
+        return   cancelable = HttpUtils.getInstance().ajax(getContext(), requestParams, isShowLoadingDialog, commCallBack);
+    }
     private Toast toast;
 
     /**
