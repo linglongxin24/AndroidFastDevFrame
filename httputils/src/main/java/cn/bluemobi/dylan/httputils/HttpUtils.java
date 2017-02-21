@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -304,8 +305,6 @@ public class HttpUtils {
     public static <T> T getApiService(Class<T> clazz) {
         return retrofit.create(clazz);
     }
-//
-//    private static LoadingDialog loadingDialog;
 
     public static Subscription post(final Context context, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         return post(context, true, mapObservable, httpResponse);
@@ -332,6 +331,7 @@ public class HttpUtils {
         Subscription subscribe = mapObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
+                    String TAG="subscribe";
 
                     @Override
                     public void onStart() {
@@ -343,6 +343,7 @@ public class HttpUtils {
 
                     @Override
                     public void onCompleted() {
+                        Log.d(TAG,"onCompleted()");
                         if (finalLoadingDialog != null) {
                             finalLoadingDialog.dismiss();
                         }
@@ -353,19 +354,18 @@ public class HttpUtils {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.dismiss();
-                        }
+                        Log.d(TAG,"onError()");
+                        onCompleted();
 
                         e.printStackTrace();
                         Toast.makeText(context, "Network  error", Toast.LENGTH_SHORT).show();
                         httpResponse.netOnFailure(e);
 
-
                     }
 
                     @Override
                     public void onNext(ResponseBody result) {
+                        Log.d(TAG,"onNext()");
                         ArrayMap<String, Object> jsonBean;
                         try {
                             jsonBean = jsonParse(result.string());
