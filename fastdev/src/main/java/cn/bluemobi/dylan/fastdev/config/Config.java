@@ -79,4 +79,5 @@ public class Config {
         HttpUtils.getInstance().init(code, data, msg, successCode, globalParameters);
     }
 
+
 }
