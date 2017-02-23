@@ -145,7 +145,7 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
         }
     }
 
-    private ArrayMap<String, Object> jsonParse(String json) throws JSONException {
+    private static ArrayMap<String, Object> jsonParse(String json) throws JSONException {
         ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
         }.getType());
         ArrayMap<String, Object> returnData = new ArrayMap<String, Object>();
@@ -154,7 +154,9 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
         if (arrayMap.containsKey(dataStrKey)) {
             Object data = arrayMap.get(dataStrKey);
             if (data instanceof String) {
-                returnData.put(dataStrKey, data.toString());
+                rrData = new ArrayMap<String, Object>();
+                rrData.put(dataStrKey, data.toString());
+                returnData.put(dataStrKey, rrData);
             } else if (data instanceof JSONArray) {
                 rrData = new ArrayMap<String, Object>();
                 rrData.put(dataStrKey, data);
@@ -177,7 +179,8 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
             returnData.put(dataStrKey, rrData);
         }
         returnData.put(HttpUtils.getInstance().getCode(), Tools.getValue(arrayMap, HttpUtils.getInstance().getCode()));
-        returnData.put(HttpUtils.getInstance().getMsg(), Tools.getValue(arrayMap, HttpUtils.getInstance().getMsg()));
+        returnData.put(HttpUtils.getInstance().getMsg(),  Tools.getValue(arrayMap, HttpUtils.getInstance().getMsg()));
         return returnData;
     }
+
 }
