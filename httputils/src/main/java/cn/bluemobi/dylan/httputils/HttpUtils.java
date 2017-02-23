@@ -292,7 +292,7 @@ public class HttpUtils {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.d(TAG, "OkHttp====message " + EncodeUtils.convertUnicode(message));
+                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
             }
 
         });
@@ -374,6 +374,7 @@ public class HttpUtils {
         if (!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             httpResponse.netOnFailure(new Exception(network_unusual));
+            httpResponse.netOnFinish();
             return null;
         }
 
