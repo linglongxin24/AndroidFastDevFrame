@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
+import cn.bluemobi.dylan.fastdev.http.CommCallBack;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
 import cn.bluemobi.dylan.fastdev.utils.StatusBarUtil;
@@ -70,14 +72,15 @@ public class MainActivity extends BasePhotoActivity {
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
         String sign = MD5Utils.md5(s);
-        HttpUtils.getInstance().post(context,
-                HttpUtils.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"),
-                new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-                        Logger.d("data=" + data);
-                    }
-                });
+//        HttpUtils.getInstance().post(context,
+//                HttpUtils.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"),
+//                new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//                        Logger.d("data=" + data);
+//                    }
+//                });
+
 //        cn.bluemobi.dylan.fastdev.http.HttpUtils.getInstance().addSignParameters(true);
 //        RequestParams requestParams=new RequestParams(ApiService.baseUrl);
 //        requestParams.addBodyParameter("app","Advert");
@@ -157,9 +160,9 @@ public class MainActivity extends BasePhotoActivity {
                 Logger.d("点击了=" + position);
                 Intent intent = new Intent(context, ImagePagerActivity.class);
                 // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
-                String [] arr=new String[urls.size()];
-                arr=urls.toArray(arr);
-                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS,arr);
+                String[] arr = new String[urls.size()];
+                arr = urls.toArray(arr);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, arr);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_ente, R.anim.zoom_exit);//切换Activity的过渡动
