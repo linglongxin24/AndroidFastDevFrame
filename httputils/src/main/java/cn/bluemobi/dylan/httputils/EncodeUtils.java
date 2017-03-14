@@ -48,8 +48,8 @@ public class EncodeUtils {
                                 value = (value << 4) + 10 + aChar - 'A';
                                 break;
                             default:
-                                throw new IllegalArgumentException(
-                                        "Malformed   \\uxxxx   encoding.");
+//                                throw new IllegalArgumentException(
+//                                        "Malformed   \\uxxxx   encoding.");
                         }
                     }
                     outBuffer.append((char) value);
@@ -69,5 +69,27 @@ public class EncodeUtils {
 
         }
         return outBuffer.toString();
+    }
+    public static String ascii2native(String asciicode)
+    {
+        String[] asciis = asciicode.split ("\\\\u");
+        String nativeValue = asciis[0];
+        try
+        {
+            for ( int i = 1; i < asciis.length; i++ )
+            {
+                String code = asciis[i];
+                nativeValue += (char) Integer.parseInt (code.substring (0, 4), 16);
+                if (code.length () > 4)
+                {
+                    nativeValue += code.substring (4, code.length ());
+                }
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            return asciicode;
+        }
+        return nativeValue;
     }
 }

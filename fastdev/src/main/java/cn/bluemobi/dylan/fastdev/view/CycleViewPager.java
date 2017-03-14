@@ -239,7 +239,7 @@ public class CycleViewPager extends FrameLayout
         }
         mViewPager.setCurrentItem(showPosition);
 
-        setWheel(true);//设置轮播
+        setWheel(isWheel());//设置轮播
     }
 
     /**
@@ -282,6 +282,9 @@ public class CycleViewPager extends FrameLayout
      * @param selectedPosition 默认指示器位置
      */
     private void setIndicator(int selectedPosition) {
+        if (mImageCycleViewListener != null) {
+            mImageCycleViewListener.onItemSelect(selectedPosition);
+        }
 //        setText(mTitle, infos.get(selectedPosition).getTitle());
         try {
 
@@ -465,7 +468,7 @@ public class CycleViewPager extends FrameLayout
      *
      * @author minking
      */
-    public static interface ImageCycleViewListener {
+    public interface ImageCycleViewListener {
 
         /**
          * 单击图片事件
@@ -474,6 +477,13 @@ public class CycleViewPager extends FrameLayout
          * @param position
          * @param imageView
          */
-        public void onImageClick(String url, int position, View imageView);
+        void onImageClick(String url, int position, View imageView);
+
+        /**
+         * 轮播选中事件
+         *
+         * @param position
+         */
+        void onItemSelect(int position);
     }
 }

@@ -10,7 +10,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -18,8 +17,6 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,8 +28,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -61,6 +56,8 @@ public class HttpUtils {
     private volatile static HttpUtils httpUtils;
     private OkHttpClient mOkHttpClient;
     private static Retrofit retrofit;
+
+    private SSLSocketFactory factory;
 
     /**
      * 构造函数私有化
@@ -105,19 +102,19 @@ public class HttpUtils {
      */
     private Map<String, String> globalParameters = new ArrayMap<>();
 
-    public String getCode() {
+    private String getCode() {
         return code;
     }
 
-    public String getData() {
+    private String getData() {
         return data;
     }
 
-    public String getMsg() {
+    private String getMsg() {
         return msg;
     }
 
-    public int getSuccessCode() {
+    private int getSuccessCode() {
         return successCode;
     }
 
@@ -140,7 +137,55 @@ public class HttpUtils {
         initRetrofit(baseUrl);
     }
 
-    private SSLSocketFactory factory;
+
+    /**
+     * 默认使用中文
+     */
+    private static boolean useEnglishLanguage = false;
+
+    /**
+     * 默认debug模式打印日志
+     */
+    private boolean debugMode = true;
+
+    /**
+     * 设置是否启用日志
+     *
+     * @param debugMode
+     */
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
+
+    /**
+     * 设置提示中英文
+     *
+     * @param useEnglishLanguage
+     */
+    private void setUseEnglishLanguage(boolean useEnglishLanguage) {
+        this.useEnglishLanguage = useEnglishLanguage;
+    }
+
+    /**
+     * 默认在其他状态的时候给用户提醒响应的错误信息
+     */
+    private static MessageModel showMessageModel = MessageModel.NO;
+
+    /**
+     * 设置给用户提醒消息的模式
+     *
+     * @param messageModel
+     */
+    public void setShowMessageModel(MessageModel messageModel) {
+        this.showMessageModel = messageModel;
+    }
+
+    /**
+     * 用户提醒消息的模式
+     */
+    public enum MessageModel {
+        All, OTHER_STATUS, NO
+    }
 
     /**
      * 设置SSL证书
@@ -152,7 +197,10 @@ public class HttpUtils {
         factory = setCertificates(certificates);
     }
 
-    private boolean overlockCard=true;
+    /**
+     * 默认忽略SSL证书
+     */
+    private boolean overlockCard = true;
 
     /**
      * 设置是否忽略证书验证
@@ -234,12 +282,17 @@ public class HttpUtils {
 
     }
 
+    /**
+     * 初始化mOkHttpClient与retrofit
+     *
+     * @param baseUrl 基础URL
+     */
     private void initRetrofit(String baseUrl) {
         mOkHttpClient = new OkHttpClient();
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
-                Log.d(TAG, "OkHttp====message " + EncodeUtils.convertUnicode(message));
+                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
             }
 
         });
@@ -276,9 +329,14 @@ public class HttpUtils {
             }
         };
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(logInterceptor)
-                .addInterceptor(commParamsIntInterceptor);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (debugMode) {
+            /**添加打印日志拦截器**/
+            builder.addInterceptor(logInterceptor);
+        }
+        /**添加公共参数拦截器**/
+        builder.addInterceptor(commParamsIntInterceptor);
+        /**设置证书**/
         if (overlockCard) {
             builder.sslSocketFactory(overlockCard().getSocketFactory())
                     .hostnameVerifier(new HostnameVerifier() {
@@ -304,18 +362,19 @@ public class HttpUtils {
     public static <T> T getApiService(Class<T> clazz) {
         return retrofit.create(clazz);
     }
-//
-//    private static LoadingDialog loadingDialog;
 
     public static Subscription post(final Context context, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         return post(context, true, mapObservable, httpResponse);
     }
 
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
+        String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
+        final String network_error = useEnglishLanguage ? "Network  error" : "网络错误";
 
         if (!NetworkUtil.isNetworkAvailable(context)) {
-            Toast.makeText(context, "Network  unusual", Toast.LENGTH_SHORT).show();
-            httpResponse.netOnFailure(new Exception("网络不可用"));
+            Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
+            httpResponse.netOnFailure(new Exception(network_unusual));
+            httpResponse.netOnFinish();
             return null;
         }
 
@@ -346,21 +405,16 @@ public class HttpUtils {
                         if (finalLoadingDialog != null) {
                             finalLoadingDialog.dismiss();
                         }
-
                         httpResponse.netOnFinish();
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.dismiss();
-                        }
-
                         e.printStackTrace();
-                        Toast.makeText(context, "Network  error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
                         httpResponse.netOnFailure(e);
-
+                        onCompleted();
 
                     }
 
@@ -372,17 +426,26 @@ public class HttpUtils {
                             String msg = getValue(jsonBean, HttpUtils.getInstance().getMsg());
                             int code = Integer.parseInt(getValue(jsonBean, HttpUtils.getInstance().getCode()));
 
-//                            if (msg != null && !msg.isEmpty()) {
-//                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-//                            }
+                            if (showMessageModel == MessageModel.All) {
+                                if (msg != null && !msg.isEmpty()) {
+                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
                             if (code == HttpUtils.getInstance().getSuccessCode()) {
                                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(HttpUtils.getInstance().getData());
                                 httpResponse.netOnSuccess(data);
                             } else {
+                                if (showMessageModel == MessageModel.OTHER_STATUS) {
+                                    if (msg != null && !msg.isEmpty()) {
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
                                 httpResponse.netOnOtherStatus(code, msg);
                             }
                         } catch (Exception e) {
-                            onError(e);
+                            Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
+                            httpResponse.netOnFailure(e);
                             e.printStackTrace();
                         }
                     }
