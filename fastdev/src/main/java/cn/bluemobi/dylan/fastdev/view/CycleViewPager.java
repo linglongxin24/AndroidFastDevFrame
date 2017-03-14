@@ -239,7 +239,7 @@ public class CycleViewPager extends FrameLayout
         }
         mViewPager.setCurrentItem(showPosition);
 
-        setWheel(true);//设置轮播
+        setWheel(isWheel());//设置轮播
     }
 
     /**
