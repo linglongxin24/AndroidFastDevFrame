@@ -28,6 +28,8 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private int itemWidth;
+
+    private int addImageResourceId=R.drawable.image_add;
     /**
      * 可以动态设置最多上传几张，之后就不显示+号了，用户也无法上传了
      * 默认9张
@@ -43,6 +45,15 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     }
 
     /**
+     * 设置默认的加号图片
+     * @param addImageResourceId
+     * @return
+     */
+    public GridViewAddImagesAdapter setAddImageResourceId(int addImageResourceId) {
+        this.addImageResourceId = addImageResourceId;
+        return this;
+    }
+    /**
      * 获取最大上传张数
      *
      * @return
@@ -56,8 +67,9 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
      *
      * @param maxImages
      */
-    public void setMaxImages(int maxImages) {
+    public GridViewAddImagesAdapter setMaxImages(int maxImages) {
         this.maxImages = maxImages;
+        return this;
     }
 
     /**
@@ -126,7 +138,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
         } else {
             /**代表+号的需要+号图片显示图片**/
             Glide.with(context)
-                    .load(R.drawable.image_add)
+                    .load(addImageResourceId)
                     .priority(Priority.HIGH)
                     .into(viewHolder.ivimage);
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.FIT_XY);
