@@ -167,6 +167,11 @@ public class MainActivity extends BasePhotoActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.zoom_ente, R.anim.zoom_exit);//切换Activity的过渡动
             }
+
+            @Override
+            public void onItemSelect(int position) {
+
+            }
         });
     }
 

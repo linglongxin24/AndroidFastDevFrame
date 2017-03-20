@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import cn.bluemobi.dylan.fastdev.R;
@@ -17,7 +18,7 @@ import cn.bluemobi.dylan.fastdev.R;
  * Date: 2014-12-29
  * Time: 13:34
  */
-public class LoadingDialog {
+public class LoadingDialog  {
     private Dialog dialog;
     private Context context;
     private TextView tv_text;
@@ -31,7 +32,7 @@ public class LoadingDialog {
         tv_text = (TextView) view.findViewById(R.id.tv_text);
         tv_text.setText(message);
         if(dialog==null){
-            dialog = new Dialog(context);
+            dialog = new Dialog(context,R.style.loadingDialogStyle);
             /**设置对话框背景透明*/
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setContentView(view);

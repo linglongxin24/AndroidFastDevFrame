@@ -35,7 +35,7 @@ public class LoadingDialog {
         tv_text = (TextView) view.findViewById(R.id.tv_text);
         tv_text.setText(message);
         if(dialog==null){
-            dialog = new Dialog(context);
+            dialog = new Dialog(context,R.style.loadingDialogStyle);
             /**设置对话框背景透明*/
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setContentView(view);
