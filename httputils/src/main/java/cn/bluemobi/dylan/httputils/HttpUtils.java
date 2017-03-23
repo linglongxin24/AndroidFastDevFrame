@@ -19,6 +19,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -330,6 +331,8 @@ public class HttpUtils {
         };
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.readTimeout(3, TimeUnit.MINUTES)
+                .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
         if (debugMode) {
             /**添加打印日志拦截器**/
             builder.addInterceptor(logInterceptor);
@@ -369,7 +372,7 @@ public class HttpUtils {
 
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
-        final String network_error = useEnglishLanguage ? "Network  error" : "网络错误";
+        final String network_error = useEnglishLanguage ? "Network  error" : "网络繁忙";
 
         if (!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
