@@ -29,6 +29,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import cn.bluemobi.dylan.httputils.ssl.Tls12SocketFactory;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -163,7 +164,7 @@ public class HttpUtils {
      *
      * @param useEnglishLanguage
      */
-    private void setUseEnglishLanguage(boolean useEnglishLanguage) {
+    public void setUseEnglishLanguage(boolean useEnglishLanguage) {
         this.useEnglishLanguage = useEnglishLanguage;
     }
 
@@ -341,7 +342,7 @@ public class HttpUtils {
         builder.addInterceptor(commParamsIntInterceptor);
         /**设置证书**/
         if (overlockCard) {
-            builder.sslSocketFactory(overlockCard().getSocketFactory())
+            builder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
                     .hostnameVerifier(new HostnameVerifier() {
                         @Override
                         public boolean verify(String hostname, SSLSession session) {
