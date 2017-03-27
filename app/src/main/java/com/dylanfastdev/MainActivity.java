@@ -67,7 +67,17 @@ public class MainActivity extends BasePhotoActivity {
 
         HttpUtils httpUtils = HttpUtils.getInstance();
         httpUtils.init(ApiService.baseUrl, "status", "data", "msg", 0, null);
+        HttpUtils.getInstance()
+                .with(context)
+                .setObservable(
+                        HttpUtils.getApiService(ApiService.class)
+                                .getTopMove("Advert", "GetAdvert"))
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
 
+                    }
+                });
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
         String sign = MD5Utils.md5(s);

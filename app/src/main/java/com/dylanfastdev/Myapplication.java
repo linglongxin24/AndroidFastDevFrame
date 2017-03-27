@@ -21,7 +21,7 @@ public class Myapplication extends Application {
         Config.initTitleBar(android.R.color.white,android.R.color.white,R.drawable.pub_arrow_back_write);
         Config.setIsImmersionStatus(false);
         CustomActivityOnCrash.install(this);
-        CustomActivityOnCrash.setDebugMode(false);
+        CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
         CustomActivityOnCrash.setEmailTo(new String[]{"appexception@163.com"});
 
     }

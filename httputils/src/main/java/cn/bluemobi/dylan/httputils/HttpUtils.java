@@ -1,8 +1,11 @@
 package cn.bluemobi.dylan.httputils;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -291,14 +294,6 @@ public class HttpUtils {
      */
     private void initRetrofit(String baseUrl) {
         mOkHttpClient = new OkHttpClient();
-        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
-            }
-
-        });
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         Interceptor commParamsIntInterceptor = new Interceptor() {
 
             @Override
@@ -330,16 +325,25 @@ public class HttpUtils {
                 return chain.proceed(request);
             }
         };
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
+            }
+
+        });
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(3, TimeUnit.MINUTES)
                 .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
+        /**添加公共参数拦截器**/
+        builder.addInterceptor(commParamsIntInterceptor);
+
         if (debugMode) {
             /**添加打印日志拦截器**/
             builder.addInterceptor(logInterceptor);
         }
-        /**添加公共参数拦截器**/
-        builder.addInterceptor(commParamsIntInterceptor);
         /**设置证书**/
         if (overlockCard) {
             builder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
@@ -370,7 +374,7 @@ public class HttpUtils {
     public static Subscription post(final Context context, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         return post(context, true, mapObservable, httpResponse);
     }
-
+/*****************************************第二版封装*****************************************************/
     /**
      * 要显示的对话框的上下文
      */
@@ -510,9 +514,14 @@ public class HttpUtils {
                         }
                     }
                 });
+
+        if (loadingDialog != null && subscribe != null) {
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog,subscribe));
+        }
         return subscribe;
     }
 
+    /*****************************************第二版封装 end*****************************************************/
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
         final String network_error = useEnglishLanguage ? "Network  error" : "网络繁忙";
@@ -688,6 +697,37 @@ public class HttpUtils {
      */
     public static boolean isNull2(String s) {
         return null == s || s.equals("");
+
+    }
+
+    /**
+     * Dialog 监听返回事件
+     *
+     * @author lizhiting
+     */
+    public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
+        private LoadingDialog dialog;
+        private Subscription subscribe;
+
+        public DialogOnKeyListener(LoadingDialog dialog, Subscription subscribe) {
+            this.dialog = dialog;
+            this.subscribe = subscribe;
+        }
+
+        @Override
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (subscribe != null && subscribe.isUnsubscribed()) {
+                    subscribe.unsubscribe();
+                }
+                if (this.dialog != null
+                        && this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
 }
