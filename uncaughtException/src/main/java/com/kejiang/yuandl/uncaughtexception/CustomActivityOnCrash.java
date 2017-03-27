@@ -109,24 +109,13 @@ public final class CustomActivityOnCrash {
                                         }
 
                                         final String finalStackTraceString = stackTraceString;
-                                        new Thread(new Runnable() {
 
-                                            @Override
-                                            public void run() {
-                                                Looper.prepare();
-
-                                                ReportByEmail.sendEmail2(CustomActivityOnCrash.getApplicationName(context), CustomActivityOnCrash.getAllErrorDetailsFromContext(context, finalStackTraceString));
-
-                                                SystemClock.sleep(3000);
-
-                                                // 退出程序
-                                                //干掉当前的程序
-                                                CustomActivityOnCrash.killCurrentProcess();
-                                                // 关闭虚拟机，彻底释放内存空间
-                                                System.exit(0);
-
-                                            }
-                                        }).start();
+                                        ReportByEmail.sendEmail2(CustomActivityOnCrash.getApplicationName(context), CustomActivityOnCrash.getAllErrorDetailsFromContext(context, finalStackTraceString));
+                                        // 退出程序
+                                        //干掉当前的程序
+                                        CustomActivityOnCrash.killCurrentProcess();
+                                        // 关闭虚拟机，彻底释放内存空间
+                                        System.exit(0);
 
 
                                     }
@@ -250,7 +239,7 @@ public final class CustomActivityOnCrash {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
-        String buildDateAsString = getBuildDateAsString(context, dateFormat);
+        String buildDateAsString = getAppDate(context, dateFormat);
 
 
         String versionName = getVersionName(context);
@@ -273,7 +262,7 @@ public final class CustomActivityOnCrash {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
-        String buildDateAsString = getBuildDateAsString(context, dateFormat);
+        String buildDateAsString = getAppDate(context, dateFormat);
 
 
         String versionName = getVersionName(context);
@@ -401,7 +390,16 @@ public final class CustomActivityOnCrash {
         return false;
     }
 
-
+    public static String  getAppDate(Context context, DateFormat dateFormat) {
+        long lastUpdateTime = 0;
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            lastUpdateTime = packageInfo.lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return dateFormat.format(new Date(lastUpdateTime));
+    }
     private static String getBuildDateAsString(Context context, DateFormat dateFormat) {
         String buildDate;
 

@@ -58,7 +58,6 @@ public class MainActivity extends BasePhotoActivity {
         showSelectPopupWindow();
 //        showAddImageDialog();
         testHttp();
-
     }
 
     /**
