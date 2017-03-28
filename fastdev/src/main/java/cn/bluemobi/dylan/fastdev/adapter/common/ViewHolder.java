@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -19,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import cn.bluemobi.dylan.fastdev.autolayout.utils.AutoUtils;
 
@@ -109,6 +114,42 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = getView(viewId);
         view.setImageDrawable(drawable);
+        return this;
+    }
+    public ViewHolder setImageUrl(int viewId,String url) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).into(view);
+        return this;
+    }
+    public ViewHolder setImageUrl(int viewId,String url,int emptyResourceId,int errorResourceId) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).placeholder(emptyResourceId).error(errorResourceId).into(view);
+        return this;
+    }
+    public ViewHolder setRoundImageUrl(int viewId,String url,int emptyResourceId,int errorResourceId) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).asBitmap().error(errorResourceId).placeholder(emptyResourceId).centerCrop().into(new BitmapImageViewTarget(view) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+        return this;
+    }
+    public ViewHolder setRoundImageUrl(int viewId,String url) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
         return this;
     }
 
