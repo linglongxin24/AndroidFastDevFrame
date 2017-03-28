@@ -38,6 +38,7 @@ import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
+import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
 public class MainActivity extends BasePhotoActivity {
 
@@ -48,6 +49,7 @@ public class MainActivity extends BasePhotoActivity {
     private List<String> paths;
     private GridView gv;
     private GridViewAddImagesAdapter gridViewAddImgesAdpter;
+    private SmartWebView smartWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +195,7 @@ public class MainActivity extends BasePhotoActivity {
 
     private void setMyRatingBar() {
         setContentView(R.layout.ac_ratingbar);
+        smartWebView = (SmartWebView)findViewById(R.id.smartWebView);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.rb);
         ratingBar.setClickable(true);//设置可否点击
         ratingBar.setStar(2.5f);//设置显示的星星个数
@@ -203,6 +206,11 @@ public class MainActivity extends BasePhotoActivity {
                 Log.d("RatingBar", "RatingBar-Count=" + ratingCount);
             }
         });
+
+//        String url = "http://nongzhangmen.cn:8911/page/Index/index?id=2406";
+        String url = "https://app.tongrunjacks.com//other//index?id=TkE9PQ==";
+//        String url = "http://c.dituhui.com/maps/1082953";
+        smartWebView.loadUrl(url);
     }
 
     /**

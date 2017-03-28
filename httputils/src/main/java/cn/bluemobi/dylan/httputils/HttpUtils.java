@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -316,9 +317,11 @@ public class HttpUtils {
                         }
                         newFormBody.addEncoded(name, value);
                     }
-                    String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
-                    newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
-                    requestBuilder.method(original.method(), newFormBody.build());
+                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className)) {
+                        String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
+                        newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
+                        requestBuilder.method(original.method(), newFormBody.build());
+                    }
                 }
 
                 Request request = requestBuilder.build();
@@ -516,7 +519,7 @@ public class HttpUtils {
                 });
 
         if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog,subscribe));
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe));
         }
         return subscribe;
     }

@@ -38,6 +38,7 @@
 
             <cn.bluemobi.dylan.fastdev.view.CycleViewPager
                 android:id="@+id/cv"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="320px"></cn.bluemobi.dylan.fastdev.view.CycleViewPager>
         </FrameLayout>
@@ -55,6 +56,7 @@
             android:layout_marginLeft="10px"
             android:layout_marginRight="10px"
             android:horizontalSpacing="10dp"
+            android:visibility="gone"
             android:numColumns="4"
             android:verticalSpacing="10dp"></cn.bluemobi.dylan.fastdev.view.MyGridView>
 
@@ -66,5 +68,9 @@
         <com.dylanfastdev.MyView
             android:layout_width="200px"
             android:layout_height="200px" />
+        <cn.bluemobi.dylan.smartwebview.SmartWebView
+            android:id="@+id/smartWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></cn.bluemobi.dylan.smartwebview.SmartWebView>
     </LinearLayout>
 </ScrollView>
