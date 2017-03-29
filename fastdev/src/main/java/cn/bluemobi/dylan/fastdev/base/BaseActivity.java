@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -599,6 +600,21 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
     @Override
     public void netOnOtherStatus(int status, String msg) {
 
+    }
+
+    @Override
+    public void netOnSuccessMetadata(String json, int requestCode) {
+
+    }
+
+    @Override
+    public void netOnSuccessMetadata(String json) {
+
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
     }
 
     @Override

@@ -108,6 +108,10 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
                 }
             }
         } catch (Exception e) {
+            httpResponse.netOnSuccessMetadata(result);
+            if (requestCode != -1) {
+                httpResponse.netOnSuccessMetadata(result, requestCode);
+            }
             Logger.d(EncodeUtils.ascii2native(result));
             Tools.show(context, "服务器异常！", Toast.LENGTH_SHORT);
             e.printStackTrace();

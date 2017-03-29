@@ -340,4 +340,14 @@ public abstract class BaseFragment extends Fragment implements HttpResponse {
     public void netOnFailure(int requestCode, Throwable ex) {
 
     }
+
+    @Override
+    public void netOnSuccessMetadata(String json, int requestCode) {
+
+    }
+
+    @Override
+    public void netOnSuccessMetadata(String json) {
+
+    }
 }

@@ -19,6 +19,16 @@ public  abstract class CommCallBack implements HttpResponse{
     }
 
     @Override
+    public void netOnSuccessMetadata(String json, int requestCode) {
+
+    }
+
+    @Override
+    public void netOnSuccessMetadata(String json) {
+
+    }
+
+    @Override
     public void netOnSuccess(Map<String, Object> data, int requestCode) {
 
     }
