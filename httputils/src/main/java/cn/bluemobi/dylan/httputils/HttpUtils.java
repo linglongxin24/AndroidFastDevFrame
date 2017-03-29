@@ -474,6 +474,7 @@ public class HttpUtils {
                         }
                         httpResponse.netOnFinish();
                         context = null;
+                        isShowLoadingDialog = true;
                     }
 
                     @Override
@@ -525,6 +526,7 @@ public class HttpUtils {
     }
 
     /*****************************************第二版封装 end*****************************************************/
+
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
         final String network_error = useEnglishLanguage ? "Network  error" : "网络繁忙";
