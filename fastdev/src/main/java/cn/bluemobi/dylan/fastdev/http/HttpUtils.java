@@ -54,14 +54,25 @@ public class HttpUtils implements HttpRequest {
      * @param successCode      请求接口成功的响应码
      * @param globalParameters 配置请求接口的全局参数
      */
-    public void init(String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
+    public void init(String code, String data, String msg, int successCode, Map<String, String> globalParameters,MessageModel showMessageModel) {
         this.code = code;
         this.data = data;
         this.msg = msg;
         this.successCode = successCode;
         this.globalParameters = globalParameters;
+        this.showMessageModel = showMessageModel;
     }
+    /**
+     * 默认在其他状态的时候给用户提醒响应的错误信息
+     */
+    private static MessageModel showMessageModel = MessageModel.OTHER_STATUS;
 
+    /**
+     * 用户提醒消息的模式
+     */
+    public enum MessageModel {
+        All, OTHER_STATUS, NO
+    }
     public String getCode() {
         return code;
     }
@@ -167,7 +178,7 @@ public class HttpUtils implements HttpRequest {
         }
 
         Logger.d(requestParamstr);
-        HttpCallBack httpCallBack = new HttpCallBack(context, requestCode, httpResponse, loadingDialog);
+        HttpCallBack httpCallBack = new HttpCallBack(context, requestCode, httpResponse, loadingDialog,showMessageModel);
         Callback.Cancelable cancelable = x.http().post(requestParams, httpCallBack);
         return cancelable;
     }

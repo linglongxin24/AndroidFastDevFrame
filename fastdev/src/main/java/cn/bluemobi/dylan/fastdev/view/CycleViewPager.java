@@ -66,6 +66,7 @@ public class CycleViewPager extends FrameLayout
     private ViewPagerAdapter mAdapter;
 
     private ImageCycleViewListener mImageCycleViewListener;
+    private ImageCycleViewSelectListener imageCycleViewSelectListener;
 
     private List<String> infos;//数据集合
 
@@ -282,8 +283,8 @@ public class CycleViewPager extends FrameLayout
      * @param selectedPosition 默认指示器位置
      */
     private void setIndicator(int selectedPosition) {
-        if (mImageCycleViewListener != null) {
-            mImageCycleViewListener.onItemSelect(selectedPosition);
+        if (imageCycleViewSelectListener != null) {
+            imageCycleViewSelectListener.onItemSelect(selectedPosition);
         }
 //        setText(mTitle, infos.get(selectedPosition).getTitle());
         try {
@@ -463,6 +464,10 @@ public class CycleViewPager extends FrameLayout
         this.delay = delay;
     }
 
+    private void setImageCycleViewSelectListener(ImageCycleViewSelectListener imageCycleViewSelectListener) {
+        this.imageCycleViewSelectListener = imageCycleViewSelectListener;
+    }
+
     /**
      * 轮播控件的监听事件
      *
@@ -479,6 +484,14 @@ public class CycleViewPager extends FrameLayout
          */
         void onImageClick(String url, int position, View imageView);
 
+    }
+
+    /**
+     * 轮播选中事件
+     *
+     * @param
+     */
+    public interface ImageCycleViewSelectListener {
         /**
          * 轮播选中事件
          *

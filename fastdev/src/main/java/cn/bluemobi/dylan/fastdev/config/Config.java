@@ -75,8 +75,8 @@ public class Config {
      * @param successCode      请求接口成功的响应码
      * @param globalParameters 配置请求接口的全局参数
      */
-    public static void initHttp(String code, String data, String msg, int successCode, Map<String, String> globalParameters) {
-        HttpUtils.getInstance().init(code, data, msg, successCode, globalParameters);
+    public static void initHttp(String code, String data, String msg, int successCode, Map<String, String> globalParameters, HttpUtils.MessageModel showMessageModel) {
+        HttpUtils.getInstance().init(code, data, msg, successCode, globalParameters,showMessageModel);
     }
 
 

@@ -34,18 +34,23 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
     private HttpResponse httpResponse;
     private int requestCode = -1;
     private LoadingDialog loadingDialog;
-
+    /**
+     * 默认在其他状态的时候给用户提醒响应的错误信息
+     */
+    private static HttpUtils.MessageModel showMessageModel = HttpUtils.MessageModel.OTHER_STATUS;
     public HttpCallBack(Context context, int requestCode, HttpResponse httpResponse) {
         this.context = context;
         this.requestCode = requestCode;
         this.httpResponse = httpResponse;
     }
 
-    public HttpCallBack(Context context, int requestCode, HttpResponse httpResponse, LoadingDialog loadingDialog) {
+    public HttpCallBack(Context context, int requestCode, HttpResponse httpResponse, LoadingDialog loadingDialog,HttpUtils.MessageModel showMessageModel) {
         this.context = context;
         this.requestCode = requestCode;
         this.httpResponse = httpResponse;
         this.loadingDialog = loadingDialog;
+        this.loadingDialog = loadingDialog;
+        this.showMessageModel = showMessageModel;
     }
 
     @Override
@@ -78,7 +83,13 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
         try {
             jsonBean = jsonParse(result);
             int code = Integer.parseInt(Tools.getValue(jsonBean, HttpUtils.getInstance().getCode()));
+            String msg = Tools.getValue(jsonBean, HttpUtils.getInstance().getMsg());
 
+            if (showMessageModel == HttpUtils.MessageModel.All) {
+                if (msg != null && !msg.isEmpty()) {
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                }
+            }
             if (code == HttpUtils.getInstance().getSuccessCode()) {
                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(HttpUtils.getInstance().getData());
                 httpResponse.netOnSuccess(data);
@@ -86,9 +97,10 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
                     httpResponse.netOnSuccess(data, requestCode);
                 }
             } else {
-                String msg = Tools.getValue(jsonBean, HttpUtils.getInstance().getMsg());
-                if (msg != null && !msg.isEmpty()) {
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                if (showMessageModel == HttpUtils.MessageModel.OTHER_STATUS) {
+                    if (msg != null && !msg.isEmpty()) {
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 httpResponse.netOnOtherStatus(code, msg);
                 if (requestCode != -1) {

@@ -175,7 +175,7 @@ public class HttpUtils {
     /**
      * 默认在其他状态的时候给用户提醒响应的错误信息
      */
-    private static MessageModel showMessageModel = MessageModel.NO;
+    private static MessageModel showMessageModel = MessageModel.OTHER_STATUS;
 
     /**
      * 设置给用户提醒消息的模式
