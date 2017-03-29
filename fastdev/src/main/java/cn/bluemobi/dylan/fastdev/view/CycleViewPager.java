@@ -464,7 +464,7 @@ public class CycleViewPager extends FrameLayout
         this.delay = delay;
     }
 
-    private void setImageCycleViewSelectListener(ImageCycleViewSelectListener imageCycleViewSelectListener) {
+    public void setImageCycleViewSelectListener(ImageCycleViewSelectListener imageCycleViewSelectListener) {
         this.imageCycleViewSelectListener = imageCycleViewSelectListener;
     }
 
