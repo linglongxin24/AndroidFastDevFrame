@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import cn.bluemobi.dylan.photoview.library.PhotoViewAttacher;
+
 
 public class ImageDetailFragment extends Fragment {
     private String mImageUrl;
@@ -44,7 +44,7 @@ public class ImageDetailFragment extends Fragment {
         mImageView = (ImageView) v.findViewById(R.id.image);
         mAttacher = new PhotoViewAttacher(mImageView);
 
-        mAttacher.setOnPhotoTapListener(new OnPhotoTapListener() {
+        mAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
 
             @Override
             public void onPhotoTap(View arg0, float arg1, float arg2) {
