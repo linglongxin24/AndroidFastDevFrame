@@ -37,8 +37,8 @@ public class Http {
      * @return
      */
     public <T> Http init(Class<T> apiService, String baseUrl, String code, String data, String msg, int successCode) {
-        RetrofitManager.getInstance().initRetrofit(apiService, baseUrl);
-        JsonParse.getJsonParsing().initJson(code, data, msg, successCode);
+        RetrofitManager.getRetrofitManager().initRetrofit(apiService, baseUrl);
+        JsonParse.getJsonParse().initJson(code, data, msg, successCode);
         return http;
     }
 
@@ -69,8 +69,17 @@ public class Http {
      * @param debugMode
      */
     public Http setDebugMode(boolean debugMode) {
-        RetrofitManager.getInstance().setDebugMode(debugMode);
+        RetrofitManager.getRetrofitManager().setDebugMode(debugMode);
         return http;
+    }
+
+    /**
+     * 获取ApiService
+     *
+     * @return
+     */
+    public static <T> T getApiService(Class<T> apiService) {
+        return RetrofitManager.getRetrofitManager().getApiService(apiService);
     }
 
     /**
@@ -79,7 +88,7 @@ public class Http {
      * @param context
      * @return
      */
-    public HttpRequest with(Context context) {
+    public static HttpRequest with(Context context) {
         HttpRequest httpRequest = new HttpRequest(context);
         return httpRequest;
     }

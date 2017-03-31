@@ -30,33 +30,26 @@ public class LoadingDialog {
 
     public LoadingDialog(Context context) {
         this.context = context;
+        dialog = new Dialog(context, R.style.loadingDialogStyle);
+        /**设置对话框背景透明*/
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
     }
 
     public Dialog show(String message) {
         View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
         tv_text = (TextView) view.findViewById(R.id.tv_text);
         tv_text.setText(message);
-        if (dialog == null) {
-            dialog = new Dialog(context, R.style.loadingDialogStyle);
-            /**设置对话框背景透明*/
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setContentView(view);
-            dialog.setCanceledOnTouchOutside(false);
-        }
-        if(onKeyListener!=null){
-            dialog.setOnKeyListener(onKeyListener);
-        }
-
+        dialog.setContentView(view);
         if (!dialog.isShowing()) {
             dialog.show();
         }
         return dialog;
     }
 
-    private DialogInterface.OnKeyListener onKeyListener;
 
     public void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
-        this.onKeyListener = onKeyListener;
+        dialog.setOnKeyListener(onKeyListener);
     }
 
     public void setMessage(String message) {

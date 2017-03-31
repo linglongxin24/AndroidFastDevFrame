@@ -15,20 +15,20 @@ import java.util.Set;
  */
 
 public class JsonParse {
-    private static volatile JsonParse jsonParsing = null;
+    private static volatile JsonParse jsonParse = null;
 
     private JsonParse() {
     }
 
     public static JsonParse getJsonParse() {
-        if (jsonParsing == null) {
+        if (jsonParse == null) {
             synchronized (Http.class) {
-                if (jsonParsing == null) {
-                    jsonParsing = new JsonParse();
+                if (jsonParse == null) {
+                    jsonParse = new JsonParse();
                 }
             }
         }
-        return jsonParsing;
+        return jsonParse;
     }
 
     /**
@@ -48,8 +48,24 @@ public class JsonParse {
      */
     private int successCode = 1;
 
-    public static JsonParse getJsonParsing() {
-        return jsonParsing;
+    public JsonParse setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public JsonParse setMsg(String msg) {
+        this.msg = msg;
+        return this;
+    }
+
+    public JsonParse setData(String data) {
+        this.data = data;
+        return this;
+    }
+
+    public JsonParse setSuccessCode(int successCode) {
+        this.successCode = successCode;
+        return this;
     }
 
     public String getCode() {
@@ -78,11 +94,12 @@ public class JsonParse {
      * @return 本类对象
      */
     public JsonParse initJson(String code, String data, String msg, int successCode) {
-        return jsonParsing;
+        setCode(code).setData(data).setMsg(msg).setSuccessCode(successCode);
+        return jsonParse;
     }
 
 
-    public  ArrayMap<String, Object> jsonParse(String json) throws JSONException {
+    public ArrayMap<String, Object> jsonParse(String json) throws JSONException {
         ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
         }.getType());
         ArrayMap<String, Object> returnData = new ArrayMap<String, Object>();
@@ -115,7 +132,7 @@ public class JsonParse {
             }
             returnData.put(dataStrKey, rrData);
         }
-        returnData.put(code, getValue(arrayMap,code));
+        returnData.put(code, getValue(arrayMap, code));
         returnData.put(msg, getValue(arrayMap, msg));
         return returnData;
     }

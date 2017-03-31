@@ -5,7 +5,10 @@ package cn.bluemobi.dylan.httputils.http;
  */
 
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.KeyEvent;
+
+import java.util.logging.Logger;
 
 import cn.bluemobi.dylan.httputils.LoadingDialog;
 import rx.Subscription;
@@ -26,8 +29,11 @@ public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
 
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+        Log.d("onKey","onKey");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (subscribe != null && subscribe.isUnsubscribed()) {
+            Log.d("onKey","keyCode == KeyEvent.KEYCODE_BACK");
+            if (subscribe != null && !subscribe.isUnsubscribed()) {
+                Log.d("onKey","subscribe != null && subscribe.isUnsubscribed()");
                 subscribe.unsubscribe();
             }
             if (this.dialog != null

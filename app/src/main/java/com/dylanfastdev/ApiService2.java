@@ -10,16 +10,18 @@ import rx.Observable;
  * Created by yuandl on 2016-12-27.
  */
 
-public interface ApiService {
-//    String baseUrl = "https://api.douban.com/v2/movie/";
-//    @POST("top250")
-//    Observable<Map<String, Object>> getTopMove(@Query("start") int start, @Query("count") int count);
+public interface ApiService2 {
+    String BASE_URL = "http://www.mmloveyou.com/app/";
 
-    String baseUrl = "http://175.102.24.27:8912/api/";
+    /**
+     * 1.获取首页数据
+     */
+    @POST("index.php")
+    Observable<ResponseBody> getHomeData();
 
-    String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
-
-    @FormUrlEncoded
-    @POST(" ")
-    Observable<ResponseBody> getTopMove(@Field("app") String app, @Field("class") String className);
+    /**
+     * 2.获取分类数据
+     */
+    @POST("category.php_src.php")
+    Observable<ResponseBody> getClassifyData();
 }

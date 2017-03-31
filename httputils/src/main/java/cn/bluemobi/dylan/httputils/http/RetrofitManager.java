@@ -50,7 +50,7 @@ public class RetrofitManager {
     private RetrofitManager() {
     }
 
-    public static RetrofitManager getInstance() {
+    public static RetrofitManager getRetrofitManager() {
         if (singleton == null) {
             synchronized (RetrofitManager.class) {
                 if (singleton == null) {
@@ -119,7 +119,6 @@ public class RetrofitManager {
 
         });
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(3, TimeUnit.MINUTES)
                 .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
@@ -161,7 +160,7 @@ public class RetrofitManager {
      * @param <T>
      * @return
      */
-    public static <T> T getApiService(Class<T> apiService) {
+    public <T> T getApiService(Class<T> apiService) {
         return retrofit.create(apiService);
     }
 
@@ -171,7 +170,7 @@ public class RetrofitManager {
      * @param <T>
      * @return
      */
-    public static <T> T getApiService() {
+    public <T> T getApiService() {
         return (T) apiService;
     }
 

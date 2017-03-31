@@ -38,6 +38,7 @@ import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
 import cn.bluemobi.dylan.httputils.http.Http;
+import cn.bluemobi.dylan.httputils.http.MessageManager;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -67,20 +68,47 @@ public class MainActivity extends BasePhotoActivity {
      * retrofit测试
      */
     private void testHttp() {
+//        Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//                });
 
-        HttpUtils httpUtils = HttpUtils.getInstance();
-        httpUtils.init(ApiService.baseUrl, "status", "data", "msg", 0, null);
-        HttpUtils.getInstance()
-                .with(context)
-                .setObservable(
-                        HttpUtils.getApiService(ApiService.class)
-                                .getTopMove("Advert", "GetAdvert"))
+
+        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
+
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService2.class).getHomeData())
                 .setDataListener(new HttpCallBack() {
                     @Override
                     public void netOnSuccess(Map<String, Object> data) {
-
                     }
                 });
+
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService2.class).getClassifyData())
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+                    }
+                });
+//        HttpUtils httpUtils = HttpUtils.getInstance();
+//        httpUtils.init(ApiService.baseUrl, "status", "data", "msg", 0, null);
+//        HttpUtils.getInstance()
+//                .with(context)
+//                .setObservable(
+//                        HttpUtils.getApiService(ApiService.class)
+//                                .getTopMove("Advert", "GetAdvert"))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//                });
         String s = "Advert" + "GetAdvert" + ApiService.secret;
 //        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
         String sign = MD5Utils.md5(s);
@@ -192,7 +220,7 @@ public class MainActivity extends BasePhotoActivity {
 
     private void setMyRatingBar() {
         setContentView(R.layout.ac_ratingbar);
-        smartWebView = (SmartWebView)findViewById(R.id.smartWebView);
+        smartWebView = (SmartWebView) findViewById(R.id.smartWebView);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.rb);
         ratingBar.setClickable(true);//设置可否点击
         ratingBar.setStar(2.5f);//设置显示的星星个数
@@ -344,8 +372,8 @@ public class MainActivity extends BasePhotoActivity {
 
     @Override
     public void initData() {
-        RequestParams requestParams = new RequestParams("http://10.58.187.40:8080/WebDemo/login?userName=zhangsan&passWord=45678");
-        ajax(requestParams);
+//        RequestParams requestParams = new RequestParams("http://10.58.187.40:8080/WebDemo/login?userName=zhangsan&passWord=45678");
+//        ajax(requestParams);
     }
 
     @Override

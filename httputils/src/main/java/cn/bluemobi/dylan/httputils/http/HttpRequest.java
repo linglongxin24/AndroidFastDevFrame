@@ -38,6 +38,7 @@ public class HttpRequest {
      * 接口监听者
      */
     private Observable<ResponseBody> observable;
+    private LoadingDialog loadingDialog = null;
 
 
     /**
@@ -90,7 +91,6 @@ public class HttpRequest {
             return null;
         }
 
-        LoadingDialog loadingDialog = null;
         if (isShowLoadingDialog) {
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialog(context.get());
@@ -98,16 +98,14 @@ public class HttpRequest {
         } else {
             loadingDialog = null;
         }
-
-        final LoadingDialog finalLoadingDialog = loadingDialog;
         Subscription subscribe = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
 
                     @Override
                     public void onStart() {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.show("");
+                        if (loadingDialog != null) {
+                            loadingDialog.show("");
                         }
                         if (httpResponse != null) {
                             httpResponse.netOnStart();
@@ -116,8 +114,8 @@ public class HttpRequest {
 
                     @Override
                     public void onCompleted() {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.dismiss();
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
                         }
                         if (httpResponse != null) {
                             httpResponse.netOnFinish();
@@ -129,7 +127,6 @@ public class HttpRequest {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
-
                         if (httpResponse != null) {
                             httpResponse.netOnFailure(e);
                         }
