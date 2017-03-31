@@ -32,6 +32,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import cn.bluemobi.dylan.httputils.http.DialogOnKeyListener;
 import cn.bluemobi.dylan.httputils.ssl.Tls12SocketFactory;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
@@ -375,155 +376,6 @@ public class HttpUtils {
     public static Subscription post(final Context context, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         return post(context, true, mapObservable, httpResponse);
     }
-/*****************************************第二版封装*****************************************************/
-    /**
-     * 要显示的对话框的上下文
-     */
-    private Context context;
-
-    /**
-     * 默认显示家在进度对话框
-     */
-    private boolean isShowLoadingDialog = true;
-    /**
-     * 接口对口
-     */
-    private Observable<ResponseBody> observable;
-
-    /**
-     * 【第一步】设置上下文
-     *
-     * @param context 上下文
-     * @return 本类对象
-     */
-    public HttpUtils with(Context context) {
-        this.context = context;
-        return this;
-    }
-
-    /**
-     * 【第二步】设置隐藏加载对话框（可忽略此步骤，默认显示）
-     *
-     * @return 本类对象
-     */
-    public HttpUtils hideLoadingDialog() {
-        isShowLoadingDialog = false;
-        return this;
-    }
-
-    /**
-     * 【第三步】设置访问的几口接口
-     *
-     * @param observable 接口对象
-     * @return 本类对象
-     */
-    public HttpUtils setObservable(Observable<ResponseBody> observable) {
-        this.observable = observable;
-        return this;
-    }
-
-    /**
-     * 【第四步】设置访问接口的返回监听
-     *
-     * @param httpResponse 请求相应监听
-     * @return 本类对象
-     */
-    public Subscription setDataListener(final HttpResponse httpResponse) {
-        String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
-        final String network_error = useEnglishLanguage ? "Network  error" : "网络繁忙";
-        if (context == null) {
-            throw new RuntimeException("请设置上下文对象--调用【with(Context context)】方法设置");
-        }
-        if (!NetworkUtil.isNetworkAvailable(context)) {
-            Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
-            httpResponse.netOnFailure(new Exception(network_unusual));
-            httpResponse.netOnFinish();
-            return null;
-        }
-
-        LoadingDialog loadingDialog = null;
-        if (isShowLoadingDialog) {
-            if (loadingDialog == null) {
-                loadingDialog = new LoadingDialog(context);
-            }
-        } else {
-            loadingDialog = null;
-        }
-        if (observable == null) {
-            throw new RuntimeException("请设置要调用的接口对象--调用【setObservable(Observable<ResponseBody> observable)】方法设置");
-        }
-        final LoadingDialog finalLoadingDialog = loadingDialog;
-        Subscription subscribe = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-
-                    @Override
-                    public void onStart() {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.show("");
-                        }
-                        httpResponse.netOnStart();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        if (finalLoadingDialog != null) {
-                            finalLoadingDialog.dismiss();
-                        }
-                        httpResponse.netOnFinish();
-                        context = null;
-                        isShowLoadingDialog = true;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
-                        httpResponse.netOnFailure(e);
-                        onCompleted();
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody result) {
-                        ArrayMap<String, Object> jsonBean;
-                        try {
-                            jsonBean = jsonParse(result.string());
-                            String msg = getValue(jsonBean, HttpUtils.getInstance().getMsg());
-                            int code = Integer.parseInt(getValue(jsonBean, HttpUtils.getInstance().getCode()));
-
-                            if (showMessageModel == MessageModel.All) {
-                                if (msg != null && !msg.isEmpty()) {
-                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            if (code == HttpUtils.getInstance().getSuccessCode()) {
-                                Map<String, Object> data = (Map<String, Object>) jsonBean.get(HttpUtils.getInstance().getData());
-                                httpResponse.netOnSuccess(data);
-                            } else {
-                                if (showMessageModel == MessageModel.OTHER_STATUS) {
-                                    if (msg != null && !msg.isEmpty()) {
-                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                httpResponse.netOnOtherStatus(code, msg);
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
-                            httpResponse.netOnFailure(e);
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe));
-        }
-        return subscribe;
-    }
-
-    /*****************************************第二版封装 end*****************************************************/
 
     public static Subscription post(final Context context, final boolean isShowLoadingDialog, Observable<ResponseBody> mapObservable, final HttpResponse httpResponse) {
         String network_unusual = useEnglishLanguage ? "Network  unusual" : "网络不可用";
@@ -608,6 +460,7 @@ public class HttpUtils {
                         }
                     }
                 });
+
         return subscribe;
     }
 
@@ -703,34 +556,5 @@ public class HttpUtils {
 
     }
 
-    /**
-     * Dialog 监听返回事件
-     *
-     * @author lizhiting
-     */
-    public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
-        private LoadingDialog dialog;
-        private Subscription subscribe;
 
-        public DialogOnKeyListener(LoadingDialog dialog, Subscription subscribe) {
-            this.dialog = dialog;
-            this.subscribe = subscribe;
-        }
-
-        @Override
-        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (subscribe != null && subscribe.isUnsubscribed()) {
-                    subscribe.unsubscribe();
-                }
-                if (this.dialog != null
-                        && this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-    }
 }

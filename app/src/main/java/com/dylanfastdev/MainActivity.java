@@ -37,6 +37,7 @@ import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
+import cn.bluemobi.dylan.httputils.http.Http;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 

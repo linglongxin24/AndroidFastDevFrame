@@ -1,0 +1,176 @@
+package cn.bluemobi.dylan.httputils.http;
+
+import android.support.v4.util.ArrayMap;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.TypeReference;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Created by yuandl on 2017-03-31.
+ */
+
+public class JsonParse {
+    private static volatile JsonParse jsonParsing = null;
+
+    private JsonParse() {
+    }
+
+    public static JsonParse getJsonParse() {
+        if (jsonParsing == null) {
+            synchronized (Http.class) {
+                if (jsonParsing == null) {
+                    jsonParsing = new JsonParse();
+                }
+            }
+        }
+        return jsonParsing;
+    }
+
+    /**
+     * 请求接口返回码
+     */
+    private String code = "code";
+    /**
+     * 请求接口返回信息
+     */
+    private String msg = "msg";
+    /**
+     * 请求接口返回数据
+     */
+    private String data = "data";
+    /**
+     * 请求接口成功的响应码
+     */
+    private int successCode = 1;
+
+    public static JsonParse getJsonParsing() {
+        return jsonParsing;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public int getSuccessCode() {
+        return successCode;
+    }
+
+    /**
+     * 初始化json解析
+     *
+     * @param code        状态码字段
+     * @param data        数据字段
+     * @param msg         消息字段
+     * @param successCode 成功的标识值
+     * @return 本类对象
+     */
+    public JsonParse initJson(String code, String data, String msg, int successCode) {
+        return jsonParsing;
+    }
+
+
+    public  ArrayMap<String, Object> jsonParse(String json) throws JSONException {
+        ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
+        }.getType());
+        ArrayMap<String, Object> returnData = new ArrayMap<String, Object>();
+        ArrayMap<String, Object> rrData = null;
+        String dataStrKey = data;
+        if (arrayMap.containsKey(dataStrKey)) {
+            Object data = arrayMap.get(dataStrKey);
+            if (data instanceof String) {
+                rrData = new ArrayMap<String, Object>();
+                rrData.put(dataStrKey, data.toString());
+                returnData.put(dataStrKey, rrData);
+            } else if (data instanceof JSONArray) {
+                rrData = new ArrayMap<String, Object>();
+                rrData.put(dataStrKey, data);
+                returnData.put(dataStrKey, rrData);
+            } else if (data instanceof com.alibaba.fastjson.JSONObject) {
+                rrData = JSON.parseObject(data.toString(), new TypeReference<ArrayMap<String, Object>>() {
+                }.getType());
+                returnData.put(dataStrKey, rrData);
+            } else {
+                returnData.put(dataStrKey, new ArrayMap<>());
+            }
+        } else {
+            rrData = new ArrayMap<>();
+            Set<String> keys2 = arrayMap.keySet();
+            for (String s : keys2) {
+                if (!s.equals(dataStrKey)) {
+                    rrData.put(s, arrayMap.get(s));
+                }
+            }
+            returnData.put(dataStrKey, rrData);
+        }
+        returnData.put(code, getValue(arrayMap,code));
+        returnData.put(msg, getValue(arrayMap, msg));
+        return returnData;
+    }
+
+    /**
+     * 获取map中的值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的值
+     */
+    public static String getValue(Map<String, Object> map, String key) {
+        if (map == null || map.size() == 0) {
+            return "";
+        } else if (isNull(key)) {
+            return "";
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data instanceof String) {
+                if (isNull2((String) map.get(key))) {
+                    return "";
+                } else {
+                    return map.get(key).toString();
+                }
+            } else {
+                return String.valueOf(map.get(key));
+            }
+
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * 判断 一个字段的值否为空
+     *
+     * @param s
+     * @return
+     * @author Michael.Zhang 2013-9-7 下午4:39:00
+     */
+    public static boolean isNull(String s) {
+        return null == s || s.equals("") || s.equalsIgnoreCase("null");
+
+    }
+
+    /**
+     * 判断 一个字段的值否为空
+     *
+     * @param s
+     * @return
+     * @author Michael.Zhang 2013-9-7 下午4:39:00
+     */
+    public static boolean isNull2(String s) {
+        return null == s || s.equals("");
+
+    }
+
+}

@@ -76,7 +76,7 @@ public class RetrofitManager {
     }
 
 
-    public <T> void initRetrofit(Class<T> clazz, String baseUrl) {
+    public <T> void initRetrofit(Class<T> apiService, String baseUrl) {
         mOkHttpClient = new OkHttpClient();
         Interceptor commParamsIntInterceptor = new Interceptor() {
 
@@ -151,18 +151,18 @@ public class RetrofitManager {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(mOkHttpClient)
                 .build();
-        apiService = retrofit.create(clazz);
+        this.apiService = retrofit.create(apiService);
     }
 
     /**
      * 获取ApiService
      *
-     * @param clazz
+     * @param apiService
      * @param <T>
      * @return
      */
-    public static <T> T getApiService(Class<T> clazz) {
-        return retrofit.create(clazz);
+    public static <T> T getApiService(Class<T> apiService) {
+        return retrofit.create(apiService);
     }
 
     /**
