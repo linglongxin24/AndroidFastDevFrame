@@ -229,7 +229,7 @@ public class SmartWebView extends RelativeLayout {
         setScale(wv);
 //        setDefaultZoom();
 //        //让缩放显示的最小值为起始
-//        wv.setInitialScale(3);
+        wv.setInitialScale(3);
         // 设置支持缩放
         // 设置缩放工具的显示
         webSettings.setBuiltInZoomControls(false);

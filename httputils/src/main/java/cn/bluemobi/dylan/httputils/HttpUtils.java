@@ -1,6 +1,5 @@
 package cn.bluemobi.dylan.httputils;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.util.ArrayMap;
@@ -361,7 +360,6 @@ public class HttpUtils {
                 builder.sslSocketFactory(factory);
             }
         }
-
         mOkHttpClient = builder.build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
