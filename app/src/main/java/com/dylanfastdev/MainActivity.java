@@ -80,7 +80,6 @@ public class MainActivity extends BasePhotoActivity {
 
 
         Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
-
         Http.with(context)
                 .setObservable(Http.getApiService(ApiService2.class).getHomeData())
                 .setDataListener(new HttpCallBack() {
@@ -89,13 +88,13 @@ public class MainActivity extends BasePhotoActivity {
                     }
                 });
 
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService2.class).getClassifyData())
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-                    }
-                });
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService2.class).getClassifyData())
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//                    }
+//                });
 //        HttpUtils httpUtils = HttpUtils.getInstance();
 //        httpUtils.init(ApiService.baseUrl, "status", "data", "msg", 0, null);
 //        HttpUtils.getInstance()

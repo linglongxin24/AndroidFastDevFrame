@@ -1,8 +1,10 @@
 package cn.bluemobi.dylan.httputils.http;
 
-import android.provider.SyncStateContract;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -40,7 +43,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 public class RetrofitManager {
 
-    String TAG = "HttpUtils";
+    String TAG = "Http";
     private static final int TIMEOUT = 15;
     private volatile static RetrofitManager singleton;
     private OkHttpClient mOkHttpClient;
@@ -78,8 +81,11 @@ public class RetrofitManager {
 
     public <T> void initRetrofit(Class<T> apiService, String baseUrl) {
         mOkHttpClient = new OkHttpClient();
-        Interceptor commParamsIntInterceptor = new Interceptor() {
 
+        /**
+         * 公共参数拦截器
+         */
+        Interceptor commParamsIntInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
@@ -106,9 +112,79 @@ public class RetrofitManager {
                         requestBuilder.method(original.method(), newFormBody.build());
                     }
                 }
-
                 Request request = requestBuilder.build();
                 return chain.proceed(request);
+            }
+        };
+        /**
+         * http请求日志拦截器
+         */
+        Interceptor httpInterceptor = new Interceptor() {
+
+            private StringBuilder mMessage = new StringBuilder();
+
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                mMessage.setLength(0);
+                Request original = chain.request();
+                mMessage.append("请求地址：" + original.url());
+                mMessage.append("\n");
+                mMessage.append("请求体大小：" + original.body().contentLength());
+                mMessage.append("\n");
+                mMessage.append("请求参数：");
+                Request.Builder requestBuilder = original.newBuilder();
+                //请求体定制：统一添加sign参数
+                if (original.body() instanceof FormBody) {
+                    FormBody.Builder newFormBody = new FormBody.Builder();
+                    FormBody oidFormBody = (FormBody) original.body();
+                    for (int i = 0; i < oidFormBody.size(); i++) {
+                        String name = oidFormBody.encodedName(i);
+                        String value = oidFormBody.encodedValue(i);
+                        newFormBody.addEncoded(name, value);
+                        mMessage.append(mMessage.indexOf("=") != -1 ? "&" : "");
+                        mMessage.append(name + "=" + value);
+                    }
+                }
+                Logger.d(mMessage.toString());
+
+                Request request = requestBuilder.build();
+                Response response = chain.proceed(request);
+
+                mMessage.setLength(0);
+                mMessage.append("响应地址：" + response.request().url());
+                mMessage.append("\n");
+
+                mMessage.append("响应参数：");
+                if (response.request().body() instanceof FormBody) {
+                    FormBody oidFormBody = (FormBody) response.request().body();
+                    for (int i = 0; i < oidFormBody.size(); i++) {
+                        String name = oidFormBody.encodedName(i);
+                        String value = oidFormBody.encodedValue(i);
+                        mMessage.append(mMessage.indexOf("=") != -1 ? "&" : "");
+                        mMessage.append(name + "=" + value);
+                    }
+                }
+                mMessage.append("\n");
+
+                mMessage.append("响应耗时：" + formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
+                mMessage.append("\n");
+
+                String content = response.body().string();
+                okhttp3.MediaType mediaType = response.body().contentType();
+                Response responseNew = response.newBuilder()
+                        .body(ResponseBody.create(mediaType, content))
+                        .build();
+                mMessage.append("响应大小：" + convertFileSize(responseNew.body().contentLength()));
+                mMessage.append("\n");
+
+                mMessage.append("响应数据：");
+                mMessage.append("\n");
+
+                mMessage.append("" + JsonParse.formatJson(EncodeUtils.ascii2native(content)));
+
+                Logger.d(mMessage.toString());
+
+                return responseNew;
             }
         };
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -124,10 +200,9 @@ public class RetrofitManager {
                 .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
         /**添加公共参数拦截器**/
         builder.addInterceptor(commParamsIntInterceptor);
-
         if (debugMode) {
             /**添加打印日志拦截器**/
-            builder.addInterceptor(logInterceptor);
+            builder.addInterceptor(httpInterceptor);
         }
         /**设置证书**/
         if (overlockCard) {
@@ -274,4 +349,41 @@ public class RetrofitManager {
         return null;
 
     }
+
+    public static String convertFileSize(long size) {
+        long kb = 1024;
+        long mb = kb * 1024;
+        long gb = mb * 1024;
+
+        if (size >= gb) {
+            return String.format("%.1f GB", (float) size / gb);
+        } else if (size >= mb) {
+            float f = (float) size / mb;
+            return String.format(f > 100 ? "%.0f MB" : "%.1f MB", f);
+        } else if (size >= kb) {
+            float f = (float) size / kb;
+            return String.format(f > 100 ? "%.0f KB" : "%.1f KB", f);
+        } else
+            return String.format("%d B", size);
+    }
+
+    /**
+     * @param mss 要转换的毫秒数
+     * @return 该毫秒数转换为 * days * hours * minutes * seconds 后的格式
+     * @author fy.zhang
+     */
+    public static String formatDuring(long mss) {
+        if (mss < 1000) {
+            return mss + "ms";
+        } else if (mss < 1000 * 60) {
+            return (mss % (1000 * 60)) / 1000 + "s";
+        } else {
+            return (mss % (1000 * 60 * 60)) / (1000 * 60) + "min";
+        }
+//        long minutes = (mss % (1000 * 60 * 60)) / (1000 * 60);
+//        long seconds = (mss % (1000 * 60)) / 1000;
+//        return minutes + " minutes "
+//                + seconds + " seconds ";
+    }
+
 }
