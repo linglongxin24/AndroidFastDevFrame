@@ -127,10 +127,10 @@ public class RetrofitManager {
             public Response intercept(Chain chain) throws IOException {
                 mMessage.setLength(0);
                 Request original = chain.request();
-                mMessage.append("请求地址：" + original.url());
+                mMessage.append("请求地址：");
+                mMessage.append(original.url());
                 mMessage.append("\n");
-                mMessage.append("请求体大小：" + original.body().contentLength());
-                mMessage.append("\n");
+
                 mMessage.append("请求参数：");
                 Request.Builder requestBuilder = original.newBuilder();
                 //请求体定制：统一添加sign参数
@@ -141,17 +141,25 @@ public class RetrofitManager {
                         String name = oidFormBody.encodedName(i);
                         String value = oidFormBody.encodedValue(i);
                         newFormBody.addEncoded(name, value);
-                        mMessage.append(mMessage.indexOf("=") != -1 ? "&" : "");
-                        mMessage.append(name + "=" + value);
+                        if (mMessage.indexOf("=") != -1) {
+                            mMessage.append("&");
+                        }
+                        mMessage.append(name);
+                        mMessage.append("=");
+                        mMessage.append(value);
                     }
                 }
+                mMessage.append("\n");
+                mMessage.append("请求体大小：");
+                mMessage.append(+original.body().contentLength());
                 Logger.d(mMessage.toString());
 
                 Request request = requestBuilder.build();
                 Response response = chain.proceed(request);
 
                 mMessage.setLength(0);
-                mMessage.append("响应地址：" + response.request().url());
+                mMessage.append("响应地址：");
+                mMessage.append(response.request().url());
                 mMessage.append("\n");
 
                 mMessage.append("响应参数：");
@@ -160,13 +168,18 @@ public class RetrofitManager {
                     for (int i = 0; i < oidFormBody.size(); i++) {
                         String name = oidFormBody.encodedName(i);
                         String value = oidFormBody.encodedValue(i);
-                        mMessage.append(mMessage.indexOf("=") != -1 ? "&" : "");
-                        mMessage.append(name + "=" + value);
+                        if (mMessage.indexOf("=") != -1) {
+                            mMessage.append("&");
+                        }
+                        mMessage.append(name);
+                        mMessage.append("=");
+                        mMessage.append(value);
                     }
                 }
                 mMessage.append("\n");
 
-                mMessage.append("响应耗时：" + formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
+                mMessage.append("响应耗时：");
+                mMessage.append(formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 mMessage.append("\n");
 
                 String content = response.body().string();
@@ -174,13 +187,14 @@ public class RetrofitManager {
                 Response responseNew = response.newBuilder()
                         .body(ResponseBody.create(mediaType, content))
                         .build();
-                mMessage.append("响应大小：" + convertFileSize(responseNew.body().contentLength()));
+                mMessage.append("响应大小：");
+                mMessage.append(convertFileSize(responseNew.body().contentLength()));
                 mMessage.append("\n");
 
                 mMessage.append("响应数据：");
                 mMessage.append("\n");
 
-                mMessage.append("" + JsonParse.formatJson(EncodeUtils.ascii2native(content)));
+                mMessage.append(JsonParse.formatJson(EncodeUtils.ascii2native(content)));
 
                 Logger.d(mMessage.toString());
 
