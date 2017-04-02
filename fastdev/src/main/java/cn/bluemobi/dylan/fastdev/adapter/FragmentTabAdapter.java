@@ -74,7 +74,7 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
      * @return
      */
     private FragmentTransaction obtainFragmentTransaction(int index) {
-        FragmentTransaction ft =fragmentManager
+        FragmentTransaction ft = fragmentManager
                 .beginTransaction();
 
         return ft;
@@ -99,7 +99,6 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Logger.d("tab=" + tab.getPosition());
         if (!isLogin) {
             // 如果设置了切换tab额外功能功能接口
             if (null != onRgsExtraCheckedChangedListener) {

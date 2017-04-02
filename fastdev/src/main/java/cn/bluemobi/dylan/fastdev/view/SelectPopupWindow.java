@@ -80,9 +80,16 @@ public class SelectPopupWindow extends PopupWindow {
             @Override
             public void onDismiss() {
                 if (outsideView != null) {
+                    outsideView.setEnabled(true);
                     outsideView.setClickable(true);
                     outsideView.setFocusable(true);
                     outsideView.setFocusableInTouchMode(true);
+                    outsideView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return false;
+                        }
+                    });
                 }
                 if (outsideFrameLayout != null) {
                     outsideFrameLayout.setForeground(new ColorDrawable(Color.TRANSPARENT));

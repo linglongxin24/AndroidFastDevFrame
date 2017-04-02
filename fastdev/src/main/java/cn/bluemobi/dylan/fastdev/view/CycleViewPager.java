@@ -69,6 +69,7 @@ public class CycleViewPager extends FrameLayout
     private ImageCycleViewSelectListener imageCycleViewSelectListener;
 
     private List<String> infos;//数据集合
+    private List<Integer> infos0;//数据集合
 
     private int mIndicatorSelected;//指示器图片，被选择状态
 
@@ -166,6 +167,10 @@ public class CycleViewPager extends FrameLayout
         setData(list, listener, 0);
     }
 
+    public void setDataResource(List<Integer> list, ImageCycleViewListener listener) {
+        setDataResource(list, listener, 0);
+    }
+
 
     /**
      * 初始化viewpager
@@ -244,6 +249,108 @@ public class CycleViewPager extends FrameLayout
     }
 
     /**
+     * 初始化viewpager
+     *
+     * @param list         要显示的数据
+     * @param showPosition 默认显示位置
+     */
+    public void setDataResource(List<Integer> list, ImageCycleViewListener listener, int showPosition) {
+
+        if (list == null || list.size() == 0) {
+            //没有数据时隐藏整个布局
+            this.setVisibility(View.GONE);
+            return;
+        }
+
+        mViews.clear();
+        infos0 = list;
+
+        if (isCycle) {
+            //添加轮播图View，数量为集合数+2
+            // 将最后一个View添加进来
+            mViews.add(getImageView(mContext, infos.get(infos.size() - 1)));
+            for (int i = 0; i < infos.size(); i++) {
+                mViews.add(getImageView(mContext, infos.get(i)));
+            }
+            // 将第一个View添加进来
+            mViews.add(getImageView(mContext, infos.get(0)));
+        } else {
+            //只添加对应数量的View
+            for (int i = 0; i < infos.size(); i++) {
+                mViews.add(getImageView(mContext, infos.get(i)));
+            }
+        }
+
+
+        if (mViews == null || mViews.size() == 0) {
+            //没有View时隐藏整个布局
+            this.setVisibility(View.GONE);
+            return;
+        }
+
+        mImageCycleViewListener = listener;
+
+        int ivSize = mViews.size();
+
+        // 设置指示器
+        mIndicators = new ImageView[ivSize];
+        if (isCycle)
+            mIndicators = new ImageView[ivSize - 2];
+        mIndicatorLayout.removeAllViews();
+        for (int i = 0; i < mIndicators.length; i++) {
+            mIndicators[i] = new ImageView(mContext);
+            mIndicators[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dotWidth, dotHeight);
+            lp.setMargins(10, 0, 10, 0);
+            mIndicators[i].setLayoutParams(lp);
+            mIndicatorLayout.addView(mIndicators[i]);
+        }
+
+        mAdapter = new ViewPagerAdapter();
+
+        // 默认指向第一项，下方viewPager.setCurrentItem将触发重新计算指示器指向
+        setIndicator(0);
+
+        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOnPageChangeListener(this);
+        mViewPager.setAdapter(mAdapter);
+        if (showPosition < 0 || showPosition >= mViews.size())
+            showPosition = 0;
+        if (isCycle) {
+            showPosition = showPosition + 1;
+        }
+        mViewPager.setCurrentItem(showPosition);
+
+        setWheel(isWheel());//设置轮播
+    }
+
+    /**
+     * 获取轮播图View
+     *
+     * @param context
+     * @param resourceId
+     */
+    private View getImageView(Context context, int resourceId) {
+        RelativeLayout rl = new RelativeLayout(context);
+        //添加一个ImageView，并加载图片
+        ImageView imageView = new ImageView(context);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setLayoutParams(layoutParams);
+
+        Glide.with(context).load(resourceId).into(imageView);
+
+        //在Imageview前添加一个半透明的黑色背景，防止文字和图片混在一起
+        ImageView backGround = new ImageView(context);
+        backGround.setLayoutParams(layoutParams);
+//        backGround.setBackgroundResource(R.color.cycle_image_bg);
+        rl.addView(imageView);
+        rl.addView(backGround);
+        return rl;
+    }
+ /**
      * 获取轮播图View
      *
      * @param context
@@ -263,10 +370,8 @@ public class CycleViewPager extends FrameLayout
             //使用Picasso来加载图片
             Glide.with(context).load(anInt).into(imageView);
         } catch (NumberFormatException e) {
-
             //使用Picasso来加载图片
             Glide.with(context).load(url).into(imageView);
-            e.printStackTrace();
         }
         //在Imageview前添加一个半透明的黑色背景，防止文字和图片混在一起
         ImageView backGround = new ImageView(context);
@@ -329,7 +434,6 @@ public class CycleViewPager extends FrameLayout
             View v = mViews.get(position);
             if (mImageCycleViewListener != null) {
                 v.setOnClickListener(new OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
                         mImageCycleViewListener.onImageClick(infos.get(mCurrentPosition - 1), mCurrentPosition - 1, v);
