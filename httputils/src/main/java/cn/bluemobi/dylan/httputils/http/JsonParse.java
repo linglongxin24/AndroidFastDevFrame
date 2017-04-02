@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.Set;
 
@@ -167,6 +168,73 @@ public class JsonParse {
     }
 
     /**
+     * 获取map中的值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static int getInt(Map<String, Object> map, String key) {
+        if (map == null || map.size() == 0) {
+            return 0;
+        } else if (isNull(key)) {
+            return 0;
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data instanceof Integer) {
+                if (isNull2((String) map.get(key))) {
+                    return 0;
+                } else {
+                    return (int) map.get(key);
+                }
+            } else {
+                return -1;
+            }
+
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 获取map中的值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static double getDouble(Map<String, Object> map, String key) {
+        if (map == null || map.size() == 0.0) {
+            return 0.0;
+        } else if (isNull(key)) {
+            return 0.0;
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data instanceof Double) {
+                if (isNull2((String) map.get(key))) {
+                    return 0.0;
+                } else {
+                    return (double) map.get(key);
+                }
+            } else {
+                return -1;
+            }
+
+        } else {
+            return 0.0;
+        }
+    }
+
+    /**
+     * 获取map中的值
+     *
+     * @return map的int值
+     */
+    public static String formatMoney(double money) {
+        return new DecimalFormat("0.00").format(money);
+    }
+
+    /**
      * 判断 一个字段的值否为空
      *
      * @param s
@@ -189,6 +257,7 @@ public class JsonParse {
         return null == s || s.equals("");
 
     }
+
     /**
      * 格式化json字符串
      *
