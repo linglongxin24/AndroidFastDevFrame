@@ -177,7 +177,7 @@ public class MainActivity extends BasePhotoActivity {
                     protected void convertView(View item, String s) {
 
                     }
-                }, cycle_view_pager, fm);
+                },  fm);
                 selectPopupWind.show();
             }
         });

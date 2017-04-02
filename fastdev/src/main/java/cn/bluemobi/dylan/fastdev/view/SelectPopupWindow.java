@@ -25,22 +25,20 @@ import cn.bluemobi.dylan.fastdev.utils.Tools;
 public class SelectPopupWindow extends PopupWindow {
     private Context context;
     private View showAsDropDownView;
-    private FrameLayout outsideFrameLayout;
     private ListAdapter listAdapter;
     private PopupWindow popupWindow;
     private ListView listView;
-    private View outsideView;
+    private FrameLayout outsideView;
 
     /**
      * 初始化一个选择下拉框
      *
      * @param showAsDropDownView 要在哪个View下面展示
      * @param listAdapter        下拉列表数据适配器
-     * @param outsideFrameLayout 外部含有遮罩层的FrameLayout
+     * @param outsideView        外部含有遮罩层的FrameLayout
      */
-    public SelectPopupWindow(View showAsDropDownView, ListAdapter listAdapter, View outsideView, FrameLayout outsideFrameLayout) {
+    public SelectPopupWindow(View showAsDropDownView, ListAdapter listAdapter, FrameLayout outsideView) {
         this.showAsDropDownView = showAsDropDownView;
-        this.outsideFrameLayout = outsideFrameLayout;
         this.context = showAsDropDownView.getContext();
         this.listAdapter = listAdapter;
         this.outsideView = outsideView;
@@ -62,41 +60,27 @@ public class SelectPopupWindow extends PopupWindow {
         popupWindow.setContentView(listView);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
-//        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                Logger.d("event.getAction() == MotionEvent.ACTION_OUTSIDE=" + (event.getAction() == MotionEvent.ACTION_OUTSIDE));
-//                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//                    popupWindow.dismiss();
-//                    Logger.d("return true;");
-//                    return true;
-//                } else {
-//                    Logger.d("return false;");
-//                    return false;
-//                }
-//            }
-//        });
+        popupWindow.setFocusable(true);
+
         popupWindow.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
+
                 if (outsideView != null) {
-                    outsideView.setEnabled(true);
-                    outsideView.setClickable(true);
-                    outsideView.setFocusable(true);
-                    outsideView.setFocusableInTouchMode(true);
-                    outsideView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return false;
-                        }
-                    });
-                }
-                if (outsideFrameLayout != null) {
-                    outsideFrameLayout.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                    outsideView.setForeground(new ColorDrawable(Color.TRANSPARENT));
                 }
             }
         });
 
+    }
+
+    /**
+     * 获取显示布局的listview
+     *
+     * @return
+     */
+    public ListView getListView() {
+        return listView;
     }
 
     /**
@@ -109,19 +93,7 @@ public class SelectPopupWindow extends PopupWindow {
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
             if (outsideView != null) {
-                outsideView.setEnabled(false);
-                outsideView.setClickable(false);
-                outsideView.setFocusable(false);
-                outsideView.setFocusableInTouchMode(false);
-                outsideView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });
-            }
-            if (outsideFrameLayout != null) {
-                outsideFrameLayout.setForeground(new ColorDrawable(Color.parseColor("#7F4c4c4c")));
+                outsideView.setForeground(new ColorDrawable(Color.parseColor("#7F4c4c4c")));
             }
         }
         return this;
@@ -134,7 +106,7 @@ public class SelectPopupWindow extends PopupWindow {
      */
     public SelectPopupWindow setOnItemClickListener(final AdapterView.OnItemClickListener onItemClickListener) {
         if (popupWindow == null) {
-            init();
+            return this;
         }
         if (listView == null) {
             return this;
