@@ -175,23 +175,16 @@ public class JsonParse {
      * @return map的int值
      */
     public static int getInt(Map<String, Object> map, String key) {
-        if (map == null || map.size() == 0) {
+        try {
+            return Integer.parseInt(getValue(map, key));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return 0;
-        } else if (isNull(key)) {
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return 0;
-        } else if (map.containsKey(key)) {
-            Object data = map.get(key);
-            if (data instanceof Integer) {
-                if (isNull2((String) map.get(key))) {
-                    return 0;
-                } else {
-                    return (int) map.get(key);
-                }
-            } else {
-                return -1;
-            }
-
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
     }
@@ -204,24 +197,39 @@ public class JsonParse {
      * @return map的int值
      */
     public static double getDouble(Map<String, Object> map, String key) {
-        if (map == null || map.size() == 0.0) {
+        try {
+            return Double.parseDouble(getValue(map, key));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
             return 0.0;
-        } else if (isNull(key)) {
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return 0.0;
-        } else if (map.containsKey(key)) {
-            Object data = map.get(key);
-            if (data instanceof Double) {
-                if (isNull2((String) map.get(key))) {
-                    return 0.0;
-                } else {
-                    return (double) map.get(key);
-                }
-            } else {
-                return -1;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
 
-        } else {
-            return 0.0;
+    /**
+     * 获取map中的值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static String getMoney(Map<String, Object> map, String key) {
+        try {
+            return formatMoney(Double.parseDouble(getValue(map, key)));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return "0.00";
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "0.00";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0.00";
         }
     }
 

@@ -151,7 +151,7 @@ public class RetrofitManager {
                 }
                 mMessage.append("\n");
                 mMessage.append("请求体大小：");
-                mMessage.append(+original.body().contentLength());
+                mMessage.append(convertFileSize(original.body().contentLength()));
                 Logger.d(mMessage.toString());
 
                 Request request = requestBuilder.build();
@@ -201,14 +201,6 @@ public class RetrofitManager {
                 return responseNew;
             }
         };
-        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
-            }
-
-        });
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(3, TimeUnit.MINUTES)
                 .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
