@@ -100,6 +100,13 @@ public class JsonParse {
     }
 
 
+    /**
+     * Json解析
+     *
+     * @param json
+     * @return
+     * @throws JSONException
+     */
     public ArrayMap<String, Object> jsonParse(String json) throws JSONException {
         ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
         }.getType());
@@ -168,7 +175,7 @@ public class JsonParse {
     }
 
     /**
-     * 获取map中的值
+     * 获取map中的intss值
      *
      * @param map map
      * @param key map的key
@@ -190,7 +197,7 @@ public class JsonParse {
     }
 
     /**
-     * 获取map中的值
+     * 获取map中的double值
      *
      * @param map map
      * @param key map的key
@@ -212,7 +219,7 @@ public class JsonParse {
     }
 
     /**
-     * 获取map中的值
+     * 获取map中的值并格式化为人民币的格式
      *
      * @param map map
      * @param key map的key
@@ -220,7 +227,7 @@ public class JsonParse {
      */
     public static String getMoney(Map<String, Object> map, String key) {
         try {
-            return formatMoney(Double.parseDouble(getValue(map, key)));
+            return formatMoney(getDouble(map, key));
         } catch (NullPointerException e) {
             e.printStackTrace();
             return "0.00";
@@ -234,7 +241,7 @@ public class JsonParse {
     }
 
     /**
-     * 获取map中的值
+     * 格式化double为人民币格式
      *
      * @return map的int值
      */
