@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import org.xutils.common.Callback;
@@ -20,6 +21,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,9 @@ import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
 import cn.bluemobi.dylan.httputils.http.Http;
+import cn.bluemobi.dylan.httputils.http.JsonParse;
 import cn.bluemobi.dylan.httputils.http.MessageManager;
+import cn.bluemobi.dylan.httputils.http.RequestParameter;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -48,10 +52,11 @@ public class MainActivity extends BasePhotoActivity {
     private WebView webView;
     private CycleViewPager cycle_view_pager;
     private FrameLayout fm;
-    private List<String> paths;
+    private List<String> paths=new ArrayList<>();
     private GridView gv;
     private GridViewAddImagesAdapter gridViewAddImgesAdpter;
     private SmartWebView smartWebView;
+    private CircleImageView ci;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,24 @@ public class MainActivity extends BasePhotoActivity {
 //        showAddImageDialog();
         testHttp();
     }
+    /**
+     * 回调压缩后的图片路径
+     *
+     * @param file 图片文件
+     */
+    public void photoPath(File file) {
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService3.class)
+                        .editInfo(RequestParameter.getRequestBody("144"), null, null, null, RequestParameter.getFilePart("imageHead", file)))
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+//                        LoginUser.getLoginUser().setHeadImageUrl(JsonParse.getValue(data, "data"));
+//                        Glide.with(getContext()).load( ApiService.BASE_URL+ LoginUser.getLoginUser().getHeadImageUrl()).into(iv_head);
+                    }
+                });
 
+    }
     /**
      * retrofit测试
      */
@@ -77,16 +99,24 @@ public class MainActivity extends BasePhotoActivity {
 //
 //                    }
 //                });
-
-
-        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService2.class).getHomeData())
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-                    }
-                });
+        ci = (CircleImageView)findViewById(R.id.ci);
+        Http.getHttp()
+                .setDebugMode(BuildConfig.DEBUG)
+                .init(ApiService.class, ApiService3.BASE_URL, "state", "data", "msg", 1);
+        ci.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+showDialog();
+            }
+        });
+//        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService2.class).getHomeData())
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//                    }
+//                });
 
 //        Http.with(context)
 //                .setObservable(Http.getApiService(ApiService2.class).getClassifyData())
@@ -148,18 +178,18 @@ public class MainActivity extends BasePhotoActivity {
             }
         });
     }
-
-    @Override
-    public void photoCompressStart(String path) {
-        super.photoCompressStart(path);
-        paths.add(path);
-        gridViewAddImgesAdpter.notifyDataSetChanged();
-    }
-
-    public void photoPath(String path) {
-        paths.set(paths.size() - 1, path);
-        gridViewAddImgesAdpter.notifyDataSetChanged();
-    }
+//
+//    @Override
+//    public void photoCompressStart(String path) {
+//        super.photoCompressStart(path);
+//        paths.add(path);
+//        gridViewAddImgesAdpter.notifyDataSetChanged();
+//    }
+//
+//    public void photoPath(String path) {
+//        paths.set(paths.size() - 1, path);
+//        gridViewAddImgesAdpter.notifyDataSetChanged();
+//    }
 
     private void showSelectPopupWindow() {
         final Button bt = (Button) findViewById(R.id.bt);
@@ -177,7 +207,7 @@ public class MainActivity extends BasePhotoActivity {
                     protected void convertView(View item, String s) {
 
                     }
-                },  fm);
+                }, fm);
                 selectPopupWind.show();
             }
         });

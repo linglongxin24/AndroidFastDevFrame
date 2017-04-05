@@ -2,10 +2,14 @@ package com.dylanfastdev;
 
 import android.support.annotation.NonNull;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import rx.Observable;
 
 /**
@@ -99,5 +103,23 @@ public interface ApiService3 {
                                           @Field("isnetshare") String isnetshare,
                                           @NonNull @Field("pageIndex") int pageIndex,
                                           @NonNull @Field("pageSize") int pageSize
+    );
+    /**
+     * 24,修改用户信息
+     *
+     * @param userId      用户ID 【必须】
+     * @param anothername 昵称
+     * @param password    用户密码【前端加密之后】
+     * @param sex         0：女，1：男，2：保密
+     * @param imageHead   imageHead
+     * @return
+     */
+    @Multipart
+    @POST("InfoUser_modifyUser.action")
+    Observable<ResponseBody> editInfo(@Part("id") RequestBody userId,
+                                      @Part("anothername") RequestBody anothername,
+                                      @Part("password") RequestBody password,
+                                      @Part("sex") RequestBody sex,
+                                      @Part MultipartBody.Part imageHead
     );
 }
