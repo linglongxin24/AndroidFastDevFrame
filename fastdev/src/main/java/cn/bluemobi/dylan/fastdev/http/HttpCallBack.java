@@ -61,7 +61,7 @@ public class HttpCallBack implements Callback.ProgressCallback<String> {
     @Override
     public void onStarted() {
         if (loadingDialog != null) {
-            loadingDialog.show("Loading...");
+            loadingDialog.show("");
         }
 
         httpResponse.netOnStart();
