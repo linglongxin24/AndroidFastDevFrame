@@ -264,7 +264,9 @@ showDialog();
 //        String url = "http://nongzhangmen.cn:8911/page/Index/index?id=2406";
 //        String url = "https://app.tongrunjacks.com//other//index?id=TkE9PQ==";
 //        String url = "http://c.dituhui.com/maps/1082953";
-        String url = "http://www.kswjw.gov.cn/jsfw/m_index.asp?deviceType=3&womanId=42996&machineCode=8767fea2-6376-42be-bd1e-c01ccaf3e02c&requestStartTime=636263218692140000&os=Android6.0&network=WIFI";
+//        String url = "http://www.kswjw.gov.cn/jsfw/m_index.asp?deviceType=3&womanId=42996&machineCode=8767fea2-6376-42be-bd1e-c01ccaf3e02c&requestStartTime=636263218692140000&os=Android6.0&network=WIFI";
+        String url = "http://mp.weixin.qq.com/s/E3zeRiZ9AxGH6sL_5JYLkg";
+//        String url = "http://mobile.abchina.com/download/clientDownload/zh_CN/MB_Index.aspx?from=message&isappinstalled=0";
         smartWebView.loadUrl(url);
     }
 

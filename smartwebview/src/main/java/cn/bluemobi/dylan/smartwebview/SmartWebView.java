@@ -216,6 +216,7 @@ public class SmartWebView extends RelativeLayout {
         webSettings.setDomStorageEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBlockNetworkImage(false);//解决图片不显示
+        webSettings.setDefaultTextEncodingName("utf-8") ;
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -240,7 +241,6 @@ public class SmartWebView extends RelativeLayout {
         webSettings.setSupportZoom(false);
 
         wv.setWebViewClient(new SslWebViewClient());
-
         if (!TextUtils.isEmpty(url)) {
             wv.loadUrl(url);
         } else if (!TextUtils.isEmpty(data)) {

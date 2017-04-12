@@ -144,7 +144,6 @@ public class SslWebViewClient extends WebViewClient {
             InputStream inputStream;
             URLConnection urlConnection;
             if(uri.toString().equalsIgnoreCase("https")){
-
                 HttpsURLConnection surlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection=surlConnection;
                 //为request设置SSL Socket Factory
@@ -175,7 +174,14 @@ public class SslWebViewClient extends WebViewClient {
 //                    view.loadData(result, "text/html; charset=UTF-8", null);
 //                }
 //            });
-
+            if(encoding==null){
+                for (String param : contentType.replace(" ", "").split(";")) {
+                    if (param.startsWith("charset=")) {
+                        encoding = param.split("=", 2)[1];
+                        break;
+                    }
+                }
+            }
             if (null != contentType){
                 String mimeType = contentType;
                 if (contentType.contains(";")){
@@ -188,6 +194,8 @@ public class SslWebViewClient extends WebViewClient {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
