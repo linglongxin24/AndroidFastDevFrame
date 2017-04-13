@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,6 +16,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import java.util.logging.Logger;
 
 import cn.bluemobi.dylan.smartwebview.ssl.SslWebViewClient;
 
@@ -273,4 +276,17 @@ public class SmartWebView extends RelativeLayout {
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        // 先从父控件中移除WebView
+        removeView(mWebView);
+        mWebView.stopLoading();
+        mWebView.getSettings().setJavaScriptEnabled(false);
+        mWebView.clearHistory();
+        mWebView.removeAllViews();
+        mWebView.destroy();
+        Log.d("WebView","onDetachedFromWindow");
+
+        super.onDetachedFromWindow();
+    }
 }
