@@ -28,6 +28,7 @@ import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -250,7 +251,8 @@ public final class CustomActivityOnCrash {
         errorDetails = errorDetails + "Build version: " + versionName + " \n";
         errorDetails = errorDetails + "Build date: " + buildDateAsString + " \n";
         errorDetails = errorDetails + "Current date: " + dateFormat.format(currentDate) + " \n";
-        errorDetails = errorDetails + "Device: " + getDeviceModelName() + " \n\n";
+        errorDetails = errorDetails + "Device: " + getDeviceModelName() + " \n";
+        errorDetails = errorDetails + "SupportedAbis: " + getSupportedAbis() + " \n\n";
         errorDetails = errorDetails + "Stack trace:  \n";
         errorDetails = errorDetails + getStackTraceFromIntent(intent);
         return errorDetails;
@@ -273,7 +275,8 @@ public final class CustomActivityOnCrash {
         errorDetails = errorDetails + "Build version: " + versionName + " \n";
         errorDetails = errorDetails + "Build date: " + buildDateAsString + " \n";
         errorDetails = errorDetails + "Current date: " + dateFormat.format(currentDate) + " \n";
-        errorDetails = errorDetails + "Device: " + getDeviceModelName() + " \n\n";
+        errorDetails = errorDetails + "Device: " + getDeviceModelName() + " \n";
+        errorDetails = errorDetails + "SupportedAbis: " + getSupportedAbis() + " \n\n";
         errorDetails = errorDetails + "Stack trace:  \n";
         errorDetails = errorDetails + stackTraceString;
         return errorDetails;
@@ -435,6 +438,11 @@ public final class CustomActivityOnCrash {
             return capitalize(model);
         }
         return capitalize(manufacturer) + " " + model;
+    }
+    private static String getSupportedAbis() {
+        String[] supportedAbis = Build.SUPPORTED_ABIS;
+
+        return Arrays.toString(supportedAbis);
     }
 
 
