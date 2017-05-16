@@ -102,11 +102,17 @@ public class MainActivity extends BasePhotoActivity {
         ci = (CircleImageView)findViewById(R.id.ci);
         Http.getHttp()
                 .setDebugMode(BuildConfig.DEBUG)
-                .init(ApiService.class, ApiService3.BASE_URL, "state", "data", "msg", 1);
+                .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
         ci.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 showDialog();
+            }
+        });
+        Http.with(context).setObservable(Http.getApiService(ApiService4.class).getHomeData()).setDataListener(new HttpCallBack() {
+            @Override
+            public void netOnSuccess(Map<String, Object> data) {
+
             }
         });
 //        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
