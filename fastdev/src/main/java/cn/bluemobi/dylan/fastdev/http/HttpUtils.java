@@ -62,6 +62,7 @@ public class HttpUtils implements HttpRequest {
         this.globalParameters = globalParameters;
         this.showMessageModel = showMessageModel;
     }
+
     /**
      * 默认在其他状态的时候给用户提醒响应的错误信息
      */
@@ -140,16 +141,16 @@ public class HttpUtils implements HttpRequest {
             httpResponse.netOnFailure(requestCode, new Exception("网络不可用"));
             return null;
         }
-        LoadingDialog loadingDialog = null;
-        if (isShowLoadingDialog) {
-            if (loadingDialog == null) {
-                loadingDialog = new LoadingDialog(context);
+            LoadingDialog loadingDialog = null;
+            if (isShowLoadingDialog) {
+                if (loadingDialog == null) {
+                    loadingDialog = new LoadingDialog(context);
+                }
+            } else {
+                loadingDialog = null;
             }
-        } else {
-            loadingDialog = null;
-        }
-        if (getGlobalParameters() != null) {
-            Set<String> set = getGlobalParameters().keySet();
+            if (getGlobalParameters() != null) {
+                Set<String> set = getGlobalParameters().keySet();
             for (String key : set) {
                 requestParams.addBodyParameter(key, getGlobalParameters().get(key));
             }

@@ -1,1 +1,1 @@
-include ':app', ':fastdev', ':httputils', ':uncaughtException', ':photoview', ':smartwebview'
+include ':app', ':fastdev', ':httputils', ':uncaughtException', ':photoview', ':smartwebview', ':base', ':http'

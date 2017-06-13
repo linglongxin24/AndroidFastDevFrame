@@ -1,0 +1,51 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--Toolbar导航栏的底色。-->
+        <item name="colorPrimary">@color/accent_material_light</item>
+        <!--导航栏状态栏的底色，注意这里只支持Android5.0以上的手机。-->
+        <item name="colorPrimaryDark">@color/accent_material_light</item>
+        <!--colorPrimaryDark标题文字颜色-->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!--Activity的窗体默认背景颜色。-->
+        <item name="android:windowBackground">@color/material_grey_300</item>
+        <!--按钮选中或者点击获得焦点后的颜色:CheckBox，RadioButton，SwitchCompat等控件的点击选中颜色-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--&lt;!&ndash;和 colorAccent相反，正常状态下按钮的颜色:CheckBox，RadioButton，SwitchCompat等默认状态的颜色。&ndash;&gt;-->
+        <!--<item name="colorControlNormal">#ff0000</item>-->
+        <!--Button按钮正常状态颜色-->
+        <item name="colorButtonNormal">@color/accent_material_light</item>
+        <!--EditText 输入框中字体的颜色-->
+        <item name="editTextColor">@android:color/black</item>
+        <!--EditText 输入框中字体的颜色-->
+        <item name="android:editTextColor">@android:color/black</item>
+        <!--toolbar菜单颜色即标题栏右上角字体颜色-->
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+        <!--recycleview分割线-->
+
+    </style>
+
+    <!--<style name="AppTheme" parent="@style/BaseAppTheme"></style>-->
+
+    <!--侵入式状态栏-->
+    <style name="immersion_status">
+        <item name="android:clipToPadding">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
+        </item>
+    </style>
+    <!--自定义对话框-->
+    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>
