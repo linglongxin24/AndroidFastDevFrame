@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="ImagePagerActivityTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="AnimationActivity" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:activityOpenEnterAnimation">@anim/zoom_ente</item>
+    </style>
+</resources>

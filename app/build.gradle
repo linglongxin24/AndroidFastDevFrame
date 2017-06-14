@@ -43,4 +43,5 @@ dependencies {
     compile project(':uncaughtException')
     compile project(':photoview')
     compile project(':smartwebview')
+    compile project(':http')
 }

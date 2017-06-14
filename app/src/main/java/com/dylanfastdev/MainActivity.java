@@ -52,7 +52,7 @@ public class MainActivity extends BasePhotoActivity {
     private WebView webView;
     private CycleViewPager cycle_view_pager;
     private FrameLayout fm;
-    private List<String> paths=new ArrayList<>();
+    private List<String> paths = new ArrayList<>();
     private GridView gv;
     private GridViewAddImagesAdapter gridViewAddImgesAdpter;
     private SmartWebView smartWebView;
@@ -68,6 +68,7 @@ public class MainActivity extends BasePhotoActivity {
 //        showAddImageDialog();
         testHttp();
     }
+
     /**
      * 回调压缩后的图片路径
      *
@@ -86,6 +87,7 @@ public class MainActivity extends BasePhotoActivity {
                 });
 
     }
+
     /**
      * retrofit测试
      */
@@ -99,14 +101,14 @@ public class MainActivity extends BasePhotoActivity {
 //
 //                    }
 //                });
-        ci = (CircleImageView)findViewById(R.id.ci);
+        ci = (CircleImageView) findViewById(R.id.ci);
         Http.getHttp()
                 .setDebugMode(BuildConfig.DEBUG)
                 .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
         ci.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-showDialog();
+                showDialog();
             }
         });
         Http.with(context).setObservable(Http.getApiService(ApiService4.class).getHomeData()).setDataListener(new HttpCallBack() {
@@ -240,7 +242,6 @@ showDialog();
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, arr);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
                 startActivity(intent);
-                overridePendingTransition(R.anim.zoom_ente, R.anim.zoom_exit);//切换Activity的过渡动
             }
 
         });

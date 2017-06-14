@@ -19,12 +19,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
@@ -32,7 +26,6 @@ dependencies {
     compile 'com.orhanobut:logger:1.8'
     compile 'com.alibaba:fastjson:1.2.33'
 }
-
 
 //
 ///** 以下开始是将Android Library上传到jcenter的相关配置**/
