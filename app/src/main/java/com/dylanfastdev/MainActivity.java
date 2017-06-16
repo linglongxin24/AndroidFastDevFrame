@@ -13,11 +13,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -26,22 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
-import cn.bluemobi.dylan.fastdev.http.CommCallBack;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
 import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
-import cn.bluemobi.dylan.fastdev.utils.StatusBarUtil;
 import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
-import cn.bluemobi.dylan.httputils.HttpUtils;
 import cn.bluemobi.dylan.httputils.MD5Utils;
 import cn.bluemobi.dylan.httputils.http.Http;
-import cn.bluemobi.dylan.httputils.http.JsonParse;
-import cn.bluemobi.dylan.httputils.http.MessageManager;
 import cn.bluemobi.dylan.httputils.http.RequestParameter;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
@@ -67,6 +60,17 @@ public class MainActivity extends BasePhotoActivity {
         showSelectPopupWindow();
 //        showAddImageDialog();
         testHttp();
+        new iOSTwoButtonDialog(this).setMessage("已发布").setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
+            @Override
+            public void buttonLeftOnClick() {
+                showToast("点击了取消按钮");
+            }
+        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
+            @Override
+            public void buttonRightOnClick() {
+                showToast("点击了确定按钮");
+            }
+        }).show();
     }
 
     /**
