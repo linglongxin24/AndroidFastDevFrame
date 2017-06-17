@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 103
-        versionName "1.0.3"
+        versionCode 104
+        versionName "1.0.4"
 
 
     }
@@ -42,7 +42,7 @@ group = "cn.bluemobi.dylan"
 //发布到JCenter上的项目名字，必须填写
 def libName = "base"
 // 版本号，下次更新是只需要更改版本号即可
-version = "1.0.3"
+version = "1.0.4"
 /**上面配置后上传至jcenter后的编译路径是这样的： compile 'cn.bluemobi.dylan:fastdev:0.1'**/
 
 

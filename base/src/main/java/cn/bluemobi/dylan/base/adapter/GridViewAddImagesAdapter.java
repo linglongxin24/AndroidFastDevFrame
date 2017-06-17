@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -111,7 +112,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.pub_item_grid_add_image, parent, false);
-            convertView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemWidth));
+            convertView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, itemWidth));
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {

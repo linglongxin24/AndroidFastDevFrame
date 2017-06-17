@@ -43,6 +43,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.alibaba:fastjson:1.2.33'
 }
 
 /** 以下开始是将Android Library上传到jcenter的相关配置**/
