@@ -115,12 +115,21 @@ public class MainActivity extends BasePhotoActivity {
                 showDialog();
             }
         });
-        Http.with(context).setObservable(Http.getApiService(ApiService4.class).getHomeData()).setDataListener(new HttpCallBack() {
-            @Override
-            public void netOnSuccess(Map<String, Object> data) {
+//        Http.with(context).setObservable(Http.getApiService(ApiService4.class).getHomeData()).setDataListener(new HttpCallBack() {
+//            @Override
+//            public void netOnSuccess(Map<String, Object> data) {
+//
+//            }
+//        });
+        Http.getApiService(ApiService4.class)
+                .getHomeData()
+                .with(context)
+                .setDataListener(new cn.bluemobi.dylan.http.HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
 
-            }
-        });
+                    }
+                });
 //        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
 //        Http.with(context)
 //                .setObservable(Http.getApiService(ApiService2.class).getHomeData())

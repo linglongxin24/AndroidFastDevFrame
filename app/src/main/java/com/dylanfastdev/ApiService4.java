@@ -1,5 +1,6 @@
 package com.dylanfastdev;
 
+import cn.bluemobi.dylan.http.HttpObservable;
 import okhttp3.ResponseBody;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -15,7 +16,7 @@ public interface ApiService4 {
      * 1.获取首页数据
      */
     @POST("v1/restserver/ting?method=baidu.ting.song.lry&songid=1137385")
-    Observable<ResponseBody> getHomeData();
+    HttpObservable<ResponseBody> getHomeData();
 
     /**
      * 2.获取分类数据
