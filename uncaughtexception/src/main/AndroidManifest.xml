@@ -40,7 +40,7 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name="com.kejiang.yuandl.uncaughtexception.activity.DefaultErrorActivity"
+            android:name="cn.bluemobi.dylan.uncaughtexception.activity.DefaultErrorActivity"
             android:process=":error_activity"
             android:theme="@android:style/Theme.Holo.Light" />
     </application>

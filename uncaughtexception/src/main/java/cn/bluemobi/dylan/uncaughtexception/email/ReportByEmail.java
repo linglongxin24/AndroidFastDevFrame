@@ -1,8 +1,8 @@
-package com.kejiang.yuandl.uncaughtexception.email;
+package cn.bluemobi.dylan.uncaughtexception.email;
 
 import android.util.Log;
 
-import com.kejiang.yuandl.uncaughtexception.CustomActivityOnCrash;
+import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
 
 
 public class ReportByEmail {

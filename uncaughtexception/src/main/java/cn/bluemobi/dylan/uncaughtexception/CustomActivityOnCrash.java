@@ -1,4 +1,4 @@
-package com.kejiang.yuandl.uncaughtexception;
+package cn.bluemobi.dylan.uncaughtexception;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,13 +14,11 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.Process;
-import android.os.SystemClock;
 import android.util.Log;
 
-import com.kejiang.yuandl.uncaughtexception.activity.DefaultErrorActivity;
-import com.kejiang.yuandl.uncaughtexception.email.ReportByEmail;
+import cn.bluemobi.dylan.uncaughtexception.activity.DefaultErrorActivity;
+import cn.bluemobi.dylan.uncaughtexception.email.ReportByEmail;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -32,7 +30,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 

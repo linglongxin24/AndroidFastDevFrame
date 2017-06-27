@@ -1,4 +1,4 @@
-package com.kejiang.yuandl.uncaughtexception.activity;
+package cn.bluemobi.dylan.uncaughtexception.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,8 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kejiang.yuandl.uncaughtexception.CustomActivityOnCrash;
-import com.kejiang.yuandl.uncaughtexception.email.ReportByEmail;
+import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
+import cn.bluemobi.dylan.uncaughtexception.email.ReportByEmail;
 
 import cat.ereza.customactivityoncrash.R;
 

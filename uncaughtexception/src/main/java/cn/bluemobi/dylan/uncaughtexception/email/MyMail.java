@@ -1,4 +1,4 @@
- package com.kejiang.yuandl.uncaughtexception.email;
+ package cn.bluemobi.dylan.uncaughtexception.email;
  
  import java.util.Date;
  import java.util.Properties;
