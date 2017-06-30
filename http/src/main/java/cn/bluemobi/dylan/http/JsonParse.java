@@ -115,7 +115,15 @@ public class JsonParse {
         String dataStrKey = data;
         if (arrayMap.containsKey(dataStrKey)) {
             Object data = arrayMap.get(dataStrKey);
-            if (data instanceof String) {
+            if (data instanceof String
+                    || data instanceof Integer
+                    || data instanceof Long
+                    || data instanceof Float
+                    || data instanceof Double
+                    || data instanceof Character
+                    || data instanceof Boolean
+                    || data instanceof Byte
+                    || data instanceof Short) {
                 rrData.put(dataStrKey, data.toString());
                 returnData.put(dataStrKey, rrData);
             } else if (data instanceof JSONArray) {
