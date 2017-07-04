@@ -1,4 +1,4 @@
-package cn.bluemobi.dylan.http;
+package cn.bluemobi.dylan.http.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,23 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.R;
 
 
 /**
- *  进度加载对话框
+ * 进度加载对话框
  * Author: dylan
  * Date: 2014-12-29
  * Time: 13:34
  */
 public class LoadingDialog {
-    private Dialog dialog;
-
-    public LoadingDialog setContext(Context context) {
-        this.context = context;
-        return this;
-    }
-
-    private Context context;
+    protected Dialog dialog;
+    protected Context context;
     private TextView tv_text;
 
     public LoadingDialog(Context context) {
@@ -36,11 +32,13 @@ public class LoadingDialog {
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public Dialog show(String message) {
-        View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
-        tv_text = (TextView) view.findViewById(R.id.tv_text);
-        tv_text.setText(message);
-        dialog.setContentView(view);
+    public Dialog show() {
+        if (Http.getHttp().getLoadingDialogLayoutId() != null) {
+            dialog.setContentView(Http.getHttp().getLoadingDialogLayoutId());
+        } else {
+            dialog.setContentView(R.layout.pub_loading);
+            tv_text= (TextView) dialog.findViewById(R.id.tv_text);
+        }
         if (!dialog.isShowing()) {
             dialog.show();
         }

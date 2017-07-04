@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
+import cn.bluemobi.dylan.http.dialog.LoadingDialog;
+
 /**
  * 网络请求工具类
  * Created by yuandl on 2017-03-31.
@@ -12,6 +14,7 @@ import com.orhanobut.logger.Logger;
 public class Http {
     private static final String TAG = "HTTP";
     private static volatile Http http = null;
+    private Integer loadingDialogLayoutId=null;
 
     private Http() {
     }
@@ -93,6 +96,14 @@ public class Http {
      */
     public static void changeBaseUrl(String newBaseUrl) {
         RetrofitManager.getRetrofitManager().changeBaseUrl(newBaseUrl);
+    }
+
+    public void setLoadingDialog(int loadingDialogLayoutId) {
+        this.loadingDialogLayoutId = loadingDialogLayoutId;
+    }
+
+    public Integer getLoadingDialogLayoutId() {
+        return loadingDialogLayoutId;
     }
 
     /**

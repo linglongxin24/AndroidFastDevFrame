@@ -32,6 +32,7 @@ import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
+import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.MD5Utils;
 import cn.bluemobi.dylan.httputils.http.Http;
@@ -59,18 +60,20 @@ public class MainActivity extends BasePhotoActivity {
         showCycleViewPager();
         showSelectPopupWindow();
 //        showAddImageDialog();
+        new   LoadingDialog(this).show();
+//        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
-        new iOSTwoButtonDialog(this).setMessage("已发布").setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
-            @Override
-            public void buttonLeftOnClick() {
-                showToast("点击了取消按钮");
-            }
-        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
-            @Override
-            public void buttonRightOnClick() {
-                showToast("点击了确定按钮");
-            }
-        }).show();
+//        new iOSTwoButtonDialog(this).setMessage("已发布").setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
+//            @Override
+//            public void buttonLeftOnClick() {
+//                showToast("点击了取消按钮");
+//            }
+//        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
+//            @Override
+//            public void buttonRightOnClick() {
+//                showToast("点击了确定按钮");
+//            }
+//        }).show();
     }
 
     /**
@@ -121,10 +124,10 @@ public class MainActivity extends BasePhotoActivity {
 //
 //            }
 //        });
-        Http.getApiService(ApiService4.class)
-                .getHomeData()
-                .with(context)
-                .setDataListener(new cn.bluemobi.dylan.http.HttpCallBack() {
+       Http.with(context)
+               .setObservable( Http.getApiService(ApiService4.class)
+                       .getHomeData())
+                .setDataListener(new HttpCallBack() {
                     @Override
                     public void netOnSuccess(Map<String, Object> data) {
 

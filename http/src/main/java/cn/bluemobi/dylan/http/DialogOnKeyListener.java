@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import rx.Subscription;
 
 /**

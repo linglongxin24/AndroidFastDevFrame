@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.http;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
+import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
@@ -102,7 +104,7 @@ public class HttpRequest {
                     @Override
                     public void onStart() {
                         if (loadingDialog != null) {
-                            loadingDialog.show("");
+                            loadingDialog.show();
                         }
                         if (httpResponse != null) {
                             httpResponse.netOnStart();
