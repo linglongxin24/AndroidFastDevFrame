@@ -56,6 +56,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     protected Context mContext;
 
+    /**
+     * 获取中间布局
+     *
+     * @return
+     */
+    public FrameLayout getViewContent() {
+        return viewContent;
+    }
 
     public interface OnClickListener {
         void onClick();
@@ -65,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_base_title_bar);
-AppManager.getAppManager().addActivity(this);
+        AppManager.getAppManager().addActivity(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         viewContent = (FrameLayout) findViewById(R.id.viewContent);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
