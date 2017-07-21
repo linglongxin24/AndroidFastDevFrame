@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import cn.bluemobi.dylan.fastdev.R;
@@ -28,7 +27,7 @@ public class LoadingDialog  {
     }
 
     public Dialog show(String message) {
-        View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.fastdev_pub_loading, null);
         tv_text = (TextView) view.findViewById(R.id.tv_text);
         tv_text.setText(message);
         if(dialog==null){
