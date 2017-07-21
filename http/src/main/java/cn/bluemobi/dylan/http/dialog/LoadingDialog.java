@@ -36,8 +36,9 @@ public class LoadingDialog {
         if (Http.getHttp().getLoadingDialogLayoutId() != null) {
             dialog.setContentView(Http.getHttp().getLoadingDialogLayoutId());
         } else {
-            dialog.setContentView(R.layout.pub_loading);
-            tv_text= (TextView) dialog.findViewById(R.id.tv_text);
+            View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
+            dialog.setContentView(view);
+            tv_text = (TextView) dialog.findViewById(R.id.tv_text);
         }
         if (!dialog.isShowing()) {
             dialog.show();

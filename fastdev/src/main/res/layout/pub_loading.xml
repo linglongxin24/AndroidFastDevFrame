@@ -27,7 +27,7 @@
                 android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="正在登录"
+                android:text=""
                 android:layout_marginTop="20dp"
                 android:textColor="#fff" />
         </LinearLayout>

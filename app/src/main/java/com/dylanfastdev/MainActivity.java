@@ -60,7 +60,7 @@ public class MainActivity extends BasePhotoActivity {
         showCycleViewPager();
         showSelectPopupWindow();
 //        showAddImageDialog();
-        new   LoadingDialog(this).show();
+//        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
 //        new iOSTwoButtonDialog(this).setMessage("已发布").setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
