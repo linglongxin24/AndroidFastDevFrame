@@ -57,6 +57,16 @@ public class iOSTwoButtonDialog extends Dialog {
         });
     }
 
+    public iOSTwoButtonDialog setLeftButtonText(String text) {
+        btn_one.setText(text);
+        return this;
+    }
+
+    public iOSTwoButtonDialog setRightButtonText(String text) {
+        btn_two.setText(text);
+        return this;
+    }
+
     public iOSTwoButtonDialog setTitle(String title) {
         tv_title.setText(title);
         return this;
