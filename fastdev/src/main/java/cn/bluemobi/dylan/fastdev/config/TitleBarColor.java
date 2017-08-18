@@ -19,6 +19,10 @@ public class TitleBarColor {
      */
     public static int textColor = android.R.color.white;
     /**
+     * 标题栏文字颜色：默认白色
+     */
+    public static int statusColor = -1;
+    /**
      * 标题返回箭头：默认白色返回箭头
      */
     public static int arrowBack = R.drawable.pub_arrow_back_write;

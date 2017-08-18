@@ -209,6 +209,8 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
             if (color == Color.WHITE) {
                 StatusBarUtil.StatusBarLightMode(this);
             }
+        }else if(TitleBarColor.statusColor!=-1){
+            llRoot.setBackgroundColor(TitleBarColor.statusColor);
         }
     }
 

@@ -34,6 +34,7 @@ public class AppManager {
     public Stack<Activity> getAllActivitys() {
         return activityStack;
     }
+
     /**
      * 栈中是否为空
      *
@@ -72,6 +73,7 @@ public class AppManager {
         }
         return activityStack.get(activityStack.size() - 1);
     }
+
     /**
      * 获取前一个activity，便于返回
      *
@@ -131,6 +133,18 @@ public class AppManager {
                 finishActivity(activity);
             }
         }
+    }
+
+    /**
+     * 结束指定类名的Activity
+     */
+    public Activity getActivity(Class<?> cls) {
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+                return activity;
+            }
+        }
+        return null;
     }
 
     /**
