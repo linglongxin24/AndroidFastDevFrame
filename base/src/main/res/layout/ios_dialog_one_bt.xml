@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginBottom="5dp"
-            android:text="温馨提示"
+            android:text="提示"
             android:textColor="#000000"
             android:textSize="20sp" />
 

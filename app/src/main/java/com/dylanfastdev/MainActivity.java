@@ -63,17 +63,19 @@ public class MainActivity extends BasePhotoActivity {
 //        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
-//        new iOSTwoButtonDialog(this).setMessage("已发布").setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
-//            @Override
-//            public void buttonLeftOnClick() {
-//                showToast("点击了取消按钮");
-//            }
-//        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
-//            @Override
-//            public void buttonRightOnClick() {
-//                showToast("点击了确定按钮");
-//            }
-//        }).show();
+        new iOSTwoButtonDialog(this)
+                .setCenterCustomView(R.layout.customview)
+                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
+            @Override
+            public void buttonLeftOnClick() {
+                showToast("点击了取消按钮");
+            }
+        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
+            @Override
+            public void buttonRightOnClick() {
+                showToast("点击了确定按钮");
+            }
+        }).show();
     }
 
     /**
