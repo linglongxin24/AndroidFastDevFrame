@@ -107,6 +107,31 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return tv.getText().toString().trim();
     }
 
+
+    /**
+     * 设置TextView的Hint值
+     *
+     * @param viewId
+     * @param text
+     * @return
+     */
+    public ViewHolder setHint(int viewId, String text) {
+        TextView tv = getView(viewId);
+        tv.setHint(text);
+        return this;
+    }
+
+    /**
+     * 获取TextView的Hint值
+     *
+     * @param viewId
+     * @return
+     */
+    public String getHint(int viewId) {
+        TextView tv = getView(viewId);
+        return tv.getHint().toString().trim();
+    }
+
     public ViewHolder setImageResource(int viewId, int resId) {
         ImageView view = getView(viewId);
         view.setImageResource(resId);
