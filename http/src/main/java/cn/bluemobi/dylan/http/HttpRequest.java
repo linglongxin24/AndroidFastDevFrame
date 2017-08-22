@@ -1,6 +1,5 @@
 package cn.bluemobi.dylan.http;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
@@ -68,6 +67,21 @@ public class HttpRequest {
      */
     public HttpRequest setObservable(Observable<ResponseBody> observable) {
         this.observable = observable;
+        return this;
+    }
+
+    private boolean isShowSuccessMessage = true;
+
+    public HttpRequest hideSuccessMessage() {
+        isShowSuccessMessage = false;
+        return this;
+    }
+
+
+    private boolean isShowOtherStatusMessage = true;
+
+    public HttpRequest hideOtherStatusMessage() {
+        isShowSuccessMessage = false;
         return this;
     }
 
@@ -141,8 +155,8 @@ public class HttpRequest {
                             String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
 
-                            if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All) {
-                                if (msg != null && !msg.isEmpty()&&!"null".equalsIgnoreCase(msg)) {
+                            if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
+                                if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
                                     Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -154,8 +168,8 @@ public class HttpRequest {
                                     httpResponse.netOnSuccess(data);
                                 }
                             } else {
-                                if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.OTHER_STATUS) {
-                                    if (msg != null && !msg.isEmpty()&&!"null".equalsIgnoreCase(msg)) {
+                                if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.OTHER_STATUS && isShowOtherStatusMessage) {
+                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
                                         Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
                                     }
                                 }
