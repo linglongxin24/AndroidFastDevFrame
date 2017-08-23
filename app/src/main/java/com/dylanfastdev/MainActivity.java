@@ -63,19 +63,19 @@ public class MainActivity extends BasePhotoActivity {
 //        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
-        new iOSTwoButtonDialog(this)
-                .setCenterCustomView(R.layout.customview)
-                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
-            @Override
-            public void buttonLeftOnClick() {
-                showToast("点击了取消按钮");
-            }
-        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
-            @Override
-            public void buttonRightOnClick() {
-                showToast("点击了确定按钮");
-            }
-        }).show();
+//        new iOSTwoButtonDialog(this)
+//                .setCenterCustomView(R.layout.customview)
+//                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
+//            @Override
+//            public void buttonLeftOnClick() {
+//                showToast("点击了取消按钮");
+//            }
+//        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
+//            @Override
+//            public void buttonRightOnClick() {
+//                showToast("点击了确定按钮");
+//            }
+//        }).show();
     }
 
     /**
@@ -101,9 +101,21 @@ public class MainActivity extends BasePhotoActivity {
      * retrofit测试
      */
     private void testHttp() {
+//        List<File> fileList=new ArrayList<>();
+//        fileList.add(new File("/storage/emulated/0/PictureSelector/CameraImage/PictureSelector_20170823_130257.mp4"));
 //        Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
 //        Http.with(context)
-//                .setObservable(Http.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"))
+//                .setObservable(Http.getApiService(ApiService.class)
+//                        .upload(cn.bluemobi.dylan.http.RequestParameter.getRequestBody("Task")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("Task_an_AddNeed")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("13b30123e894904eafe2c4a9a7d64bea")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("46")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("1")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("2")
+//                                , cn.bluemobi.dylan.http.RequestParameter.getRequestBody("1")
+//                                ,cn.bluemobi.dylan.http.RequestParameter.getPartMap("attachment",fileList)
+//                        )
+//                )
 //                .setDataListener(new HttpCallBack() {
 //                    @Override
 //                    public void netOnSuccess(Map<String, Object> data) {
