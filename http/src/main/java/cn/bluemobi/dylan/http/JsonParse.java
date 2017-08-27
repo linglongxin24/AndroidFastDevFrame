@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -269,6 +271,65 @@ public class JsonParse {
             return "0.00";
         }
     }
+
+    /**
+     * 获取map中的Map对象
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的值
+     */
+    public static Map<String, Object> getMap(Map<String, Object> map, String key) {
+        Map<String, Object> newMap = new ArrayMap<>();
+        if (map == null || map.size() == 0) {
+            return newMap;
+        } else if (isNull(key)) {
+            return newMap;
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data == null) {
+                return newMap;
+            } else {
+                if (data instanceof Map) {
+                    return (Map<String, Object>) data;
+                } else {
+                    return newMap;
+                }
+            }
+        } else {
+            return newMap;
+        }
+    }
+
+    /**
+     * 获取map中的Map对象
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的值
+     */
+    public static List<Map<String, Object>> getList(Map<String, Object> map, String key) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (map == null || map.size() == 0) {
+            return list;
+        } else if (isNull(key)) {
+            return list;
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data == null) {
+                return list;
+            } else {
+                if (data instanceof List) {
+                    return (List<Map<String, Object>>) data;
+                } else {
+                    return list;
+                }
+            }
+        } else {
+            return list;
+        }
+    }
+
 
     /**
      * 格式化double为人民币格式

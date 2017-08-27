@@ -21,6 +21,6 @@ public class TestFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-
+        getChildFragmentManager();
     }
 }
