@@ -14,7 +14,7 @@ import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 public class Http {
     private static final String TAG = "HTTP";
     private static volatile Http http = null;
-    private Integer loadingDialogLayoutId=null;
+    private Integer loadingDialogLayoutId = null;
 
     private Http() {
     }
@@ -77,6 +77,17 @@ public class Http {
      */
     public Http setDebugMode(boolean debugMode) {
         RetrofitManager.getRetrofitManager().setDebugMode(debugMode);
+        return http;
+    }
+
+
+    /**
+     * 5.设置错误消息文字【可选】
+     *
+     * @param errorMessage
+     */
+    public Http setErrorMessage(String  errorMessage) {
+        MessageManager.getMessageManager().setErrorMessage(errorMessage);
         return http;
     }
 

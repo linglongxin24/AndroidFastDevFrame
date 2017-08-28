@@ -70,6 +70,17 @@ public class MessageManager {
         return messageManager;
     }
 
+    private String errorMessage = "网络繁忙";
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public MessageManager setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
+
     /**
      * 用户提醒消息的模式
      */

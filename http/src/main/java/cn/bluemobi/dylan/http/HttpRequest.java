@@ -93,7 +93,7 @@ public class HttpRequest {
      */
     public Subscription setDataListener(final HttpResponse httpResponse) {
         String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
-        final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : "网络繁忙";
+        final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : MessageManager.getMessageManager().getErrorMessage();
 
         if (!NetworkUtil.isNetworkAvailable(context.get())) {
             Toast.makeText(context.get(), network_unusual, Toast.LENGTH_SHORT).show();
