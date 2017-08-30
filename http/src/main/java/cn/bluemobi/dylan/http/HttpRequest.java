@@ -85,6 +85,13 @@ public class HttpRequest {
         return this;
     }
 
+    private boolean canCancel = true;
+
+    public HttpRequest setCanCancel(boolean canCancel) {
+        this.canCancel = canCancel;
+        return this;
+    }
+
     /**
      * 【第四步】设置访问接口的返回监听
      *
@@ -189,7 +196,7 @@ public class HttpRequest {
                     }
                 });
 
-        if (loadingDialog != null && subscribe != null) {
+        if (loadingDialog != null && subscribe != null&&canCancel) {
             loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe));
         }
         return subscribe;
