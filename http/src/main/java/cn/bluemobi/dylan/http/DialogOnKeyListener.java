@@ -19,26 +19,33 @@ import rx.Subscription;
 public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
     private LoadingDialog dialog;
     private Subscription subscribe;
+    private boolean canCancel;
 
-    public DialogOnKeyListener(LoadingDialog dialog, Subscription subscribe) {
+    public DialogOnKeyListener(LoadingDialog dialog, Subscription subscribe, boolean canCancel) {
         this.dialog = dialog;
         this.subscribe = subscribe;
+        this.canCancel = canCancel;
     }
 
     @Override
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-        Log.d("onKey","onKey");
+        Log.d("onKey", "onKey");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.d("onKey","keyCode == KeyEvent.KEYCODE_BACK");
-            if (subscribe != null && !subscribe.isUnsubscribed()) {
-                Log.d("onKey","subscribe != null && subscribe.isUnsubscribed()");
-                subscribe.unsubscribe();
-            }
-            if (this.dialog != null
-                    && this.dialog.isShowing()) {
-                this.dialog.dismiss();
+            if (canCancel) {
+                Log.d("onKey", "keyCode == KeyEvent.KEYCODE_BACK");
+                if (subscribe != null && !subscribe.isUnsubscribed()) {
+                    Log.d("onKey", "subscribe != null && subscribe.isUnsubscribed()");
+                    subscribe.unsubscribe();
+                }
+                if (this.dialog != null
+                        && this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                    return true;
+                }
+            } else {
                 return true;
             }
+
         }
         return false;
     }

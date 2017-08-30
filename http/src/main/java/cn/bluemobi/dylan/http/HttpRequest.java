@@ -196,8 +196,8 @@ public class HttpRequest {
                     }
                 });
 
-        if (loadingDialog != null && subscribe != null&&canCancel) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe));
+        if (loadingDialog != null && subscribe != null) {
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe,canCancel));
         }
         return subscribe;
     }
