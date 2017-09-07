@@ -26,4 +26,8 @@ public abstract class HttpCallBack implements HttpResponse {
 
     }
 
+    @Override
+    public void onResponseProgress(long bytesRead, long contentLength, boolean done) {
+
+    }
 }

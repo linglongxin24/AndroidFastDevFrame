@@ -4,10 +4,15 @@ import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
 import java.lang.ref.WeakReference;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
+import cn.bluemobi.dylan.http.download.ProgressResponseBody;
 import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
@@ -35,7 +40,7 @@ public class HttpRequest {
     /**
      * 接口监听者
      */
-    private Observable<ResponseBody> observable;
+    private Observable<? extends ResponseBody> observable;
     private LoadingDialog loadingDialog = null;
 
 
@@ -65,7 +70,7 @@ public class HttpRequest {
      * @param observable 接口对象
      * @return 本类对象
      */
-    public HttpRequest setObservable(Observable<ResponseBody> observable) {
+    public HttpRequest setObservable(Observable<? extends ResponseBody> observable) {
         this.observable = observable;
         return this;
     }
@@ -98,7 +103,7 @@ public class HttpRequest {
      * @param httpResponse 请求相应监听
      * @return 本类对象
      */
-    public Subscription setDataListener(final HttpResponse httpResponse) {
+    public Subscription setDataListener(final HttpCallBack httpResponse) {
         String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
         final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : MessageManager.getMessageManager().getErrorMessage();
 
@@ -156,6 +161,9 @@ public class HttpRequest {
 
                     @Override
                     public void onNext(ResponseBody result) {
+                        if(result instanceof ProgressResponseBody){
+
+                        }
                         ArrayMap<String, Object> jsonBean;
                         try {
                             jsonBean = JsonParse.getJsonParse().jsonParse(result.string());
@@ -197,7 +205,7 @@ public class HttpRequest {
                 });
 
         if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe,canCancel));
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe, canCancel));
         }
         return subscribe;
     }

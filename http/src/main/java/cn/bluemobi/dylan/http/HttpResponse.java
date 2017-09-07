@@ -2,10 +2,12 @@ package cn.bluemobi.dylan.http;
 
 import java.util.Map;
 
+import cn.bluemobi.dylan.http.download.ProgressResponseListener;
+
 /**网络请求响应
  * Created by yuandl on 2016/8/31 0031.
  */
-public interface  HttpResponse {
+public interface  HttpResponse extends ProgressResponseListener {
     /**
      * 开始访问网络
      */

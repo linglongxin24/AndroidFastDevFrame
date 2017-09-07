@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
@@ -32,11 +31,11 @@ import cn.bluemobi.dylan.fastdev.view.CircleImageView;
 import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.MessageManager;
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
-import cn.bluemobi.dylan.httputils.HttpCallBack;
 import cn.bluemobi.dylan.httputils.MD5Utils;
-import cn.bluemobi.dylan.httputils.http.Http;
-import cn.bluemobi.dylan.httputils.http.RequestParameter;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -84,16 +83,16 @@ public class MainActivity extends BasePhotoActivity {
      * @param file 图片文件
      */
     public void photoPath(File file) {
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService3.class)
-                        .editInfo(RequestParameter.getRequestBody("144"), null, null, null, RequestParameter.getFilePart("imageHead", file)))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-//                        LoginUser.getLoginUser().setHeadImageUrl(JsonParse.getValue(data, "data"));
-//                        Glide.with(getContext()).load( ApiService.BASE_URL+ LoginUser.getLoginUser().getHeadImageUrl()).into(iv_head);
-                    }
-                });
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService3.class)
+//                        .editInfo(RequestParameter.getRequestBody("144"), null, null, null, RequestParameter.getFilePart("imageHead", file)))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+////                        LoginUser.getLoginUser().setHeadImageUrl(JsonParse.getValue(data, "data"));
+////                        Glide.with(getContext()).load( ApiService.BASE_URL+ LoginUser.getLoginUser().getHeadImageUrl()).into(iv_head);
+//                    }
+//                });
 
     }
 
@@ -125,28 +124,32 @@ public class MainActivity extends BasePhotoActivity {
         ci = (CircleImageView) findViewById(R.id.ci);
         Http.getHttp()
                 .setDebugMode(BuildConfig.DEBUG)
-                .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
+                .init(ApiService.class, ApiService4.BASE_URL, "returnCode", "data", "returnMsg", 200)
+                .setShowMessageModel(MessageManager.MessageModel.All);
+//                .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
         ci.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
             }
         });
-//        Http.with(context).setObservable(Http.getApiService(ApiService4.class).getHomeData()).setDataListener(new HttpCallBack() {
-//            @Override
-//            public void netOnSuccess(Map<String, Object> data) {
-//
-//            }
-//        });
-       Http.with(context)
-               .setObservable( Http.getApiService(ApiService4.class)
-                       .getHomeData())
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo())
                 .setDataListener(new HttpCallBack() {
                     @Override
                     public void netOnSuccess(Map<String, Object> data) {
 
                     }
                 });
+//       Http.with(context)
+//               .setObservable( Http.getApiService(ApiService4.class)
+//                       .getHomeData())
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//                });
 //        Http.getHttp().init(ApiService2.class, ApiService2.BASE_URL, "error", "content", "message", 0).setShowMessageModel(MessageManager.MessageModel.All);
 //        Http.with(context)
 //                .setObservable(Http.getApiService(ApiService2.class).getHomeData())
