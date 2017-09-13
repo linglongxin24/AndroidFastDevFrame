@@ -86,7 +86,7 @@ public class HttpRequest {
     private boolean isShowOtherStatusMessage = true;
 
     public HttpRequest hideOtherStatusMessage() {
-        isShowSuccessMessage = false;
+        isShowOtherStatusMessage = false;
         return this;
     }
 
@@ -183,7 +183,7 @@ public class HttpRequest {
                                     httpResponse.netOnSuccess(data);
                                 }
                             } else {
-                                if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.OTHER_STATUS && isShowOtherStatusMessage) {
+                                if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
                                     if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
                                         Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
                                     }
