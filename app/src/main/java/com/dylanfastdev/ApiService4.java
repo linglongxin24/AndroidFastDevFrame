@@ -2,6 +2,8 @@ package com.dylanfastdev;
 
 import cn.bluemobi.dylan.http.download.ProgressResponseBody;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -10,7 +12,7 @@ import rx.Observable;
  */
 
 public interface ApiService4 {
-//    String BASE_URL = "http://tingapi.ting.baidu.com/";
+    //    String BASE_URL = "http://tingapi.ting.baidu.com/";
     String BASE_URL = "http://192.168.1.205:8081/campus/";
 
     /**
@@ -28,6 +30,7 @@ public interface ApiService4 {
     /**
      * 2.获取分类数据
      */
+    @FormUrlEncoded
     @POST("app/getsysUserExamInfo")
-    Observable<ResponseBody> getsysUserExamInfo();
+    Observable<ResponseBody> getsysUserExamInfo(@Field("p") String p);
 }

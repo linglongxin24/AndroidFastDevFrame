@@ -134,7 +134,7 @@ public class MainActivity extends BasePhotoActivity {
             }
         });
         Http.with(context)
-                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo())
+                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo("sss,中文"))
                 .setDataListener(new HttpCallBack() {
                     @Override
                     public void netOnSuccess(Map<String, Object> data) {
@@ -179,9 +179,8 @@ public class MainActivity extends BasePhotoActivity {
 //
 //                    }
 //                });
-        String s = "Advert" + "GetAdvert" + ApiService.secret;
-//        String s="Advert"+"GetAdvert"+"O]dWJ,[*g)%k\\\"?q~g6Co!`cQvV>>Ivw";
-        String sign = MD5Utils.md5(s);
+//        String s = "Advert" + "GetAdvert" + ApiService.secret;
+//        String sign = MD5Utils.md5(s);
 //        HttpUtils.getInstance().post(context,
 //                HttpUtils.getApiService(ApiService.class).getTopMove("Advert", "GetAdvert"),
 //                new HttpCallBack() {

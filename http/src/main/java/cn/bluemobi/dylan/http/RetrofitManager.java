@@ -8,7 +8,9 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -143,6 +145,7 @@ public class RetrofitManager {
                 mMessage.append("\n");
                 mMessage.append("请求大小：");
                 mMessage.append(convertFileSize(original.body().contentLength()));
+
                 Logger.d(mMessage.toString());
 
                 Request request = requestBuilder.build();
@@ -187,7 +190,12 @@ public class RetrofitManager {
                     FormBody oidFormBody = (FormBody) original.body();
                     for (int i = 0; i < oidFormBody.size(); i++) {
                         String name = oidFormBody.encodedName(i);
-                        String value = oidFormBody.encodedValue(i);
+                        String value = null;
+                        try {
+                            value = URLDecoder.decode( oidFormBody.encodedValue(i),"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
 //                        newFormBody.addEncoded(name, value);
                         if (mMessage.indexOf("=") != -1) {
                             mMessage.append("\n");
@@ -201,7 +209,12 @@ public class RetrofitManager {
                     MultipartBody multipartBody = (MultipartBody) original.body();
                     for (MultipartBody.Part part : multipartBody.parts()) {
                         String name = getPartHeaders(part);
-                        String value = getRequestBody(part);
+                        String value = null;
+                        try {
+                            value = URLDecoder.decode(  getRequestBody(part),"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
 //                        newFormBody.addEncoded(name, value);
                         if (mMessage.indexOf("=") != -1) {
                             mMessage.append("\n");

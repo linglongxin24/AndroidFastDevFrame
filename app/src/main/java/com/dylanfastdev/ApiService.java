@@ -22,9 +22,6 @@ public interface ApiService {
 //    Observable<Map<String, Object>> getTopMove(@Query("start") int start, @Query("count") int count);
 
     //    String baseUrl = "http://175.102.24.27:8912/api/";
-    String baseUrl = "http://workstation.365wanmeng.com:8019/api/";
-
-    String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
 
     @FormUrlEncoded
     @POST(" ")
