@@ -7,7 +7,8 @@ import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
 
 public class ReportByEmail {
     public static boolean sendEmail2(String title, String reportContent) {
-        MyMail m = new MyMail("android2dev@163.com", "android");
+//        MyMail m = new MyMail("android2dev@163.com", "android");
+        MyMail m = new MyMail("dylanandroid2dev@163.com", "dylanandroid2dev");
         m.set_host("smtp.163.com");
         m.set_port("25");
         m.set_debuggable(true);
@@ -17,7 +18,7 @@ public class ReportByEmail {
 //       toArr = new String[] {"13468857714@qq.com" };
         }
         m.set_to(toArr);
-        m.set_from("android2dev@163.com");
+        m.set_from("dylanandroid2dev@163.com");
         m.set_subject("【" + title + "】异常崩溃");
         m.setBody(reportContent.toString());
         try {

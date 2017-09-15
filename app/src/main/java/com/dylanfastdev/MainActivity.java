@@ -133,14 +133,14 @@ public class MainActivity extends BasePhotoActivity {
                 showDialog();
             }
         });
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo("sss,中文"))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-
-                    }
-                });
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo("sss,中文"))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//                });
 //       Http.with(context)
 //               .setObservable( Http.getApiService(ApiService4.class)
 //                       .getHomeData())

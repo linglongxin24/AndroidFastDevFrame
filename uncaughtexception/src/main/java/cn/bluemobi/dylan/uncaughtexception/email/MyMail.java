@@ -34,8 +34,8 @@
    public MyMail()
    {
      this._host = "smtp.qq.com";
-     this._port = "465";
-     this._sport = "465";
+     this._port = "587";
+     this._sport = "587";
      this._user = "";
      this._pass = "";
      this._from = "";
@@ -178,6 +178,7 @@
      if (this._auth)
        props.put("mail.smtp.auth", "true");
      props.put("mail.smtp.port", this._port);
+     props.put("mail.password", "dylanandroid2dev");
      props.put("mail.smtp.socketFactory.port", this._sport);
      props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
      props.put("mail.smtp.socketFactory.fallback", "false");

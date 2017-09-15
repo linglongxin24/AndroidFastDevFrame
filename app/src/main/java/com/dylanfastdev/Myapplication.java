@@ -22,7 +22,7 @@ public class Myapplication extends Application {
         Config.setIsImmersionStatus(false);
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
-        CustomActivityOnCrash.setEmailTo(new String[]{"appexception@163.com"});
+        CustomActivityOnCrash.setEmailTo(new String[]{"13468857714@qq.com"});
 
     }
 }
