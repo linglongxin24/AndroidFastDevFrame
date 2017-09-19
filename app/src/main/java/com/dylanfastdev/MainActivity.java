@@ -271,6 +271,7 @@ public class MainActivity extends BasePhotoActivity {
                 // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
                 String[] arr = new String[urls.size()];
                 arr = urls.toArray(arr);
+                intent.putExtra(ImagePagerActivity.EXTRA_IS_SHOW_SAVE_BUTTON, true);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, arr);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
                 startActivity(intent);
