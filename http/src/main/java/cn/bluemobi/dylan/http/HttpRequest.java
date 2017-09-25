@@ -161,7 +161,7 @@ public class HttpRequest {
 
                     @Override
                     public void onNext(ResponseBody result) {
-                        if(result instanceof ProgressResponseBody){
+                        if (result instanceof ProgressResponseBody) {
 
                         }
                         ArrayMap<String, Object> jsonBean;
@@ -181,6 +181,7 @@ public class HttpRequest {
 
                                 if (httpResponse != null) {
                                     httpResponse.netOnSuccess(data);
+                                    httpResponse.netOnSuccess(data, msg);
                                 }
                             } else {
                                 if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
@@ -190,6 +191,8 @@ public class HttpRequest {
                                 }
                                 if (httpResponse != null) {
                                     httpResponse.netOnOtherStatus(code, msg);
+                                    Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
+                                    httpResponse.netOnOtherStatus(code, msg, data);
                                 }
                             }
                         } catch (Exception e) {
