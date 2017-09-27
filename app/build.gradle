@@ -45,4 +45,5 @@ dependencies {
     compile project(':smartwebview')
     compile project(':http')
     compile project(':base')
+    compile project(':pay')
 }

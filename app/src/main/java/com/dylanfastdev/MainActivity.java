@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
@@ -32,10 +33,10 @@ import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.http.MessageManager;
-import cn.bluemobi.dylan.http.dialog.LoadingDialog;
-import cn.bluemobi.dylan.httputils.MD5Utils;
+import cn.bluemobi.dylan.pay.AliPay;
+import cn.bluemobi.dylan.pay.PayListener;
+import cn.bluemobi.dylan.pay.alipay.OrderInfoUtil2_0;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -50,6 +51,7 @@ public class MainActivity extends BasePhotoActivity {
     private GridViewAddImagesAdapter gridViewAddImgesAdpter;
     private SmartWebView smartWebView;
     private CircleImageView ci;
+    private Button bt_pay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class MainActivity extends BasePhotoActivity {
 //        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
+        testPay();
 //        new iOSTwoButtonDialog(this)
 //                .setCenterCustomView(R.layout.customview)
 //                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
@@ -75,6 +78,42 @@ public class MainActivity extends BasePhotoActivity {
 //                showToast("点击了确定按钮");
 //            }
 //        }).show();
+    }
+
+    private void testPay() {
+        bt_pay = (Button) findViewById(R.id.bt_pay);
+        bt_pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AliPay(MainActivity.this
+                        , ""
+                        , ""
+                        , "支付宝测试"
+                        , "支付商品"
+                        , OrderInfoUtil2_0.getOutTradeNo()
+                        , "0.02"
+                        , "http://115.28.228.110:8080/shucai/InfoUserRecharge_infoPayNotify.action"
+                ).pay(new PayListener() {
+                    @Override
+                    public void paySuccess() {
+                        Toast.makeText(MainActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        Logger.d("支付成功");
+                    }
+
+                    @Override
+                    public void payFailed() {
+                        Toast.makeText(MainActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                        Logger.d("支付失败");
+                    }
+
+                    @Override
+                    public void payCancel() {
+                        Toast.makeText(MainActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
+                        Logger.d("支付取消");
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -255,7 +294,7 @@ public class MainActivity extends BasePhotoActivity {
                 datas.add("选择4");
                 datas.add("选择4");
                 datas.add("选择4");
-                SelectPopupWindow selectPopupWind = new SelectPopupWindow(MainActivity.this,bt, new CommonAdapter<String>(context, datas, R.layout.item) {
+                SelectPopupWindow selectPopupWind = new SelectPopupWindow(MainActivity.this, bt, new CommonAdapter<String>(context, datas, R.layout.item) {
                     @Override
                     protected void convertView(View item, String s) {
 
