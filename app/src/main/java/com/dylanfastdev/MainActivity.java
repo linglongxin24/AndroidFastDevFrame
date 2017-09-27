@@ -242,7 +242,20 @@ public class MainActivity extends BasePhotoActivity {
                 datas.add("选择2");
                 datas.add("选择3");
                 datas.add("选择4");
-                SelectPopupWindow selectPopupWind = new SelectPopupWindow(bt, new CommonAdapter<String>(context, datas, R.layout.item) {
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                datas.add("选择4");
+                SelectPopupWindow selectPopupWind = new SelectPopupWindow(MainActivity.this,bt, new CommonAdapter<String>(context, datas, R.layout.item) {
                     @Override
                     protected void convertView(View item, String s) {
 

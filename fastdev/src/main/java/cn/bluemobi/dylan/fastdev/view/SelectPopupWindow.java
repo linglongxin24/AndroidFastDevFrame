@@ -1,12 +1,15 @@
 package cn.bluemobi.dylan.fastdev.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
@@ -23,6 +26,7 @@ import cn.bluemobi.dylan.fastdev.utils.Tools;
  */
 
 public class SelectPopupWindow extends PopupWindow {
+    private Activity activity;
     private Context context;
     private View showAsDropDownView;
     private ListAdapter listAdapter;
@@ -37,7 +41,8 @@ public class SelectPopupWindow extends PopupWindow {
      * @param listAdapter        下拉列表数据适配器
      * @param outsideView        外部含有遮罩层的FrameLayout
      */
-    public SelectPopupWindow(View showAsDropDownView, ListAdapter listAdapter, FrameLayout outsideView) {
+    public SelectPopupWindow(Activity activity,View showAsDropDownView, ListAdapter listAdapter, FrameLayout outsideView) {
+        this.activity = activity;
         this.showAsDropDownView = showAsDropDownView;
         this.context = showAsDropDownView.getContext();
         this.listAdapter = listAdapter;
@@ -49,7 +54,11 @@ public class SelectPopupWindow extends PopupWindow {
      * 初始化PopupWindow
      */
     private void init() {
-        popupWindow = new PopupWindow(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;     // 屏幕宽度（像素）
+        int height = metric.heightPixels;   // 屏幕高度（像素）
+        popupWindow = new PopupWindow(ViewGroup.LayoutParams.MATCH_PARENT, height/2);
         listView = new ListView(context);
         listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         listView.setDivider(new ColorDrawable(context.getResources().getColor(android.R.color.darker_gray)));
@@ -61,13 +70,18 @@ public class SelectPopupWindow extends PopupWindow {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-
         popupWindow.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
 
                 if (outsideView != null) {
-                    outsideView.setForeground(new ColorDrawable(Color.TRANSPARENT));
+                    outsideView.setAlpha(1f);
+//                    outsideView.setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+//
+//                    WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+//                    lp.alpha = 1f;
+//                    activity.getWindow().setAttributes(lp);
                 }
             }
         });
@@ -92,8 +106,14 @@ public class SelectPopupWindow extends PopupWindow {
         }
         if (!popupWindow.isShowing()) {
             popupWindow.showAsDropDown(showAsDropDownView);
+
+            // 设置背景颜色变暗
+//            WindowManager.LayoutParams lp = activity. getWindow().getAttributes();
+//            lp.alpha = 0.7f;
+//            activity.getWindow().setAttributes(lp);
+            outsideView.setAlpha(0.5f);
             if (outsideView != null) {
-                outsideView.setForeground(new ColorDrawable(Color.parseColor("#7F4c4c4c")));
+                outsideView.setForeground(new ColorDrawable(Color.parseColor("#00B1B1B1")));
             }
         }
         return this;
