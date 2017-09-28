@@ -92,7 +92,8 @@ public class MainActivity extends BasePhotoActivity {
                         , "支付商品"
                         , OrderInfoUtil2_0.getOutTradeNo()
                         , "0.02"
-                        , "http://115.28.228.110:8080/shucai/InfoUserRecharge_infoPayNotify.action"
+                        , ""
+                        , true
                 ).pay(new PayListener() {
                     @Override
                     public void paySuccess() {

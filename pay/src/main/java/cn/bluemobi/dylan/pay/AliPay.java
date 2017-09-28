@@ -53,10 +53,16 @@ public class AliPay {
      * 回调地址
      */
     private String notify_url;
-
+    /**
+     * 是否使用rsa2加密
+     */
+    private boolean rsa2;
+    /**
+     * 支付监听
+     */
     private PayListener payListener;
 
-    public AliPay(Activity mActivity, String app_id, String RSA_PRIVATE, String subject, String body, String out_trade_no, String pay_amount, String notify_url) {
+    public AliPay(Activity mActivity, String app_id, String RSA_PRIVATE, String subject, String body, String out_trade_no, String pay_amount, String notify_url, boolean rsa2) {
         this.mActivity = mActivity;
         this.app_id = app_id;
         this.RSA_PRIVATE = RSA_PRIVATE;
@@ -65,11 +71,12 @@ public class AliPay {
         this.out_trade_no = out_trade_no;
         this.pay_amount = pay_amount;
         this.notify_url = notify_url;
+        this.rsa2 = rsa2;
     }
 
     public void pay(PayListener payListener) {
         this.payListener = payListener;
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
         String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
         final String orderInfo = orderParam + "&" + sign;

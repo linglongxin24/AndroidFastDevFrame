@@ -66,7 +66,7 @@ public class OrderInfoUtil2_0 {
      *
      * @return
      */
-    public static Map<String, String> buildOrderParamMap(String app_id, String out_trade_no, String notify_url, String money, String subject, String body) {
+    public static Map<String, String> buildOrderParamMap(String app_id, String out_trade_no, String notify_url, String money, String subject, String body, boolean rsa2) {
         Map<String, String> keyValues = new HashMap<String, String>();
 
         keyValues.put("app_id", app_id);
@@ -77,7 +77,7 @@ public class OrderInfoUtil2_0 {
 
         keyValues.put("method", "alipay.trade.app.pay");
 
-        keyValues.put("sign_type", "RSA");
+        keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
         keyValues.put("timestamp", DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date()).toString());
 
@@ -141,7 +141,7 @@ public class OrderInfoUtil2_0 {
      * @param map 待签名授权信息
      * @return
      */
-    public static String getSign(Map<String, String> map,String RSA_PRIVATE) {
+    public static String getSign(Map<String, String> map, String RSA_PRIVATE) {
         List<String> keys = new ArrayList<String>(map.keySet());
         // key排序
         Collections.sort(keys);
@@ -158,7 +158,7 @@ public class OrderInfoUtil2_0 {
         String tailValue = map.get(tailKey);
         authInfo.append(buildKeyValue(tailKey, tailValue, false));
 
-        String oriSign = SignUtils.sign(authInfo.toString(),RSA_PRIVATE);
+        String oriSign = SignUtils.sign(authInfo.toString(), RSA_PRIVATE);
         String encodedSign = "";
 
         try {
