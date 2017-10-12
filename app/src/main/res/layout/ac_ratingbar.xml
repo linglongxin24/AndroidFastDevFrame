@@ -8,7 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+<EditText
+    android:layout_width="match_parent"
+    android:text="请输入"
+    android:layout_height="50dp" />
         <cn.bluemobi.dylan.fastdev.view.RatingBar
             android:id="@+id/rb"
             android:layout_width="360dp"
