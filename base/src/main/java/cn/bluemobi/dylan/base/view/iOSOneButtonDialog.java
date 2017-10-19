@@ -5,9 +5,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.bluemobi.dylan.base.R;
@@ -18,6 +20,7 @@ import cn.bluemobi.dylan.base.R;
 
 public class iOSOneButtonDialog extends Dialog {
 
+    private final LinearLayout ll_content;
     private final TextView textView;
     private final TextView tv_title;
     private final Button btn_one;
@@ -31,6 +34,7 @@ public class iOSOneButtonDialog extends Dialog {
         Window dialogWindow = getWindow();
         dialogWindow.setGravity(Gravity.CENTER);
 
+        ll_content = (LinearLayout) findViewById(R.id.ll_content);
         textView = (TextView) findViewById(R.id.text_message);
         tv_title = (TextView) findViewById(R.id.tv_title);
         btn_one = (Button) findViewById(R.id.btn_one);
@@ -61,6 +65,10 @@ public class iOSOneButtonDialog extends Dialog {
         return this;
     }
 
+    public iOSOneButtonDialog setCenterCustomView(int layoutId) {
+        LayoutInflater.from(getContext()).inflate(layoutId, ll_content);
+        return this;
+    }
     public iOSOneButtonDialog setButtonOnClickListener(final View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
         return this;
