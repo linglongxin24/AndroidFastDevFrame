@@ -89,6 +89,12 @@ public class HttpRequest {
         isShowOtherStatusMessage = false;
         return this;
     }
+    private boolean isShowFailMessage = true;
+
+    public HttpRequest hideFailMessage() {
+        isShowFailMessage = false;
+        return this;
+    }
 
     private boolean canCancel = true;
 
@@ -151,7 +157,9 @@ public class HttpRequest {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                        if(isShowFailMessage){
+                            Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                        }
                         if (httpResponse != null) {
                             httpResponse.netOnFailure(e);
                         }
@@ -196,7 +204,7 @@ public class HttpRequest {
                                 }
                             }
                         } catch (Exception e) {
-                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO) {
+                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO&&isShowFailMessage) {
                                 Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
                             }
                             if (httpResponse != null) {
