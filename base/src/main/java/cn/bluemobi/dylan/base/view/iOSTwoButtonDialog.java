@@ -61,6 +61,10 @@ public class iOSTwoButtonDialog extends Dialog {
         });
     }
 
+    public iOSTwoButtonDialog setMessageGrivity(int gravity) {
+        textView.setGravity(gravity);
+        return this;
+    }
     public iOSTwoButtonDialog setLeftButtonText(String text) {
         btn_one.setText(text);
         return this;

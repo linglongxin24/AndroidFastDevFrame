@@ -49,6 +49,11 @@ public class iOSOneButtonDialog extends Dialog {
         });
     }
 
+    public iOSOneButtonDialog setMessageGrivity(int gravity) {
+        textView.setGravity(gravity);
+        return this;
+    }
+
     public iOSOneButtonDialog setTitle(String title) {
         tv_title.setText(title);
         return this;
@@ -69,6 +74,7 @@ public class iOSOneButtonDialog extends Dialog {
         LayoutInflater.from(getContext()).inflate(layoutId, ll_content);
         return this;
     }
+
     public iOSOneButtonDialog setButtonOnClickListener(final View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
         return this;
