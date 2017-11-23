@@ -216,6 +216,40 @@ public class JsonParse {
         }
     }
 
+    /**
+     * 获取map中的boolean值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的boolean值
+     */
+    public static boolean getBoolean(Map<String, Object> map, String key) {
+        return getBoolean(map, key, false);
+    }
+
+    /**
+     * 获取map中的boolean值
+     *
+     * @param map          map
+     * @param key          map的key
+     * @param defaultValue 默认值
+     * @return map的boolean值
+     */
+    public static boolean getBoolean(Map<String, Object> map, String key, boolean defaultValue) {
+        try {
+            return Boolean.parseBoolean(getString(map, key));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return defaultValue;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return defaultValue;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
 
     /**
      * 获取map中的double值
