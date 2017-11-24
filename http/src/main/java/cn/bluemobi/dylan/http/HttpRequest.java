@@ -89,6 +89,7 @@ public class HttpRequest {
         isShowOtherStatusMessage = false;
         return this;
     }
+
     private boolean isShowFailMessage = true;
 
     public HttpRequest hideFailMessage() {
@@ -157,7 +158,7 @@ public class HttpRequest {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        if(isShowFailMessage){
+                        if (isShowFailMessage) {
                             Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
                         }
                         if (httpResponse != null) {
@@ -178,15 +179,13 @@ public class HttpRequest {
                             String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
 
-                            if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
-                                if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
-                                    Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
                             if (code == JsonParse.getJsonParse().getSuccessCode()) {
+                                if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
+                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                        Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
                                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
-
                                 if (httpResponse != null) {
                                     httpResponse.netOnSuccess(data);
                                     httpResponse.netOnSuccess(data, msg);
@@ -204,7 +203,7 @@ public class HttpRequest {
                                 }
                             }
                         } catch (Exception e) {
-                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO&&isShowFailMessage) {
+                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
                                 Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
                             }
                             if (httpResponse != null) {
