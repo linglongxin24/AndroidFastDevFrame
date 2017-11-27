@@ -8,10 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-<EditText
-    android:layout_width="match_parent"
-    android:text="请输入"
-    android:layout_height="50dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="请输入" />
+
         <cn.bluemobi.dylan.fastdev.view.RatingBar
             android:id="@+id/rb"
             android:layout_width="360dp"
@@ -62,13 +64,15 @@
             android:verticalSpacing="10dp"></cn.bluemobi.dylan.fastdev.view.MyGridView>
 
         <Button
-            android:onClick="textException"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="textException"
             android:text="测试异常" />
+
         <com.dylanfastdev.MyView
             android:layout_width="200px"
             android:layout_height="200px" />
+
         <cn.bluemobi.dylan.smartwebview.SmartWebView
             android:id="@+id/smartWebView"
             android:layout_width="match_parent"
@@ -80,5 +84,10 @@
             android:layout_height="wrap_content"
             android:text="支付宝支付" />
 
+        <Button
+            android:id="@+id/bt_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="仿iOS弹框" />
     </LinearLayout>
 </ScrollView>

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cn.bluemobi.dylan.base.view.iOSSelectDialog;
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
@@ -52,6 +53,7 @@ public class MainActivity extends BasePhotoActivity {
     private SmartWebView smartWebView;
     private CircleImageView ci;
     private Button bt_pay;
+    private Button bt_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MainActivity extends BasePhotoActivity {
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
         testPay();
+        testiOSDialog();
 //        new iOSTwoButtonDialog(this)
 //                .setCenterCustomView(R.layout.customview)
 //                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
@@ -78,6 +81,29 @@ public class MainActivity extends BasePhotoActivity {
 //                showToast("点击了确定按钮");
 //            }
 //        }).show();
+    }
+
+    /**
+     * 仿iOS对话框
+     */
+    private void testiOSDialog() {
+        Button bt_dialog= (Button) findViewById(R.id.bt_dialog);
+        bt_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new iOSSelectDialog(MainActivity.this)
+                        .setTitle("请选择邀请方式")
+                        .addMenuText("手机号")
+                        .addMenuText("微信")
+                        .setMenuClickLisentner(new iOSSelectDialog.MenuClick() {
+                            @Override
+                            public void onMenuClick(String menuText) {
+Logger.d("menuText="+menuText);
+                            }
+                        }).show();
+
+            }
+        });
     }
 
     private void testPay() {
