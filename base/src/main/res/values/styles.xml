@@ -25,7 +25,12 @@
         <item name="android:textColor">@android:color/black</item>
         <!--recycleview分割线-->
 
-        <!--侵入式状态栏-->
+    </style>
+
+    <!--<style name="AppTheme" parent="@style/BaseAppTheme"></style>-->
+
+    <!--侵入式状态栏-->
+    <style name="immersion_status">
         <item name="android:clipToPadding">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:layout_width">match_parent</item>
@@ -34,19 +39,6 @@
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
     </style>
-
-    <!--<style name="AppTheme" parent="@style/BaseAppTheme"></style>-->
-
-    <!--侵入式状态栏-->
-    <!--<style name="immersion_status">-->
-        <!--<item name="android:clipToPadding">true</item>-->
-        <!--<item name="android:fitsSystemWindows">true</item>-->
-        <!--<item name="android:layout_width">match_parent</item>-->
-        <!--<item name="android:layout_height">match_parent</item>-->
-        <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>-->
-        <!--<item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>-->
-        <!--<item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimaryDark</item>-->
-    <!--</style>-->
     <!--自定义对话框-->
     <style name="custom_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
