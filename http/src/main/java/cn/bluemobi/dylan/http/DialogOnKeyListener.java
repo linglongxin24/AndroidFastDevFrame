@@ -32,15 +32,15 @@ public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
         Log.d("onKey", "onKey");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (canCancel) {
-                Log.d("onKey", "keyCode == KeyEvent.KEYCODE_BACK");
-                if (subscribe != null && !subscribe.isUnsubscribed()) {
-                    Log.d("onKey", "subscribe != null && subscribe.isUnsubscribed()");
-                    subscribe.unsubscribe();
-                }
                 if (this.dialog != null
                         && this.dialog.isShowing()) {
                     this.dialog.dismiss();
                     return true;
+                }
+                Log.d("onKey", "keyCode == KeyEvent.KEYCODE_BACK");
+                if (subscribe != null && !subscribe.isUnsubscribed()) {
+                    Log.d("onKey", "subscribe != null && subscribe.isUnsubscribed()");
+                    subscribe.unsubscribe();
                 }
             } else {
                 return true;

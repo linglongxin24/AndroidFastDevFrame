@@ -1,10 +1,13 @@
 package cn.bluemobi.dylan.http.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -58,9 +61,7 @@ public class LoadingDialog {
     }
 
     public void dismiss() {
-        if (dialog != null) {
-            dialog.dismiss();
-        }
+        hideProgress();
     }
 
     public boolean isShowing() {
@@ -70,5 +71,30 @@ public class LoadingDialog {
             return false;
         }
 
+    }
+
+    public void hideProgress() {
+        if (dialog != null) {
+            //check if dialog is showing.
+            if (dialog.isShowing()) {
+
+                //get the Context object that was used to great the dialog
+                Context context = ((ContextWrapper) dialog.getContext()).getBaseContext();
+
+                //if the Context used here was an activity AND it hasn't been finished or destroyed
+                //then dismiss it
+                if (context instanceof Activity) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                            dialog.dismiss();
+                        }
+                    }
+                } else {
+                    //if the Context used wasnt an Activity, then dismiss it too
+                    dialog.dismiss();
+                }
+            }
+            dialog = null;
+        }
     }
 } 
