@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.logging.Logger;
+
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.R;
 
@@ -51,7 +53,7 @@ public class LoadingDialog {
             //then dismiss it
             if (context instanceof Activity) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                    if (!((Activity) context).isFinishing()) {
                         dialog.show();
                     }
                 }

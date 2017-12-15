@@ -17,7 +17,7 @@ import rx.Observable;
  */
 
 public interface ApiService {
-//    String baseUrl = "https://api.douban.com/v2/movie/";
+    String baseUrl = "https://api.douban.com/v2/movie/";
 //    @POST("top250")
 //    Observable<Map<String, Object>> getTopMove(@Query("start") int start, @Query("count") int count);
 
@@ -50,4 +50,15 @@ public interface ApiService {
             , @Part("attachment_count") RequestBody attachment_count
             , @Part("attachment0") RequestBody attachment
     );
+    /**
+     * 3.登录
+     *
+     * @param username uname
+     * @param password password
+     * @return Observable
+     */
+    @FormUrlEncoded
+    @POST("http://192.168.1.110:8080/campus/app/appstu/login")
+    Observable<ResponseBody> login(@Field("uname") String username,
+                                   @Field("pwd") String password);
 }

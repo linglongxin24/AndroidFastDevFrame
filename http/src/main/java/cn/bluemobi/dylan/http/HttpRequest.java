@@ -170,6 +170,9 @@ public class HttpRequest {
 
                     @Override
                     public void onNext(ResponseBody result) {
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
                         if (result instanceof ProgressResponseBody) {
 
                         }

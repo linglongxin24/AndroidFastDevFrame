@@ -2,6 +2,8 @@ package com.dylanfastdev;
 
 import android.app.Application;
 
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.MessageManager;
 import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
 import com.orhanobut.logger.Logger;
 
@@ -23,6 +25,11 @@ public class Myapplication extends Application {
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
         CustomActivityOnCrash.setEmailTo(new String[]{"13468857714@qq.com"});
+        //http请求初始化设置
+        Http.getHttp().setDebugMode(BuildConfig.DEBUG);
+        Http.getHttp().init(ApiService.class, ApiService.baseUrl, "returnCode", "data", "returnMsg", 200);
+        Http.getHttp().setShowMessageModel(MessageManager.MessageModel.All);
+        Http.getHttp().setErrorMessage("网络开小差了");
 
     }
 }
