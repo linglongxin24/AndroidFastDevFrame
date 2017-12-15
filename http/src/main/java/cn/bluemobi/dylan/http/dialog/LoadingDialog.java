@@ -44,7 +44,21 @@ public class LoadingDialog {
             tv_text = (TextView) dialog.findViewById(R.id.tv_text);
         }
         if (!dialog.isShowing()) {
-            dialog.show();
+            //get the Context object that was used to great the dialog
+            Context context = ((ContextWrapper) dialog.getContext()).getBaseContext();
+
+            //if the Context used here was an activity AND it hasn't been finished or destroyed
+            //then dismiss it
+            if (context instanceof Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        dialog.show();
+                    }
+                }
+            } else {
+                //if the Context used wasnt an Activity, then dismiss it too
+                dialog.show();
+            }
         }
         return dialog;
     }
