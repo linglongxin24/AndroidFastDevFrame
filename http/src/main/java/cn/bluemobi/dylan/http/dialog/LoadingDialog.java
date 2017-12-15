@@ -94,7 +94,6 @@ public class LoadingDialog {
                     dialog.dismiss();
                 }
             }
-            dialog = null;
         }
     }
 } 
