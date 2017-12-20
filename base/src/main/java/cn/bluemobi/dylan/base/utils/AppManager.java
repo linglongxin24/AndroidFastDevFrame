@@ -3,9 +3,11 @@ package cn.bluemobi.dylan.base.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -15,11 +17,13 @@ import java.util.Stack;
  */
 public class AppManager {
 
-    private static Stack<Activity> activityStack;
+    private Stack<Activity> activityStack;
     private static AppManager instance;
+    private List<Fragment> fragments;
 
     private AppManager() {
         activityStack = new Stack<Activity>();
+        fragments = new ArrayList<>();
     }
 
     /**
@@ -51,6 +55,7 @@ public class AppManager {
     public void addActivity(Activity activity) {
         activityStack.add(activity);
     }
+
 
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
@@ -137,7 +142,7 @@ public class AppManager {
     }
 
     /**
-     * 结束指定类名的Activity
+     * 获取指定类名的Activity
      */
     public <T extends Activity> T getActivity(Class<?> cls) {
         for (Activity activity : activityStack) {
@@ -203,6 +208,41 @@ public class AppManager {
                 }
             }
         }
+    }
+
+    /**
+     * 添加Fragment到堆栈
+     */
+    public void addFragment(Fragment fragment) {
+        fragments.add(fragment);
+    }
+
+
+    /**
+     * 从栈中移除指定的Fragment
+     *
+     * @param fragment
+     */
+    public void removeFragment(Fragment fragment) {
+        if (fragments != null) {
+            try {
+                fragments.remove(fragment);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 获取指定类名的Fragment
+     */
+    public <T extends Fragment> T getFragment(Class<?> cls) {
+        for (Fragment fragment : fragments) {
+            if (fragment.getClass().equals(cls)) {
+                return (T) fragment;
+            }
+        }
+        return null;
     }
 
     /**

@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.bluemobi.dylan.base.utils.AppManager;
+
 /**
  * cn.bluemobi.dylan.fastdev.base.BaseFragment
  * * Fragment预加载问题的解决方案：
@@ -47,6 +49,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
+        AppManager.getAppManager().addFragment(this);
         isInit = true;
         mContext = getContext();
         initView(view);
@@ -92,6 +95,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      */
     @Override
     public void onDestroyView() {
+        AppManager.getAppManager().removeFragment(this);
         super.onDestroyView();
         isInit = false;
         isLoad = false;
