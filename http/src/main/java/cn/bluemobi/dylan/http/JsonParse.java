@@ -342,8 +342,8 @@ public class JsonParse {
      * @param key map的key
      * @return map的值
      */
-    public static List<Map<String, Object>> getList(Map<String, Object> map, String key) {
-        List<Map<String, Object>> list = new ArrayList<>();
+    public static <T> List<T> getList(Map<String, Object> map, String key) {
+        List<T> list = new ArrayList<>();
         if (map == null || map.size() == 0) {
             return list;
         } else if (isNull(key)) {
@@ -354,7 +354,7 @@ public class JsonParse {
                 return list;
             } else {
                 if (data instanceof List) {
-                    return (List<Map<String, Object>>) data;
+                    return (List<T>) data;
                 } else {
                     return list;
                 }

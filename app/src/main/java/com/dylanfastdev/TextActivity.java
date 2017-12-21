@@ -6,11 +6,13 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.JsonParse;
 
 /**
  * Created by lenovo on 2017/11/28.
@@ -41,6 +43,8 @@ public class TextActivity extends BaseActivity {
                 .setDataListener(new HttpCallBack() {
                     @Override
                     public void netOnSuccess(Map<String, Object> data) {
+                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
+                      List<String> s= JsonParse.getList(data, "data");
                         startActivity(new Intent(mContext,MainActivity.class));
                         finish();
                     }
