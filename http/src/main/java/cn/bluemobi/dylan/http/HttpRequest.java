@@ -157,7 +157,9 @@ public class HttpRequest {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        if(Http.getHttp().isDebugMode()){
+                            e.printStackTrace();
+                        }
                         if (isShowFailMessage) {
                             Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
                         }
@@ -212,7 +214,9 @@ public class HttpRequest {
                             if (httpResponse != null) {
                                 httpResponse.netOnFailure(e);
                             }
-                            e.printStackTrace();
+                            if(Http.getHttp().isDebugMode()){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });

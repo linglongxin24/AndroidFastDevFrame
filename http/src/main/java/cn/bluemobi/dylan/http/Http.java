@@ -69,6 +69,7 @@ public class Http {
         return http;
     }
 
+    private boolean debugMode;
 
     /**
      * 4.设置是否启用日志【可选】
@@ -80,13 +81,16 @@ public class Http {
         return http;
     }
 
+    public boolean isDebugMode() {
+        return debugMode;
+    }
 
     /**
      * 5.设置错误消息文字【可选】
      *
      * @param errorMessage
      */
-    public Http setErrorMessage(String  errorMessage) {
+    public Http setErrorMessage(String errorMessage) {
         MessageManager.getMessageManager().setErrorMessage(errorMessage);
         return http;
     }

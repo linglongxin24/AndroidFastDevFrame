@@ -56,7 +56,7 @@ public class RetrofitManager {
     private volatile static RetrofitManager singleton;
     private OkHttpClient mOkHttpClient;
     private static Retrofit retrofit;
-    private static Object apiService;
+    private  Object apiService;
     private Retrofit.Builder retrofitBuilder;
 
     private RetrofitManager() {
@@ -228,8 +228,9 @@ public class RetrofitManager {
             }
         };
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //设置超时
         builder.readTimeout(3, TimeUnit.MINUTES)
-                .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
+                .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES);
         /**添加公共参数拦截器**/
         builder.addInterceptor(commParamsIntInterceptor);
         if (debugMode) {

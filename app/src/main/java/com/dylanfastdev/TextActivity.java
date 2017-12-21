@@ -44,7 +44,6 @@ public class TextActivity extends BaseActivity {
                         startActivity(new Intent(mContext,MainActivity.class));
                         finish();
                     }
-
                     @Override
                     public void netOnFinish() {
                         super.netOnFinish();
