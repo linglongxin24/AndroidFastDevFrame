@@ -13,6 +13,7 @@ import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.http.JsonParse;
+import cn.bluemobi.dylan.pay.wechatpay.PayActivity;
 
 /**
  * Created by lenovo on 2017/11/28.
@@ -36,23 +37,24 @@ public class TextActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        Http.with(mContext)
-                .setObservable(
-                        Http.getApiService(ApiService.class)
-                                .login("17010120022", "111111"))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
-                      List<String> s= JsonParse.getList(data, "data");
-                        startActivity(new Intent(mContext,MainActivity.class));
-                        finish();
-                    }
-                    @Override
-                    public void netOnFinish() {
-                        super.netOnFinish();
-                    }
-                });
+        startActivity(new Intent(mContext, PayActivity.class));
+//        Http.with(mContext)
+//                .setObservable(
+//                        Http.getApiService(ApiService.class)
+//                                .login("17010120022", "111111"))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
+//                      List<String> s= JsonParse.getList(data, "data");
+//                        startActivity(new Intent(mContext,MainActivity.class));
+//                        finish();
+//                    }
+//                    @Override
+//                    public void netOnFinish() {
+//                        super.netOnFinish();
+//                    }
+//                });
     }
 
     @Override
