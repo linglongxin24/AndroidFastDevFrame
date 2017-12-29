@@ -74,12 +74,26 @@ public class AliPay {
         this.rsa2 = rsa2;
     }
 
+    private String orderInfo;
+
+    /**
+     * 构造函数，服务端返回的订单信息
+     *
+     * @param orderInfo 订单信息
+     */
+    public AliPay(Activity mActivity, String orderInfo) {
+        this.mActivity = mActivity;
+        this.orderInfo = orderInfo;
+    }
+
     public void pay(PayListener payListener) {
         this.payListener = payListener;
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
-        String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
-        String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
-        final String orderInfo = orderParam + "&" + sign;
+        if (TextUtils.isEmpty(orderInfo)) {
+            Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
+            String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
+            String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
+            orderInfo = orderParam + "&" + sign;
+        }
         try {
             Logger.d("支付宝订单信息orderInfo=" + URLDecoder.decode(orderInfo, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -103,6 +117,7 @@ public class AliPay {
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
+        @Override
         @SuppressWarnings("unused")
         public void handleMessage(Message msg) {
             @SuppressWarnings("unchecked")
@@ -110,21 +125,24 @@ public class AliPay {
             Logger.d("payResult=" + payResult);
             /**
              对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+             同步返回需要验证的信息
+             该笔订单真实的支付结果，需要依赖服务端的异步通知。
              */
-            String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+            String resultInfo = payResult.getResult();
             String resultStatus = payResult.getResultStatus();
             // 判断resultStatus 为9000则代表支付成功
             if (TextUtils.equals(resultStatus, "9000")) {
-                // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                //成功
                 if (payListener != null) {
                     payListener.paySuccess();
                 }
-            } else if (TextUtils.equals(resultStatus, "6001")) {//取消
+            } else if (TextUtils.equals(resultStatus, "6001")) {
+                //取消
                 if (payListener != null) {
                     payListener.payCancel();
                 }
             } else {
-                // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                //失败
                 if (payListener != null) {
                     payListener.payFailed();
                 }
