@@ -24,14 +24,7 @@
 
 
         <activity
-            android:name=".wechatpay.PayActivity"
-            android:label="@string/app_name" />
-
-        <receiver android:name=".wechatpay.AppRegister">
-            <intent-filter>
-                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
-            </intent-filter>
-        </receiver>
+            android:name=".wechatpay.PayActivity" />
 
     </application>
 

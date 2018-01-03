@@ -2,7 +2,9 @@ package cn.bluemobi.dylan.pay;
 
 /**
  * 支付回调
- * Created by ydl on 2017/9/27.
+ *
+ * @author ydl
+ * @date 2017/9/27
  */
 
 public interface PayListener {

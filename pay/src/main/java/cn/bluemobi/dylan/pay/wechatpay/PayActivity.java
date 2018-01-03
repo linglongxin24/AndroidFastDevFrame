@@ -89,7 +89,8 @@ public class PayActivity extends Activity {
                         req.timeStamp = json.getString("timestamp");
                         req.packageValue = json.getString("package");
                         req.sign = json.getString("sign");
-                        req.extData = "app data"; // optional
+                        // optional
+                        req.extData = "app data";
                         Toast.makeText(PayActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
                         // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
                         api.sendReq(req);

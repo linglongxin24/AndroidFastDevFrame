@@ -2,10 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     style="@style/NavPage">
-    
-    <TextView
-        style="@style/TitleText"
-        android:text="@string/pay_by_wx_title"/>
+
     
     <Button
         android:id="@+id/appay_btn"
