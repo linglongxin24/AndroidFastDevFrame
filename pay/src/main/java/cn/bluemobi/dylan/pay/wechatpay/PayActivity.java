@@ -19,7 +19,10 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import cn.bluemobi.dylan.pay.R;
+import cn.bluemobi.dylan.pay.WeChatPay;
 
 public class PayActivity extends Activity {
 
@@ -107,4 +110,5 @@ public class PayActivity extends Activity {
             }
         }
     };
+
 }

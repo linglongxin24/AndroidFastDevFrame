@@ -145,7 +145,7 @@ public class URLConnectionUtils {
             String baseUrl = httpUrl;
 
             String params = entity;
-            System.out.println("Post方式请求地址httpUrl--->" + params);
+            System.out.println("Post方式请求地址httpUrl--->" + httpUrl);
             System.out.println("Post方式请求参数params--->" + params);
             // 请求的参数转换为byte数组
             byte[] postData = params.getBytes();
@@ -214,31 +214,6 @@ public class URLConnectionUtils {
             is.close();
             byte[] byteArray = baos.toByteArray();
             return new String(byteArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    /**
-     * 将输入流转换成字符串
-     *
-     * @param is 从网络获取的输入流
-     * @return
-     */
-    private static byte[] streamToByteArray(InputStream is) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = 0;
-            while ((len = is.read(buffer)) != -1) {
-                baos.write(buffer, 0, len);
-            }
-            baos.close();
-            is.close();
-            byte[] byteArray = baos.toByteArray();
-            return byteArray;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

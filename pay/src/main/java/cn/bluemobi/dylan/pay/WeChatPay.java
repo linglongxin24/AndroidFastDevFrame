@@ -14,12 +14,16 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.StringReader;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
-import cn.bluemobi.dylan.pay.wechatpay.MD5;
 import cn.bluemobi.dylan.pay.wechatpay.URLConnectionUtils;
 
 /**
@@ -69,21 +73,21 @@ public class WeChatPay {
      * 微信支付统一下单接口地址: https://api.mch.weixin.qq.com/pay/unifiedorder
      *
      * @param appId        在微信开发平台生成的AppId
-     * @param partnerId    商户ID
+     * @param mch_id       商户ID
      * @param partnerKey   在商户平台生成的密钥
      * @param bodyString   商品描述交易描述。例如：腾讯充值中心-QQ会员充值
      * @param out_trade_no 服务端返回的支付订单号
      * @param total_fee    订单金额，单位分
      * @param notifyUrl    微信回调服务器接口地址
      */
-    public void pay(final String appId, final String partnerId, final String partnerKey, final String bodyString, final String out_trade_no, final String total_fee, final String notifyUrl) {
+    public void pay(final String appId, final String mch_id, final String partnerKey, final String bodyString, final String out_trade_no, final String total_fee, final String notifyUrl) {
         Toast.makeText(mContext, "获取订单中...", Toast.LENGTH_SHORT).show();
         new AsyncTask<Void, Void, Map<String, String>>() {
             @Override
             protected Map<String, String> doInBackground(Void... voids) {
                 // 统一下单接口地址
                 String url = String.format(WECHAT_UNIFIED_ORDER);
-                String result = URLConnectionUtils.requestPost(url, getProductArgs(appId, partnerId, partnerKey, bodyString, out_trade_no, total_fee, notifyUrl));
+                String result = URLConnectionUtils.requestPost(url, getProductArgs(appId, mch_id, partnerKey, bodyString, out_trade_no, total_fee, notifyUrl));
                 try {
                     return decodeXml(result);
                 } catch (Exception e) {
@@ -95,6 +99,10 @@ public class WeChatPay {
             @Override
             protected void onPostExecute(Map<String, String> result) {
                 if (result != null) {
+                    if (!"SUCCESS".equals(result.get("result_code"))) {
+                        Toast.makeText(mContext, "签名错误", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     //获取订单预支付id
                     String prepay_id = result.get("prepay_id");
                     // 扩展字段，暂填写固定值Sign=WXPay
@@ -103,15 +111,21 @@ public class WeChatPay {
                     String nonceStr = getNonceString();
                     // 时间戳
                     String timeStamp = String.valueOf(getTimeStamp());
-                    Map<String, Object> signParams = new HashMap<>(10);
+                    Map<String, Object> signParams = new TreeMap<String, Object>(new Comparator<String>() {
+                        @Override
+                        public int compare(String s, String t1) {
+                            return s.compareTo(t1);
+                        }
+                    });
                     signParams.put("appid", appId);
-                    signParams.put("noncestr", nonceStr);
+                    signParams.put("body", bodyString);
+                    signParams.put("mch_id", mch_id);
+                    signParams.put("nonce_str", nonceStr);
                     signParams.put("package", packageValue);
-                    signParams.put("partnerid", partnerId);
-                    signParams.put("prepayid", prepay_id);
+                    signParams.put("prepay_id", prepay_id);
                     signParams.put("timestamp", timeStamp);
                     String sign = getAppSign(signParams, partnerKey);
-                    pay(appId, partnerId, prepay_id, packageValue, nonceStr, timeStamp, sign, "");
+                    pay(appId, mch_id, prepay_id, packageValue, nonceStr, timeStamp, sign, "");
                 }
             }
         }.execute();
@@ -135,7 +149,12 @@ public class WeChatPay {
             // 获取随机字符串，方法在本贴下面给出
             String nonceString = getNonceString();
             xml.append("</xml>");
-            Map<String, Object> packageParams = new HashMap<>();
+            Map<String, Object> packageParams = new TreeMap<>(new Comparator<String>() {
+                @Override
+                public int compare(String s, String t1) {
+                    return s.compareTo(t1);
+                }
+            });
             // AppId
             packageParams.put("appid", appId);
             // 商品描述交易描述。例如：腾讯充值中心-QQ会员充值
@@ -149,7 +168,7 @@ public class WeChatPay {
             // 服务端返回的支付订单号
             packageParams.put("out_trade_no", out_trade_no);
             // 设备IP，当前设备IP，默认为“WEB”
-            packageParams.put("spbill_create_ip", "APP");
+            packageParams.put("spbill_create_ip", "172.0.0.1");
             // 订单总金额，单位为分。根据商户商品价格定义，此处需自行设置
             packageParams.put("total_fee", total_fee);
             // 交易类型
@@ -158,7 +177,7 @@ public class WeChatPay {
             packageParams.put("sign", getAppSign(packageParams, partnerKey));
             String xmls = toXml(packageParams);
             // 设置编码格式
-            return new String(xmls.toString().getBytes(), "ISO8859-1");
+            return new String(xmls.toString().getBytes());
         } catch (Exception e) {
             return null;
         }
@@ -168,7 +187,7 @@ public class WeChatPay {
      * 发起请求
      *
      * @param appId        在微信开发平台生成的AppId
-     * @param partnerId    商户ID
+     * @param mch_id       商户ID
      * @param prepay_id    支付订单Id
      * @param packageValue 扩展字段，暂填写固定值Sign=WXPay
      * @param nonceStr     随机数字符串
@@ -176,12 +195,12 @@ public class WeChatPay {
      * @param sign         签名
      * @param extData      额外参数
      */
-    public void pay(String appId, String partnerId, String prepay_id, String packageValue, String nonceStr, String timeStamp, String sign, String extData) {
+    public void pay(String appId, String mch_id, String prepay_id, String packageValue, String nonceStr, String timeStamp, String sign, String extData) {
         PayReq mPayReq = new PayReq();
         // AppId
         mPayReq.appId = appId;
         // 微信支付分配的商户号
-        mPayReq.partnerId = partnerId;
+        mPayReq.partnerId = mch_id;
         // 支付订单Id
         mPayReq.prepayId = prepay_id;
         // 扩展字段，暂填写固定值Sign=WXPay
@@ -195,11 +214,11 @@ public class WeChatPay {
         mPayReq.extData = extData;
         IWXAPI api = WXAPIFactory.createWXAPI(mContext, appId);
         api.registerApp(appId);
-        if (api.isWXAppInstalled()) {
+        if (!api.isWXAppInstalled()) {
             Toast.makeText(mContext, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (api.isWXAppSupportAPI()) {
+        if (!api.isWXAppSupportAPI()) {
             Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -250,6 +269,15 @@ public class WeChatPay {
      * @return
      */
     private String getAppSign(Map<String, Object> params, String partnerKey) {
+        List<Map.Entry<String, Object>> infoIds = new ArrayList<Map.Entry<String, Object>>(params.entrySet());
+        // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+        Collections.sort(infoIds, new Comparator<Map.Entry<String, Object>>() {
+
+            @Override
+            public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
+                return (o1.getKey()).toString().compareTo(o2.getKey());
+            }
+        });
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Object> stringObjectEntry : params.entrySet()) {
             sb.append(stringObjectEntry.getKey());
@@ -260,7 +288,7 @@ public class WeChatPay {
         sb.append("key=");
         // 商户平台生成的密钥
         sb.append(partnerKey);
-        String appSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
+        String appSign = getMessageDigest(sb.toString().getBytes()).toUpperCase();
         return appSign;
     }
 
