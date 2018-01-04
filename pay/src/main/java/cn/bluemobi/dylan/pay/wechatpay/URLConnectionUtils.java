@@ -24,7 +24,7 @@ public class URLConnectionUtils {
     public static String requestgGet(String httpUrl) {
         try {
             String baseUrl = httpUrl;
-            System.out.println("Get方式请求地址httpUrl--->" + baseUrl);
+            Logger.d("Get方式请求地址httpUrl--->" + baseUrl);
             // 新建一个URL对象
             URL url = new URL(baseUrl);
             // 打开一个HttpURLConnection连接
@@ -57,7 +57,7 @@ public class URLConnectionUtils {
                 urlConn.disconnect();
                 return result;
             } else {
-                System.out.println("Get方式请求失败");
+                Logger.d("Get方式请求失败");
                 // 关闭连接
                 urlConn.disconnect();
                 return null;
@@ -88,8 +88,8 @@ public class URLConnectionUtils {
                 pos++;
             }
             String params = tempParams.toString();
-            System.out.println("Post方式请求地址httpUrl--->" + params);
-            System.out.println("Post方式请求参数params--->" + params);
+            Logger.d("Post方式请求地址httpUrl--->" + params);
+            Logger.d("Post方式请求参数params--->" + params);
             // 请求的参数转换为byte数组
             byte[] postData = params.getBytes();
             // 新建一个URL对象
@@ -123,9 +123,9 @@ public class URLConnectionUtils {
             if (urlConn.getResponseCode() == 200) {
                 // 获取返回的数据
                 String result = streamToString(urlConn.getInputStream());
-                System.out.println("Post方式请求成功，result--->" + result);
+                Logger.d("Post方式请求成功，result--->" + result);
             } else {
-                System.out.println("Post方式请求失败");
+                Logger.d("Post方式请求失败");
             }
             // 关闭连接
             urlConn.disconnect();
@@ -145,8 +145,8 @@ public class URLConnectionUtils {
             String baseUrl = httpUrl;
 
             String params = entity;
-            System.out.println("Post方式请求地址httpUrl--->" + httpUrl);
-            System.out.println("Post方式请求参数params--->" + params);
+            Logger.d("Post方式请求地址httpUrl--->" + httpUrl);
+            Logger.d("Post方式请求参数params--->" + params);
             // 请求的参数转换为byte数组
             byte[] postData = params.getBytes();
             // 新建一个URL对象
@@ -180,12 +180,12 @@ public class URLConnectionUtils {
             if (urlConn.getResponseCode() == 200) {
                 // 获取返回的数据
                 String result = streamToString(urlConn.getInputStream());
-                System.out.println("Post方式请求成功，result--->" + result);
+                Logger.d("Post方式请求成功，result--->" + result);
                 // 关闭连接
                 urlConn.disconnect();
                 return result;
             } else {
-                System.out.println("Post方式请求失败");
+                Logger.d("Post方式请求失败");
                 // 关闭连接
                 urlConn.disconnect();
                 return null;

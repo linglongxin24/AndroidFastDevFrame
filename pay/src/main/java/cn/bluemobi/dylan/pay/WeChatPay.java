@@ -72,10 +72,10 @@ public class WeChatPay {
      * @param partnerKey   在商户平台生成的密钥
      * @param bodyString   商品描述交易描述。例如：腾讯充值中心-QQ会员充值
      * @param out_trade_no 服务端返回的支付订单号
-     * @param total_fee    订单金额，单位分
+     * @param total_fee    订单金额
      * @param notifyUrl    微信回调服务器接口地址
      */
-    public void pay(final String appId, final String mch_id, final String partnerKey, final String bodyString, final String out_trade_no, final String total_fee, final String notifyUrl) {
+    public WeChatPay pay(final String appId, final String mch_id, final String partnerKey, final String bodyString, final String out_trade_no, final String total_fee, final String notifyUrl) {
         Toast.makeText(mContext, "获取订单中...", Toast.LENGTH_SHORT).show();
         new AsyncTask<Void, Void, Map<String, String>>() {
             @Override
@@ -93,7 +93,7 @@ public class WeChatPay {
 
             @Override
             protected void onPostExecute(Map<String, String> result) {
-                if (result != null) {
+                if (result != null && result.containsKey("return_code") && result.containsKey("result_code")) {
                     if (!"SUCCESS".equals(result.get("result_code"))) {
                         Toast.makeText(mContext, "签名错误", Toast.LENGTH_SHORT).show();
                         return;
@@ -121,9 +121,12 @@ public class WeChatPay {
                     signParams.put("timestamp", timeStamp);
                     String sign = getAppSign(signParams, partnerKey);
                     pay(appId, mch_id, prepay_id, packageValue, nonceStr, timeStamp, sign, "App");
+                } else {
+                    Toast.makeText(mContext, "非法交易", Toast.LENGTH_SHORT).show();
                 }
             }
         }.execute();
+        return this;
     }
 
     /**
@@ -163,7 +166,7 @@ public class WeChatPay {
             // 设备IP，当前设备IP，默认为“WEB”
             packageParams.put("spbill_create_ip", "172.0.0.1");
             // 订单总金额，单位为分。根据商户商品价格定义，此处需自行设置
-            packageParams.put("total_fee", total_fee);
+            packageParams.put("total_fee", String.valueOf(Double.valueOf(Double.parseDouble(total_fee) * 100).intValue()));
             // 交易类型
             packageParams.put("trade_type", "APP");
             // 签名，方法在本贴下面
@@ -180,22 +183,22 @@ public class WeChatPay {
      * 发起请求
      *
      * @param appId        在微信开发平台生成的AppId
-     * @param mch_id       商户ID
-     * @param prepay_id    支付订单Id
+     * @param partnerId    商户ID
+     * @param prepayId     支付订单Id
      * @param packageValue 扩展字段，暂填写固定值Sign=WXPay
      * @param nonceStr     随机数字符串
      * @param timeStamp    时间戳
      * @param sign         签名
      * @param extData      额外参数
      */
-    public void pay(String appId, String mch_id, String prepay_id, String packageValue, String nonceStr, String timeStamp, String sign, String extData) {
+    public WeChatPay pay(String appId, String partnerId, String prepayId, String packageValue, String nonceStr, String timeStamp, String sign, String extData) {
         PayReq mPayReq = new PayReq();
         // AppId
         mPayReq.appId = appId;
         // 微信支付分配的商户号
-        mPayReq.partnerId = mch_id;
+        mPayReq.partnerId = partnerId;
         // 支付订单Id
-        mPayReq.prepayId = prepay_id;
+        mPayReq.prepayId = prepayId;
         // 扩展字段，暂填写固定值Sign=WXPay
         mPayReq.packageValue = packageValue;
         // 随机数字符串
@@ -209,13 +212,14 @@ public class WeChatPay {
         api.registerApp(appId);
         if (!api.isWXAppInstalled()) {
             Toast.makeText(mContext, "您还未安装微信", Toast.LENGTH_SHORT).show();
-            return;
+            return this;
         }
         if (!api.isWXAppSupportAPI()) {
             Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
-            return;
+            return this;
         }
         api.sendReq(mPayReq);
+        return this;
     }
 
     /**

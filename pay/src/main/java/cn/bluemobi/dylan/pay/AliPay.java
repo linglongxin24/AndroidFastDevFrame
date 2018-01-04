@@ -17,7 +17,10 @@ import cn.bluemobi.dylan.pay.alipay.OrderInfoUtil2_0;
 import cn.bluemobi.dylan.pay.alipay.PayResult;
 
 /**
- * Created by ydl on 2017/9/27.
+ * 支付宝支付
+ *
+ * @author ydl
+ * @date 2017/9/27
  */
 
 public class AliPay {
@@ -26,74 +29,51 @@ public class AliPay {
      */
     private Activity mActivity;
     /**
-     * appid
-     */
-    private String app_id;
-    /**
-     * 私钥
-     */
-    private String RSA_PRIVATE;
-    /**
-     * 商品主题
-     */
-    private String subject;
-    /**
-     * 商品描述
-     */
-    private String body;
-    /**
-     * 交易订单号
-     */
-    private String out_trade_no;
-    /**
-     * 支付金额
-     */
-    private String pay_amount;
-    /**
-     * 回调地址
-     */
-    private String notify_url;
-    /**
-     * 是否使用rsa2加密
-     */
-    private boolean rsa2;
-    /**
      * 支付监听
      */
     private PayListener payListener;
 
-    public AliPay(Activity mActivity, String app_id, String RSA_PRIVATE, String subject, String body, String out_trade_no, String pay_amount, String notify_url, boolean rsa2) {
-        this.mActivity = mActivity;
-        this.app_id = app_id;
-        this.RSA_PRIVATE = RSA_PRIVATE;
-        this.subject = subject;
-        this.body = body;
-        this.out_trade_no = out_trade_no;
-        this.pay_amount = pay_amount;
-        this.notify_url = notify_url;
-        this.rsa2 = rsa2;
-    }
-
-    private String orderInfo;
 
     /**
      * 构造函数，服务端返回的订单信息
-     *
-     * @param orderInfo 订单信息
      */
-    public AliPay(Activity mActivity, String orderInfo) {
+    public AliPay(Activity mActivity) {
         this.mActivity = mActivity;
-        this.orderInfo = orderInfo;
     }
 
-    public void pay(PayListener payListener) {
+    /**
+     * 设置监听
+     *
+     * @param payListener
+     */
+    public AliPay setPayLisitener(PayListener payListener) {
         this.payListener = payListener;
-        if (TextUtils.isEmpty(orderInfo)) {
-            Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
-            String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
-            String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
-            orderInfo = orderParam + "&" + sign;
-        }
+        return this;
+    }
+
+    /**
+     * @param app_id       应用的appid
+     * @param RSA_PRIVATE  应用的私钥
+     * @param subject      商品主题
+     * @param body         商品描述
+     * @param out_trade_no 交易订单号
+     * @param pay_amount   支付金额
+     * @param notify_url   回调地址
+     * @param rsa2         是否使用rsa2加密
+     */
+    public AliPay pay(String app_id, String RSA_PRIVATE, String subject, String body, String out_trade_no, String pay_amount, String notify_url, boolean rsa2) {
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
+        String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
+        String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
+        String orderInfo = orderParam + "&" + sign;
+        pay(orderInfo);
+        return this;
+    }
+
+    /**
+     * @param orderInfo 支付宝订单信息
+     */
+    public AliPay pay(final String orderInfo) {
         try {
             Logger.d("支付宝订单信息orderInfo=" + URLDecoder.decode(orderInfo, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -113,6 +93,7 @@ public class AliPay {
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+        return this;
     }
 
     @SuppressLint("HandlerLeak")
