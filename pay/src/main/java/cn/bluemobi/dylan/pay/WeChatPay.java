@@ -13,13 +13,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.io.StringReader;
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -108,9 +103,10 @@ public class WeChatPay {
                     // 扩展字段，暂填写固定值Sign=WXPay
                     String packageValue = "Sign=WXPay";
                     // 随机数字符串
-                    String nonceStr = getNonceString();
+                    String nonceStr = result.get("nonce_str");
                     // 时间戳
-                    String timeStamp = String.valueOf(getTimeStamp());
+                    final String timeStamp = String.valueOf(getTimeStamp());
+
                     Map<String, Object> signParams = new TreeMap<String, Object>(new Comparator<String>() {
                         @Override
                         public int compare(String s, String t1) {
@@ -118,14 +114,13 @@ public class WeChatPay {
                         }
                     });
                     signParams.put("appid", appId);
-                    signParams.put("body", bodyString);
-                    signParams.put("mch_id", mch_id);
-                    signParams.put("nonce_str", nonceStr);
+                    signParams.put("partnerid", mch_id);
+                    signParams.put("prepayid", prepay_id);
                     signParams.put("package", packageValue);
-                    signParams.put("prepay_id", prepay_id);
+                    signParams.put("noncestr", nonceStr);
                     signParams.put("timestamp", timeStamp);
                     String sign = getAppSign(signParams, partnerKey);
-                    pay(appId, mch_id, prepay_id, packageValue, nonceStr, timeStamp, sign, "");
+                    pay(appId, mch_id, prepay_id, packageValue, nonceStr, timeStamp, sign, "App");
                 }
             }
         }.execute();
@@ -144,11 +139,9 @@ public class WeChatPay {
      * @return xml参数
      */
     private String getProductArgs(String appId, String partnerId, String partnerKey, String bodyString, String out_trade_no, String total_fee, String notifyUrl) {
-        StringBuffer xml = new StringBuffer();
         try {
             // 获取随机字符串，方法在本贴下面给出
             String nonceString = getNonceString();
-            xml.append("</xml>");
             Map<String, Object> packageParams = new TreeMap<>(new Comparator<String>() {
                 @Override
                 public int compare(String s, String t1) {
@@ -269,15 +262,6 @@ public class WeChatPay {
      * @return
      */
     private String getAppSign(Map<String, Object> params, String partnerKey) {
-        List<Map.Entry<String, Object>> infoIds = new ArrayList<Map.Entry<String, Object>>(params.entrySet());
-        // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
-        Collections.sort(infoIds, new Comparator<Map.Entry<String, Object>>() {
-
-            @Override
-            public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
-                return (o1.getKey()).toString().compareTo(o2.getKey());
-            }
-        });
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Object> stringObjectEntry : params.entrySet()) {
             sb.append(stringObjectEntry.getKey());
@@ -298,8 +282,7 @@ public class WeChatPay {
      * @return
      */
     private long getTimeStamp() {
-        SimpleDateFormat time = new SimpleDateFormat("yyyyMMddkkmmss");
-        return Long.valueOf(time.format(new Date()));
+        return System.currentTimeMillis() / 1000L;
     }
 
     /**
