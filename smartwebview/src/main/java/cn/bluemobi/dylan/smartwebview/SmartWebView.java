@@ -110,6 +110,7 @@ public class SmartWebView extends RelativeLayout {
                 super.onGeolocationPermissionsShowPrompt(origin, callback);
                 callback.invoke(origin, true, false);
             }
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 // TODO Auto-generated method stub
@@ -154,7 +155,7 @@ public class SmartWebView extends RelativeLayout {
      * @param url
      */
     public void loadUrl(String url) {
-        loadUrl(mWebView, url, null);
+        loadUrl(mWebView, url, null, null);
         // TODO Auto-generated method stub
 
     }
@@ -165,10 +166,20 @@ public class SmartWebView extends RelativeLayout {
      * @param data
      */
     public void loadData(String data) {
-        loadUrl(mWebView, null, data);
+        loadUrl(mWebView, null, data, null);
         // TODO Auto-generated method stub
 
     }
+
+    /**
+     * @param data
+     */
+    public void loadData(String data, String baseUrl) {
+        loadUrl(mWebView, null, data, baseUrl);
+        // TODO Auto-generated method stub
+
+    }
+
 
     /**
      * Description: 自己填写
@@ -194,7 +205,7 @@ public class SmartWebView extends RelativeLayout {
      * @param wv
      * @param url
      */
-    protected void loadUrl(WebView wv, String url, String data) {
+    protected void loadUrl(WebView wv, String url, String data, String baseUrl) {
         if (Build.VERSION.SDK_INT >= 19) {
             wv.getSettings().setLoadsImagesAutomatically(true);
         } else {
@@ -219,7 +230,7 @@ public class SmartWebView extends RelativeLayout {
         webSettings.setDomStorageEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBlockNetworkImage(false);//解决图片不显示
-        webSettings.setDefaultTextEncodingName("utf-8") ;
+        webSettings.setDefaultTextEncodingName("utf-8");
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -246,6 +257,8 @@ public class SmartWebView extends RelativeLayout {
         wv.setWebViewClient(new SslWebViewClient());
         if (!TextUtils.isEmpty(url)) {
             wv.loadUrl(url);
+        } else if (!TextUtils.isEmpty(baseUrl)) {
+            wv.loadDataWithBaseURL(baseUrl, data, "text/html; charset=UTF-8", null, baseUrl);
         } else if (!TextUtils.isEmpty(data)) {
             wv.loadData(data, "text/html; charset=UTF-8", null);
         }
@@ -285,7 +298,7 @@ public class SmartWebView extends RelativeLayout {
         mWebView.clearHistory();
         mWebView.removeAllViews();
         mWebView.destroy();
-        Log.d("WebView","onDetachedFromWindow");
+        Log.d("WebView", "onDetachedFromWindow");
 
         super.onDetachedFromWindow();
     }
