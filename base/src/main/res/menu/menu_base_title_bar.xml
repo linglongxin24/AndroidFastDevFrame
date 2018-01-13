@@ -4,7 +4,8 @@
 
     <item
         android:id="@+id/menu_1"
-        android:title=""
+        android:title="随时随订单地"
+        android:icon="@drawable/image_add"
         app:showAsAction="always" />
 
 </menu>

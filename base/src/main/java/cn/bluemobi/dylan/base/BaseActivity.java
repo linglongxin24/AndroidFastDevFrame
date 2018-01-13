@@ -250,11 +250,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_1);
         if (menuResId != 0) {
-            menu.findItem(R.id.menu_1).setIcon(menuResId);
+            item.setIcon(menuResId);
         }
         if (!TextUtils.isEmpty(menuStr)) {
-            menu.findItem(R.id.menu_1).setTitle(menuStr);
+            item.setTitle(menuStr);
         }
         return super.onPrepareOptionsMenu(menu);
     }
