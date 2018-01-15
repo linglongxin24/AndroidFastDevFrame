@@ -11,10 +11,12 @@ import com.orhanobut.logger.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import cn.bluemobi.dylan.pay.alipay.OrderInfoUtil2_0;
 import cn.bluemobi.dylan.pay.alipay.PayResult;
+import cn.bluemobi.dylan.pay.alipay.SignUtils;
 
 /**
  * 支付宝支付
@@ -52,6 +54,37 @@ public class AliPay {
     }
 
     /**
+     * @param PARTNER       商户id
+     * @param SELLER        商户号
+     * @param RSA_PRIVATE   应用的私钥
+     * @param subject       商品主题
+     * @param subject       商品描述
+     * @param body          商品描述
+     * @param out_trade_no  交易订单号
+     * @param pay_amount    支付金额
+     * @param NotifyAddress 回调地址
+     */
+    public AliPay pay(String PARTNER, String SELLER, String RSA_PRIVATE, String NotifyAddress, String out_trade_no, String subject, String body, String pay_amount, boolean rsa2) {
+        String orderParam = OrderInfoUtil2_0.getOrderInfo(PARTNER, SELLER, NotifyAddress, out_trade_no, subject, body, pay_amount);
+        String sign = SignUtils.sign(orderParam, RSA_PRIVATE, rsa2);
+        try {
+            /**
+             * 仅需对sign 做URL编码
+             */
+            sign = URLEncoder.encode(sign, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        // 完整的符合支付宝参数规范的订单信息
+
+        final String orderInfo = orderParam + "&sign=\"" + sign + "\"&" + "sign_type=\"" + (rsa2 ? "RSA2" : "RSA") + "\"";
+        pay(orderInfo);
+        return this;
+    }
+
+    /**
      * @param app_id       应用的appid
      * @param RSA_PRIVATE  应用的私钥
      * @param subject      商品主题
@@ -64,7 +97,7 @@ public class AliPay {
     public AliPay pay(String app_id, String RSA_PRIVATE, String subject, String body, String out_trade_no, String pay_amount, String notify_url, boolean rsa2) {
         Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(app_id, out_trade_no, notify_url, pay_amount, subject, body, rsa2);
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
-        String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE);
+        String sign = OrderInfoUtil2_0.getSign(params, RSA_PRIVATE, rsa2);
         String orderInfo = orderParam + "&" + sign;
         pay(orderInfo);
         return this;
