@@ -216,6 +216,41 @@ public class JsonParse {
         }
     }
 
+
+    /**
+     * 获取map中的long值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static long getLong(Map<String, Object> map, String key) {
+        return getLong(map, key, 0);
+    }
+
+    /**
+     * 获取map中的int值
+     *
+     * @param map          map
+     * @param key          map的key
+     * @param defaultValue 默认值
+     * @return map的int值
+     */
+    public static long getLong(Map<String, Object> map, String key, int defaultValue) {
+        try {
+            return Long.parseLong(getString(map, key));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return defaultValue;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return defaultValue;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
     /**
      * 获取map中的boolean值
      *
