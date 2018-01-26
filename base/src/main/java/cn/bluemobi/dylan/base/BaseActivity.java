@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -285,6 +286,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void showToast(CharSequence charSequence) {
         if (null == toast) {
             toast = Toast.makeText(mContext, charSequence, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
         } else {
             toast.setText(charSequence);
         }
