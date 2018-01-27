@@ -121,7 +121,7 @@ public class RetrofitManager {
                         }
                         newFormBody.addEncoded(name, value);
                     }
-                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className) && TextUtils.isEmpty(secret)) {
+                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className) && !TextUtils.isEmpty(secret)) {
                         newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
                         requestBuilder.method(original.method(), newFormBody.build());
                     }
