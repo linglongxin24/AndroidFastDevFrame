@@ -173,10 +173,9 @@ public class HttpUtils implements HttpRequest {
             }
             requestParamstr += "\n" + keyValue.key + "=" + keyValue.getValueStr();
         }
-        if(addSignParameters){
-            String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
-            requestParams.addBodyParameter("sign", MD5Utils.md5(appName + className + secret));
-        }
+//        if(addSignParameters){
+//            requestParams.addBodyParameter("sign", MD5Utils.md5(appName + className + secret));
+//        }
 
         Logger.d(requestParamstr);
         HttpCallBack httpCallBack = new HttpCallBack(context, requestCode, httpResponse, loadingDialog,showMessageModel);

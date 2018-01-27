@@ -12,7 +12,7 @@ import cn.bluemobi.dylan.http.dialog.LoadingDialog;
  */
 
 public class Http {
-    private static final String TAG = "HTTP";
+    private final String TAG = "HTTP";
     private static volatile Http http = null;
     private Integer loadingDialogLayoutId = null;
 
@@ -93,6 +93,17 @@ public class Http {
     public Http setErrorMessage(String errorMessage) {
         MessageManager.getMessageManager().setErrorMessage(errorMessage);
         return http;
+    }
+
+    /**
+     * 6.设置app签名秘钥
+     *
+     * @param secret 秘钥
+     * @return
+     */
+    public Http setSecret(String secret) {
+        RetrofitManager.getRetrofitManager().setSecret(secret);
+        return this;
     }
 
     /**

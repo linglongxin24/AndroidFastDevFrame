@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -17,8 +16,6 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -52,11 +49,11 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 public class RetrofitManager {
 
     String TAG = "Http";
-    private static final int TIMEOUT = 15;
+    private final int TIMEOUT = 15;
     private volatile static RetrofitManager singleton;
     private OkHttpClient mOkHttpClient;
-    private static Retrofit retrofit;
-    private  Object apiService;
+    private Retrofit retrofit;
+    private Object apiService;
     private Retrofit.Builder retrofitBuilder;
 
     private RetrofitManager() {
@@ -71,6 +68,17 @@ public class RetrofitManager {
             }
         }
         return singleton;
+    }
+
+    private String secret;
+
+    /**
+     * 设置app加密签名秘钥
+     *
+     * @param secret app加密签名秘钥
+     */
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     /**
@@ -113,8 +121,7 @@ public class RetrofitManager {
                         }
                         newFormBody.addEncoded(name, value);
                     }
-                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className)) {
-                        String secret = "O]dWJ,[*g)%k\"?q~g6Co!`cQvV>>Ilvw";
+                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className) && TextUtils.isEmpty(secret)) {
                         newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
                         requestBuilder.method(original.method(), newFormBody.build());
                     }
@@ -192,7 +199,7 @@ public class RetrofitManager {
                         String name = oidFormBody.encodedName(i);
                         String value = null;
                         try {
-                            value = URLDecoder.decode( oidFormBody.encodedValue(i),"UTF-8");
+                            value = URLDecoder.decode(oidFormBody.encodedValue(i), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -211,7 +218,7 @@ public class RetrofitManager {
                         String name = getPartHeaders(part);
                         String value = null;
                         try {
-                            value = URLDecoder.decode(  getRequestBody(part),"UTF-8");
+                            value = URLDecoder.decode(getRequestBody(part), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
