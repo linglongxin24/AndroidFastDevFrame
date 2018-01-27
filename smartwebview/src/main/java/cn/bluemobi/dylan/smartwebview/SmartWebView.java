@@ -2,6 +2,7 @@ package cn.bluemobi.dylan.smartwebview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.http.SslError;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -94,7 +96,15 @@ public class SmartWebView extends RelativeLayout {
             SmartWebView.this.addView(progressBar_circle, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         }
         mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
 
+                // 不要使用super，否则有些手机访问不了，因为包含了一条 handler.cancel()
+                // super.onReceivedSslError(view, handler, error);
+
+                // 接受所有网站的证书，忽略SSL错误，执行访问网页
+                handler.proceed();
+            }
             public boolean shouldOverrideUrlLoading(SmartWebView view, String url) {
                 // TODO Auto-generated method stub
                 view.loadUrl(url);
