@@ -108,39 +108,39 @@ Logger.d("menuText="+menuText);
 
     private void testPay() {
         bt_pay = (Button) findViewById(R.id.bt_pay);
-        bt_pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AliPay(MainActivity.this
-                        , ""
-                        , ""
-                        , "支付宝测试"
-                        , "支付商品"
-                        , OrderInfoUtil2_0.getOutTradeNo()
-                        , "0.02"
-                        , ""
-                        , true
-                ).pay(new PayListener() {
-                    @Override
-                    public void paySuccess() {
-                        Toast.makeText(MainActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-                        Logger.d("支付成功");
-                    }
-
-                    @Override
-                    public void payFailed() {
-                        Toast.makeText(MainActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
-                        Logger.d("支付失败");
-                    }
-
-                    @Override
-                    public void payCancel() {
-                        Toast.makeText(MainActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
-                        Logger.d("支付取消");
-                    }
-                });
-            }
-        });
+//        bt_pay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new AliPay(MainActivity.this
+//                        , ""
+//                        , ""
+//                        , "支付宝测试"
+//                        , "支付商品"
+//                        , OrderInfoUtil2_0.getOutTradeNo()
+//                        , "0.02"
+//                        , ""
+//                        , true
+//                ).pay(new PayListener() {
+//                    @Override
+//                    public void paySuccess() {
+//                        Toast.makeText(MainActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+//                        Logger.d("支付成功");
+//                    }
+//
+//                    @Override
+//                    public void payFailed() {
+//                        Toast.makeText(MainActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+//                        Logger.d("支付失败");
+//                    }
+//
+//                    @Override
+//                    public void payCancel() {
+//                        Toast.makeText(MainActivity.this, "支付取消", Toast.LENGTH_SHORT).show();
+//                        Logger.d("支付取消");
+//                    }
+//                });
+//            }
+//        });
     }
 
     /**
@@ -384,7 +384,8 @@ Logger.d("menuText="+menuText);
 //        String url = "https://app.tongrunjacks.com//other//index?id=TkE9PQ==";
 //        String url = "http://c.dituhui.com/maps/1082953";
 //        String url = "http://www.kswjw.gov.cn/jsfw/m_index.asp?deviceType=3&womanId=42996&machineCode=8767fea2-6376-42be-bd1e-c01ccaf3e02c&requestStartTime=636263218692140000&os=Android6.0&network=WIFI";
-        String url = "http://mp.weixin.qq.com/s/E3zeRiZ9AxGH6sL_5JYLkg";
+//        String url = "http://mp.weixin.qq.com/s/E3zeRiZ9AxGH6sL_5JYLkg";
+        String url = "http://xdkd.boxkj.com/app/appnotice/h5appLoadNotice?noticeId=1&userId=38069";
 //        String url = "http://mobile.abchina.com/download/clientDownload/zh_CN/MB_Index.aspx?from=message&isappinstalled=0";
         smartWebView.loadUrl(url);
     }

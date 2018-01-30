@@ -105,7 +105,8 @@ public class SmartWebView extends RelativeLayout {
                 // 接受所有网站的证书，忽略SSL错误，执行访问网页
                 handler.proceed();
             }
-            public boolean shouldOverrideUrlLoading(SmartWebView view, String url) {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // TODO Auto-generated method stub
                 view.loadUrl(url);
                 return true;
@@ -264,7 +265,7 @@ public class SmartWebView extends RelativeLayout {
         }
         webSettings.setSupportZoom(false);
 
-        wv.setWebViewClient(new SslWebViewClient());
+//        wv.setWebViewClient(new SslWebViewClient());
         if (!TextUtils.isEmpty(url)) {
             wv.loadUrl(url);
         } else if (!TextUtils.isEmpty(baseUrl)) {
