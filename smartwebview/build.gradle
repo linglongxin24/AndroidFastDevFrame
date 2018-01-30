@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-def mavenVersionCode = 73
-def mavenVersionName = "0.7.3"
+def mavenVersionCode = 74
+def mavenVersionName = "0.7.4"
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
@@ -12,7 +12,6 @@ android {
         versionCode mavenVersionCode
         versionName mavenVersionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -25,11 +24,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.android.support:appcompat-v7:25.0.1'
-    testCompile 'junit:junit:4.12'
 }
 
 
