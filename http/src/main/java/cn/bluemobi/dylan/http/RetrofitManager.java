@@ -218,7 +218,7 @@ public class RetrofitManager {
                         String name = getPartHeaders(part);
                         String value = null;
                         try {
-                            value = URLDecoder.decode(getRequestBody(part), "UTF-8");
+                            value = URLDecoder.decode(getRequestBody(part).replaceAll("%(?![0-9a-fA-F]{2})", "%25"), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }

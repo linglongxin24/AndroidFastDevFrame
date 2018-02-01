@@ -13,7 +13,6 @@ import rx.Observable;
 
 public interface ApiService4 {
     //    String BASE_URL = "http://tingapi.ting.baidu.com/";
-    String BASE_URL = "http://192.168.1.205:8081/campus/";
 
     /**
      * 1.获取首页数据
@@ -33,4 +32,18 @@ public interface ApiService4 {
     @FormUrlEncoded
     @POST("app/getsysUserExamInfo")
     Observable<ResponseBody> getsysUserExamInfo(@Field("p") String p);
+    /**
+     * 94 运动会-获取竞赛列表
+     *
+     * @param competitionId 竞赛ID,有竞赛ID，则说明该竞赛存在子竞赛
+     * @param pageIndex     页码
+     * @param pageSize      每页大小
+     * @return Observable
+     */
+
+    @POST("app/appCompetition/getAppCompetitionList")
+    @FormUrlEncoded
+    Observable<ResponseBody> getCompetitionList(@Field("competitionId") String competitionId,
+                                                @Field("pageIndex") int pageIndex,
+                                                @Field("pageSize") int pageSize);
 }

@@ -34,6 +34,7 @@ import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
 import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.http.MessageManager;
 import cn.bluemobi.dylan.pay.AliPay;
 import cn.bluemobi.dylan.pay.PayListener;
@@ -87,7 +88,7 @@ public class MainActivity extends BasePhotoActivity {
      * 仿iOS对话框
      */
     private void testiOSDialog() {
-        Button bt_dialog= (Button) findViewById(R.id.bt_dialog);
+        Button bt_dialog = (Button) findViewById(R.id.bt_dialog);
         bt_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +99,7 @@ public class MainActivity extends BasePhotoActivity {
                         .setMenuClickLisentner(new iOSSelectDialog.MenuClick() {
                             @Override
                             public void onMenuClick(String menuText) {
-Logger.d("menuText="+menuText);
+                                Logger.d("menuText=" + menuText);
                             }
                         }).show();
 
@@ -188,10 +189,10 @@ Logger.d("menuText="+menuText);
 //                    }
 //                });
         ci = (CircleImageView) findViewById(R.id.ci);
-        Http.getHttp()
-                .setDebugMode(BuildConfig.DEBUG)
-                .init(ApiService.class, ApiService4.BASE_URL, "returnCode", "data", "returnMsg", 200)
-                .setShowMessageModel(MessageManager.MessageModel.All);
+//        Http.getHttp()
+//                .setDebugMode(BuildConfig.DEBUG)
+//                .init(ApiService.class, ApiService4.BASE_URL, "returnCode", "data", "returnMsg", 200)
+//                .setShowMessageModel(MessageManager.MessageModel.All);
 //                .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
         ci.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,14 +200,29 @@ Logger.d("menuText="+menuText);
                 showDialog();
             }
         });
-//        Http.with(context)
-//                .setObservable(Http.getApiService(ApiService4.class).getsysUserExamInfo("sss,中文"))
-//                .setDataListener(new HttpCallBack() {
-//                    @Override
-//                    public void netOnSuccess(Map<String, Object> data) {
-//
-//                    }
-//                });
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService4.class).getCompetitionList("", 1, 10))
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+
+                    }
+                });
+
+        /**设置网络请求**/
+//        Http.getHttp().init(ApiService.class, ApiService2.BASE_HOST, "status", "data", "msg", 0);
+
+        Http.with(context)
+                .setObservable(Http.getApiService(ApiService2.class).getAd("Advert", "Advertr_an_HomeList"))
+                .setDataListener(new HttpCallBack() {
+                                     @Override
+                                     public void netOnSuccess(Map<String, Object> data) {
+
+                                     }
+                                 }
+                );
+
+
 //       Http.with(context)
 //               .setObservable( Http.getApiService(ApiService4.class)
 //                       .getHomeData())
