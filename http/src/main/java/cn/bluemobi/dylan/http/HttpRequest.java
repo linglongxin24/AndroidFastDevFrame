@@ -32,6 +32,11 @@ public class HttpRequest {
      */
     private WeakReference<Context> context;
 
+    public HttpRequest setShowLoadingDialog(boolean showLoadingDialog) {
+        isShowLoadingDialog = showLoadingDialog;
+        return this;
+    }
+
     /**
      * 默认显示加载进度对话框
      */

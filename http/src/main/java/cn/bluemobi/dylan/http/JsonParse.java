@@ -377,7 +377,36 @@ public class JsonParse {
      * @param key map的key
      * @return map的值
      */
-    public static <T> List<T> getList(Map<String, Object> map, String key) {
+    public static List<Map<String,Object>> getList(Map<String, Object> map, String key) {
+        List<Map<String,Object>> list = new ArrayList<>();
+        if (map == null || map.size() == 0) {
+            return list;
+        } else if (isNull(key)) {
+            return list;
+        } else if (map.containsKey(key)) {
+            Object data = map.get(key);
+            if (data == null) {
+                return list;
+            } else {
+                if (data instanceof List) {
+                    return (List<Map<String,Object>>) data;
+                } else {
+                    return list;
+                }
+            }
+        } else {
+            return list;
+        }
+    }
+
+    /**
+     * 获取map中的Map对象
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的值
+     */
+    public static <T> List<T> getList(Map<String, Object> map, String key, Class<T> beanClass) {
         List<T> list = new ArrayList<>();
         if (map == null || map.size() == 0) {
             return list;
@@ -389,7 +418,7 @@ public class JsonParse {
                 return list;
             } else {
                 if (data instanceof List) {
-                    return (List<T>) data;
+                    return JSON.parseArray(JSON.toJSONString(data), beanClass);
                 } else {
                     return list;
                 }
