@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.view.iOSSelectDialog;
+import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
 import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
 import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
@@ -92,6 +93,10 @@ public class MainActivity extends BasePhotoActivity {
         bt_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new iOSTwoButtonDialog(context).setCenterCustomView(R.layout.dialog_add_score_radiot).show();
+                if (true) {
+                    return;
+                }
                 new iOSSelectDialog(MainActivity.this)
                         .setTitle("请选择邀请方式")
                         .addMenuText("手机号")

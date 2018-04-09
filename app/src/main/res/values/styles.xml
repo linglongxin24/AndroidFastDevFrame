@@ -9,4 +9,7 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
 
+    <style name="toolbar" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:navigationIcon">@mipmap/star_yellow</item>
+    </style>
 </resources>

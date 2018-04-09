@@ -153,13 +153,22 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @return
      */
     private BaseActivity setLeftButton() {
-        setLeftButtonIcon(R.drawable.ic_return_white_24dp)
-                .setLeftButtonOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        finish();
-                    }
-                });
+        if(AppConfig.getAppLeftResId()!=null){
+            setLeftButtonIcon(AppConfig.getAppLeftResId())
+                    .setLeftButtonOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick() {
+                            finish();
+                        }
+                    });
+        }else{
+            setLeftButtonIcon(R.drawable.ic_return_white_24dp)
+                    .setLeftButtonOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick() {
+                            finish();
+                        }
+                    });}
         return this;
     }
 

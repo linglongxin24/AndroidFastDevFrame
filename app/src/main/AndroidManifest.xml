@@ -22,7 +22,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".TextActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TextActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 

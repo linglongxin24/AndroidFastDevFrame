@@ -2,6 +2,7 @@ package com.dylanfastdev;
 
 import android.app.Application;
 
+import cn.bluemobi.dylan.base.AppConfig;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.MessageManager;
 import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
@@ -30,6 +31,6 @@ public class Myapplication extends Application {
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "returnCode", "data", "returnMsg", 200);
         Http.getHttp().setShowMessageModel(MessageManager.MessageModel.All);
         Http.getHttp().setErrorMessage("网络开小差了");
-
+        AppConfig.setAppLeftResId(R.drawable.pub_arrow_back_write);
     }
 }

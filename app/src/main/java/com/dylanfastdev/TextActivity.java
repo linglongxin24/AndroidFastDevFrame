@@ -37,7 +37,7 @@ public class TextActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        startActivity(new Intent(mContext, PayActivity.class));
+//        startActivity(new Intent(mContext, PayActivity.class));
 //        Http.with(mContext)
 //                .setObservable(
 //                        Http.getApiService(ApiService.class)
