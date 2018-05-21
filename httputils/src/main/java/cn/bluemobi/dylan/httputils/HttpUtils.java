@@ -368,6 +368,84 @@ public class HttpUtils {
                 .build();
     }
 
+    /**
+     * 初始化mOkHttpClient与retrofit
+     *
+     */
+    public void initRetrofit() {
+        mOkHttpClient = new OkHttpClient();
+        Interceptor commParamsIntInterceptor = new Interceptor() {
+
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder();
+                //请求体定制：统一添加sign参数
+                if (original.body() instanceof FormBody) {
+                    FormBody.Builder newFormBody = new FormBody.Builder();
+                    FormBody oidFormBody = (FormBody) original.body();
+                    String appName = "";
+                    String className = "";
+                    for (int i = 0; i < oidFormBody.size(); i++) {
+                        String name = oidFormBody.encodedName(i);
+                        String value = oidFormBody.encodedValue(i);
+                        if ("app".equals(name)) {
+                            appName = value;
+                        } else if ("class".equals(name)) {
+                            className = value;
+                        }
+                        newFormBody.addEncoded(name, value);
+                    }
+                    if (!TextUtils.isEmpty(appName) && !TextUtils.isEmpty(className)) {
+//                        newFormBody.add("sign", MD5Utils.md5(appName + className + secret));
+                        requestBuilder.method(original.method(), newFormBody.build());
+                    }
+                }
+
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            }
+        };
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                Log.d(TAG, "OkHttp====message " + EncodeUtils.ascii2native(message));
+            }
+
+        });
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.readTimeout(3, TimeUnit.MINUTES)
+                .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES); //设置超时
+        /**添加公共参数拦截器**/
+        builder.addInterceptor(commParamsIntInterceptor);
+
+        if (debugMode) {
+            /**添加打印日志拦截器**/
+            builder.addInterceptor(logInterceptor);
+        }
+        /**设置证书**/
+        if (overlockCard) {
+            builder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
+        } else {
+            if (factory != null) {
+                builder.sslSocketFactory(factory);
+            }
+        }
+        mOkHttpClient = builder.build();
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(mOkHttpClient)
+                .build();
+    }
+
     public static <T> T getApiService(Class<T> clazz) {
         return retrofit.create(clazz);
     }
