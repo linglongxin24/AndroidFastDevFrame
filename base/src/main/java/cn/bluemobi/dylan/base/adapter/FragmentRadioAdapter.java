@@ -24,10 +24,15 @@ public class FragmentRadioAdapter implements OnCheckedChangeListener {
     private OnRgsExtraCheckedChangedListener onRgsExtraCheckedChangedListener; // 用于让调用者在切换tab时候增加新的功能
 
     public FragmentRadioAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, RadioGroup rg) {
+        this(fragmentManager,fragments,fragmentContentId,rg,0);
+
+    }
+    public FragmentRadioAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, RadioGroup rg,int currentTab) {
         this.fragments = fragments;
         this.rg = rg;
         this.fragmentManager = fragmentManager;
         this.fragmentContentId = fragmentContentId;
+        this.currentTab = fragmentContentId;
 
         // 默认显示第一页
         FragmentTransaction ft = fragmentManager

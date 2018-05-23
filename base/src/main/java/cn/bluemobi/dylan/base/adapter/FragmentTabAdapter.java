@@ -22,10 +22,16 @@ public class FragmentTabAdapter implements TabLayout.OnTabSelectedListener {
     private OnRgsExtraCheckedChangedListener onRgsExtraCheckedChangedListener; // 用于让调用者在切换tab时候增加新的功能
 
     public FragmentTabAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, TabLayout tabLayout) {
+
+        this(fragmentManager,fragments,fragmentContentId,tabLayout,0);
+
+    }
+    public FragmentTabAdapter(FragmentManager fragmentManager, List<Fragment> fragments, int fragmentContentId, TabLayout tabLayout,int currentTab) {
         this.fragments = fragments;
         this.tabLayout = tabLayout;
         this.fragmentManager = fragmentManager;
         this.fragmentContentId = fragmentContentId;
+        this.currentTab = currentTab;
 
         // 默认显示第一页
         FragmentTransaction ft = fragmentManager
