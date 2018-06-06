@@ -5,6 +5,7 @@ import android.content.Context;
 import com.orhanobut.logger.Logger;
 
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
+import okhttp3.Interceptor;
 
 /**
  * 网络请求工具类
@@ -107,6 +108,16 @@ public class Http {
     }
 
     /**
+     * 7.添加自定义拦截器
+     *
+     * @param interceptor 拦截器
+     */
+
+    public void addInterceptor(Interceptor interceptor) {
+        RetrofitManager.getRetrofitManager().addInterceptor(interceptor);
+    }
+
+    /**
      * 获取ApiService
      *
      * @return
@@ -140,8 +151,16 @@ public class Http {
      */
     public static HttpRequest with(Context context) {
         HttpRequest httpRequest = new HttpRequest(context);
+        if (responseInterceptor != null) {
+            httpRequest.setResponseInterceptor(responseInterceptor);
+        }
         return httpRequest;
     }
 
+    private static ResponseInterceptor responseInterceptor;
+
+    public void setResponseInterceptor(ResponseInterceptor responseInterceptor) {
+        Http.responseInterceptor = responseInterceptor;
+    }
 
 }

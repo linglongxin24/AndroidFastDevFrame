@@ -16,6 +16,8 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -238,8 +240,15 @@ public class RetrofitManager {
         //设置超时
         builder.readTimeout(3, TimeUnit.MINUTES)
                 .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES);
+
+        /**
+         * 添加其他自定义拦截器
+         */
+        for (Interceptor interceptor : interceptorList) {
+            builder.addInterceptor(interceptor);
+        }
         /**添加公共参数拦截器**/
-        builder.addInterceptor(commParamsIntInterceptor);
+        builder.addNetworkInterceptor(commParamsIntInterceptor);
         if (debugMode) {
             /**添加打印日志拦截器**/
             builder.addInterceptor(httpInterceptor);
@@ -267,6 +276,12 @@ public class RetrofitManager {
                 .client(mOkHttpClient)
                 .build();
         this.apiService = retrofit.create(apiService);
+    }
+
+    private List<Interceptor> interceptorList = new ArrayList<>();
+
+    public void addInterceptor(Interceptor interceptor) {
+        interceptorList.add(interceptor);
     }
 
     /**

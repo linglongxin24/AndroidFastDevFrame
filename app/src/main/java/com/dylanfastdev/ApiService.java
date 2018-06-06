@@ -1,7 +1,5 @@
 package com.dylanfastdev;
 
-import java.util.Map;
-
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
@@ -9,7 +7,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import rx.Observable;
 
 /**
@@ -50,6 +47,7 @@ public interface ApiService {
             , @Part("attachment_count") RequestBody attachment_count
             , @Part("attachment0") RequestBody attachment
     );
+
     /**
      * 3.登录
      *
@@ -61,4 +59,16 @@ public interface ApiService {
     @POST("http://192.168.1.110:8080/campus/app/appstu/login")
     Observable<ResponseBody> login(@Field("uname") String username,
                                    @Field("pwd") String password);
+
+    /**
+     * 3.测试
+     *
+     * @return Observable
+     */
+    @FormUrlEncoded
+    @POST("http://192.168.1.222:8080/campus/app/activity/doList")
+    Observable<ResponseBody> test(@Field("uid") String uid
+            , @Field("pageSize") int pageSize
+            , @Field("pageIndex") int pageIndex
+    );
 }

@@ -4,11 +4,7 @@ import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
-
 import java.lang.ref.WeakReference;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Map;
 
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
@@ -109,6 +105,13 @@ public class HttpRequest {
         return this;
     }
 
+    private ResponseInterceptor responseInterceptor;
+
+    public HttpRequest setResponseInterceptor(ResponseInterceptor responseInterceptor) {
+        this.responseInterceptor = responseInterceptor;
+        return this;
+    }
+
     /**
      * 【第四步】设置访问接口的返回监听
      *
@@ -162,7 +165,7 @@ public class HttpRequest {
 
                     @Override
                     public void onError(Throwable e) {
-                        if(Http.getHttp().isDebugMode()){
+                        if (Http.getHttp().isDebugMode()) {
                             e.printStackTrace();
                         }
                         if (isShowFailMessage) {
@@ -188,6 +191,13 @@ public class HttpRequest {
                             jsonBean = JsonParse.getJsonParse().jsonParse(result.string());
                             String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
+                            Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
+                            if (responseInterceptor != null) {
+                                boolean isInterceptor = responseInterceptor.onResponse(context.get(),code, msg, data);
+                                if (isInterceptor) {
+                                    return;
+                                }
+                            }
 
                             if (code == JsonParse.getJsonParse().getSuccessCode()) {
                                 if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
@@ -195,7 +205,6 @@ public class HttpRequest {
                                         Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                                Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
                                 if (httpResponse != null) {
                                     httpResponse.netOnSuccess(data);
                                     httpResponse.netOnSuccess(data, msg);
@@ -208,7 +217,6 @@ public class HttpRequest {
                                 }
                                 if (httpResponse != null) {
                                     httpResponse.netOnOtherStatus(code, msg);
-                                    Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
                                     httpResponse.netOnOtherStatus(code, msg, data);
                                 }
                             }
@@ -219,7 +227,7 @@ public class HttpRequest {
                             if (httpResponse != null) {
                                 httpResponse.netOnFailure(e);
                             }
-                            if(Http.getHttp().isDebugMode()){
+                            if (Http.getHttp().isDebugMode()) {
                                 e.printStackTrace();
                             }
                         }
