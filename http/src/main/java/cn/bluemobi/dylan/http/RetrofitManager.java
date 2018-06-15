@@ -199,12 +199,7 @@ public class RetrofitManager {
                     FormBody oidFormBody = (FormBody) original.body();
                     for (int i = 0; i < oidFormBody.size(); i++) {
                         String name = oidFormBody.encodedName(i);
-                        String value = null;
-                        try {
-                            value = URLDecoder.decode(oidFormBody.encodedValue(i), "UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                        String value = oidFormBody.value(i);
 //                        newFormBody.addEncoded(name, value);
                         if (mMessage.indexOf("=") != -1) {
                             mMessage.append("\n");
