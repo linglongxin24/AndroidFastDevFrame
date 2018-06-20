@@ -243,10 +243,10 @@ public class RetrofitManager {
             builder.addInterceptor(interceptor);
         }
         /**添加公共参数拦截器**/
-        builder.addNetworkInterceptor(commParamsIntInterceptor);
+        builder.addInterceptor(commParamsIntInterceptor);
         if (debugMode) {
             /**添加打印日志拦截器**/
-            builder.addInterceptor(httpInterceptor);
+            builder.addNetworkInterceptor(httpInterceptor);
         }
         /**设置证书**/
         if (overlockCard) {
