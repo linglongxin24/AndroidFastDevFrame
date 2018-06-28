@@ -246,7 +246,7 @@ public class RetrofitManager {
         builder.addInterceptor(commParamsIntInterceptor);
         if (debugMode) {
             /**添加打印日志拦截器**/
-            builder.addNetworkInterceptor(httpInterceptor);
+            builder.addInterceptor(httpInterceptor);
         }
         /**设置证书**/
         if (overlockCard) {
