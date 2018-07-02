@@ -78,6 +78,7 @@ public class Http {
      * @param debugMode
      */
     public Http setDebugMode(boolean debugMode) {
+        this.debugMode=debugMode;
         RetrofitManager.getRetrofitManager().setDebugMode(debugMode);
         return http;
     }
