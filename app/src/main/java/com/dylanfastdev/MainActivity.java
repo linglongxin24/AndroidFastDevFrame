@@ -12,7 +12,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
@@ -36,10 +35,6 @@ import cn.bluemobi.dylan.fastdev.view.RatingBar;
 import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
-import cn.bluemobi.dylan.http.MessageManager;
-import cn.bluemobi.dylan.pay.AliPay;
-import cn.bluemobi.dylan.pay.PayListener;
-import cn.bluemobi.dylan.pay.alipay.OrderInfoUtil2_0;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -154,6 +149,7 @@ public class MainActivity extends BasePhotoActivity {
      *
      * @param file 图片文件
      */
+    @Override
     public void photoPath(File file) {
 //        Http.with(context)
 //                .setObservable(Http.getApiService(ApiService3.class)
@@ -205,27 +201,27 @@ public class MainActivity extends BasePhotoActivity {
                 showDialog();
             }
         });
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService4.class).getCompetitionList("", 1, 10))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-
-                    }
-                });
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService4.class).getCompetitionList("", 1, 10))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//                });
 
         /**设置网络请求**/
 //        Http.getHttp().init(ApiService.class, ApiService2.BASE_HOST, "status", "data", "msg", 0);
 
-        Http.with(context)
-                .setObservable(Http.getApiService(ApiService2.class).getAd("Advert", "Advertr_an_HomeList"))
-                .setDataListener(new HttpCallBack() {
-                                     @Override
-                                     public void netOnSuccess(Map<String, Object> data) {
-
-                                     }
-                                 }
-                );
+//        Http.with(context)
+//                .setObservable(Http.getApiService(ApiService2.class).getAd("Advert", "Advertr_an_HomeList"))
+//                .setDataListener(new HttpCallBack() {
+//                                     @Override
+//                                     public void netOnSuccess(Map<String, Object> data) {
+//
+//                                     }
+//                                 }
+//                );
 
 
 //       Http.with(context)

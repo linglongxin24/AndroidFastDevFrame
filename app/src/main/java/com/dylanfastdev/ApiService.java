@@ -2,6 +2,7 @@ package com.dylanfastdev;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
@@ -67,8 +68,21 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("http://192.168.1.222:8080/campus/app/activity/doList")
-    Observable<ResponseBody> test(@Field("uid") String uid
+    Observable<Response<ResponseBody>> test(@Field("uid") String uid
             , @Field("pageSize") int pageSize
             , @Field("pageIndex") int pageIndex
+    );
+    /**
+     * 3.测试
+     *
+     * @return Observable
+     */
+    @FormUrlEncoded
+    @POST("http://192.168.1.222:8080/campus/app/activity/doList")
+    Observable<Response<ResponseBody>> test2(
+            @Field("act") String act,
+            @Field("pars") String pars,
+            @Field("returnData") String returnData,
+            @Field("accessToken") String accessToken
     );
 }

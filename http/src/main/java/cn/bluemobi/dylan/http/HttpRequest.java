@@ -4,12 +4,25 @@ import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import cn.bluemobi.dylan.http.download.ProgressResponseBody;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import okio.Buffer;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -41,7 +54,7 @@ public class HttpRequest {
     /**
      * 接口监听者
      */
-    private Observable<? extends ResponseBody> observable;
+    private Observable<? extends Response<ResponseBody>> observable;
     private LoadingDialog loadingDialog = null;
 
 
@@ -71,7 +84,7 @@ public class HttpRequest {
      * @param observable 接口对象
      * @return 本类对象
      */
-    public HttpRequest setObservable(Observable<? extends ResponseBody> observable) {
+    public HttpRequest setObservable(Observable<? extends Response<ResponseBody>> observable) {
         this.observable = observable;
         return this;
     }
@@ -140,7 +153,7 @@ public class HttpRequest {
         }
         Subscription subscribe = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
+                .subscribe(new Subscriber<Response<ResponseBody>>() {
 
                     @Override
                     public void onStart() {
@@ -179,10 +192,24 @@ public class HttpRequest {
                     }
 
                     @Override
-                    public void onNext(ResponseBody result) {
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
+                        ResponseBody result = responseBodyResponse.body();
+                        try {
+                            String responseString = result.string();
+                            if (responseInterceptor != null) {
+                                Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                                boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                if (isInterceptor) {
+                                    return;
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         if (result instanceof ProgressResponseBody) {
 
                         }
@@ -193,7 +220,7 @@ public class HttpRequest {
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
                             Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
                             if (responseInterceptor != null) {
-                                boolean isInterceptor = responseInterceptor.onResponse(context.get(),code, msg, data);
+                                boolean isInterceptor = responseInterceptor.onResponse(responseBodyResponse.raw().request().url().encodedPath(), context.get(), code, msg, data);
                                 if (isInterceptor) {
                                     return;
                                 }
@@ -238,6 +265,130 @@ public class HttpRequest {
             loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe, canCancel));
         }
         return subscribe;
+    }
+
+
+    private Map<String, Object> getRequestParement(Request original) {
+        Map<String, Object> map = new ArrayMap<>();
+        //请求体定制：统一添加sign参数
+        if (original.body() instanceof FormBody) {
+            FormBody oidFormBody = (FormBody) original.body();
+            for (int i = 0; i < oidFormBody.size(); i++) {
+                String name = oidFormBody.name(i);
+                String value = oidFormBody.value(i);
+                map.put(name, value);
+            }
+        } else if (original.body() instanceof MultipartBody) {
+            MultipartBody multipartBody = (MultipartBody) original.body();
+            for (MultipartBody.Part part : multipartBody.parts()) {
+                String name = getPartHeaders(part);
+                String value = null;
+                try {
+                    value = URLDecoder.decode(getRequestBody(part).replaceAll("%(?![0-9a-fA-F]{2})", "%25"), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                map.put(name, value);
+            }
+        }
+        return map;
+    }
+
+    private String getPartHeaders(MultipartBody.Part part) {
+        Class<?> personType = part.getClass();
+
+        //访问私有属性
+        Field field = null;
+        try {
+            field = personType.getDeclaredField("headers");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        field.setAccessible(true);
+        try {
+            Headers headers = (Headers) field.get(part);
+            String s = headers.get("content-disposition");
+            return s.split(";")[1].split("=")[1].replace("\"", "");
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return "";
+    }
+
+    private String getRequestBody(MultipartBody.Part part) {
+
+        Class<?> personType = part.getClass();
+
+        //访问私有属性
+        Field field = null;
+        try {
+            field = personType.getDeclaredField("body");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        field.setAccessible(true);
+        try {
+            RequestBody requestBody = (RequestBody) field.get(part);
+            MediaType contentType = requestBody.contentType();
+            if (contentType.type().equals("multipart")) {
+                Buffer buffer = new Buffer();
+                requestBody.writeTo(buffer);
+                Charset UTF8 = Charset.forName("UTF-8");
+                Charset charset = contentType.charset(UTF8);
+                return buffer.readString(charset);
+            } else if (contentType.type().equals("image")) {
+                return convertFileSize(requestBody.contentLength());
+//                Class<?> requestBodyClass = requestBody.getClass();
+//
+//                //访问私有属性
+//                Field fileRequestBodyClass = null;
+//                try {
+//                    fileRequestBodyClass = requestBodyClass.getDeclaredField("file");
+//
+//
+//                    fileRequestBodyClass.setAccessible(true);
+//                    File file = (File) fileRequestBodyClass.get(requestBody);
+//                    Logger.d("file=" + file.getPath());
+//                } catch (NoSuchFieldException e) {
+//                    e.printStackTrace();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+            }
+
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String convertFileSize(long size) {
+        long kb = 1024;
+        long mb = kb * 1024;
+        long gb = mb * 1024;
+
+        if (size >= gb) {
+            return String.format("%.1f GB", (float) size / gb);
+        } else if (size >= mb) {
+            float f = (float) size / mb;
+            return String.format(f > 100 ? "%.0f MB" : "%.1f MB", f);
+        } else if (size >= kb) {
+            float f = (float) size / kb;
+            return String.format(f > 100 ? "%.0f KB" : "%.1f KB", f);
+        } else {
+            return String.format("%d B", size);
+        }
     }
 
 }

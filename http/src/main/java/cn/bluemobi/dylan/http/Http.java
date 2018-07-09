@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
-import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import okhttp3.Interceptor;
 
 /**

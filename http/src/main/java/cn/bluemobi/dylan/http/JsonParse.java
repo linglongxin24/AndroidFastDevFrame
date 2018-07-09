@@ -293,6 +293,38 @@ public class JsonParse {
      * @param key map的key
      * @return map的int值
      */
+    public static float getFloat(Map<String, Object> map, String key) {
+        return getFloat(map, key, 0.0f);
+    }
+
+    /**
+     * 获取map中的double值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static float getFloat(Map<String, Object> map, String key, float defaultValue) {
+        try {
+            return Float.parseFloat(getString(map, key));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return 0.0f;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0.0f;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
+    /**
+     * 获取map中的double值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
     public static double getDouble(Map<String, Object> map, String key) {
         return getDouble(map, key, 0.0);
     }
