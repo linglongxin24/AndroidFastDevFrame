@@ -197,8 +197,9 @@ public class HttpRequest {
                             loadingDialog.dismiss();
                         }
                         ResponseBody result = responseBodyResponse.body();
+                        String responseString="";
                         try {
-                            String responseString = result.string();
+                             responseString = result.string();
                             if (responseInterceptor != null) {
                                 Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
                                 boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
@@ -215,7 +216,7 @@ public class HttpRequest {
                         }
                         ArrayMap<String, Object> jsonBean;
                         try {
-                            jsonBean = JsonParse.getJsonParse().jsonParse(result.string());
+                            jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
                             String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
                             Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
