@@ -196,24 +196,29 @@ public class HttpRequest {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
-                        ResponseBody result = responseBodyResponse.body();
-                        String responseString="";
+                        String responseString = "";
+                        boolean isSuccessful = responseBodyResponse.isSuccessful();
                         try {
-                             responseString = result.string();
-                            if (responseInterceptor != null) {
-                                Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
-                                if (isInterceptor) {
-                                    return;
+                            if (!isSuccessful) {
+                                responseString = responseBodyResponse.errorBody().string();
+                                if (responseInterceptor != null) {
+                                    Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                                    boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                    if (isInterceptor) {
+                                        return;
+                                    }
                                 }
+                            } else {
+
+                                responseString = responseBodyResponse.body().string();
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        if (result instanceof ProgressResponseBody) {
-
-                        }
+//
+//                        if (result instanceof ProgressResponseBody) {
+//
+//                        }
                         ArrayMap<String, Object> jsonBean;
                         try {
                             jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
@@ -221,7 +226,7 @@ public class HttpRequest {
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
                             Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
                             if (responseInterceptor != null) {
-                                boolean isInterceptor = responseInterceptor.onResponse( context.get(), code, msg, data,responseBodyResponse.raw().request().url().url().toString());
+                                boolean isInterceptor = responseInterceptor.onResponse(context.get(), code, msg, data, responseBodyResponse.raw().request().url().url().toString());
                                 if (isInterceptor) {
                                     return;
                                 }

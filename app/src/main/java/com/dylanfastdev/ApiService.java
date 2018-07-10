@@ -78,10 +78,10 @@ public interface ApiService {
      * @return Observable
      */
     @FormUrlEncoded
-    @POST("http://192.168.1.222:8080/campus/app/activity/doList")
+    @POST("https://www.travel-network.xin/mixin-apis/app/updateMemberInfo")
     Observable<Response<ResponseBody>> test2(
-            @Field("act") String act,
-            @Field("pars") String pars,
+            @Field("nickName") String act,
+            @Field("headPortrait") String pars,
             @Field("returnData") String returnData,
             @Field("accessToken") String accessToken
     );
