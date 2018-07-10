@@ -312,11 +312,11 @@ public class Tools {
      * @param context
      * @return
      */
-    public static int DPtoPX(int size, Context context) {
+    public static int DPtoPX(float size, Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
-        return (int) ((float) size * metrics.density + 0.5);
+        return (int) ( size * metrics.density + 0.5);
     }
 
     /**
