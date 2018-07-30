@@ -126,17 +126,19 @@ public class AppManager {
         // 隐藏上一个页面的键盘
         /*
          * if(activityStack.size() > 0){
-		 * UIUtils.alwaysHideSoftKeyboard(activityStack.peek()); }
-		 */
+         * UIUtils.alwaysHideSoftKeyboard(activityStack.peek()); }
+         */
     }
 
     /**
      * 结束指定类名的Activity
      */
     public void finishActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
+        for (int i = 0; i < activityStack.size(); i++) {
+            Activity activity = activityStack.get(i);
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
+                i--;
             }
         }
     }
@@ -254,9 +256,9 @@ public class AppManager {
 //            MyApplication.getInstance().unregisterReceiver();
             /*
              * ActivityManager activityMgr= (ActivityManager)
-			 * context.getSystemService(Context.ACTIVITY_SERVICE);
-			 * activityMgr.restartPackage(context.getPackageName());
-			 */
+             * context.getSystemService(Context.ACTIVITY_SERVICE);
+             * activityMgr.restartPackage(context.getPackageName());
+             */
             // System.exit(0);
 
         } catch (Exception e) {
