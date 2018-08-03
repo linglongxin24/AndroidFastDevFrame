@@ -205,13 +205,10 @@ public class JsonParse {
         try {
             return Integer.parseInt(getString(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (Exception e) {
-            e.printStackTrace();
             return defaultValue;
         }
     }
@@ -240,13 +237,10 @@ public class JsonParse {
         try {
             return Long.parseLong(getString(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (Exception e) {
-            e.printStackTrace();
             return defaultValue;
         }
     }
@@ -274,13 +268,10 @@ public class JsonParse {
         try {
             return Boolean.parseBoolean(getString(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return defaultValue;
         } catch (Exception e) {
-            e.printStackTrace();
             return defaultValue;
         }
     }
@@ -308,13 +299,10 @@ public class JsonParse {
         try {
             return Float.parseFloat(getString(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return 0.0f;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return 0.0f;
         } catch (Exception e) {
-            e.printStackTrace();
             return 0.0f;
         }
     }
@@ -340,13 +328,10 @@ public class JsonParse {
         try {
             return Double.parseDouble(getString(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return 0.0;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return 0.0;
         } catch (Exception e) {
-            e.printStackTrace();
             return 0.0;
         }
     }
@@ -362,13 +347,10 @@ public class JsonParse {
         try {
             return formatMoney(getDouble(map, key));
         } catch (NullPointerException e) {
-            e.printStackTrace();
             return "0.00";
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             return "0.00";
         } catch (Exception e) {
-            e.printStackTrace();
             return "0.00";
         }
     }
