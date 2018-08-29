@@ -15,15 +15,18 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Process;
+import android.text.TextUtils;
 import android.util.Log;
 
-import cn.bluemobi.dylan.uncaughtexception.activity.DefaultErrorActivity;
-import cn.bluemobi.dylan.uncaughtexception.email.ReportByEmail;
-
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -34,6 +37,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import cat.ereza.customactivityoncrash.R;
+import cn.bluemobi.dylan.uncaughtexception.activity.DefaultErrorActivity;
+import cn.bluemobi.dylan.uncaughtexception.email.ReportByEmail;
 
 
 @SuppressLint({"NewApi"})
@@ -52,6 +57,15 @@ public final class CustomActivityOnCrash {
     private static Class<? extends Activity> restartActivityClass = null;
     private static boolean debugModel = true;
     private static String[] toArr;
+    private static String dingtalkUrl;
+
+    public static void setDingtalkUrl(String dingtalkUrl) {
+        CustomActivityOnCrash.dingtalkUrl = dingtalkUrl;
+    }
+
+    public static String getDingtalkUrl() {
+        return dingtalkUrl;
+    }
 
     public static void setEmailTo(String[] toAddress) {
         toArr = toAddress;
@@ -107,7 +121,11 @@ public final class CustomActivityOnCrash {
                                         }
 
                                         final String finalStackTraceString = stackTraceString;
-
+                                        if (!TextUtils.isEmpty(CustomActivityOnCrash.getDingtalkUrl())) {
+                                            String url = CustomActivityOnCrash.getDingtalkUrl();
+                                            String json = "{ \"msgtype\": \"text\", \"text\": {\"content\": \"" + CustomActivityOnCrash.getAllErrorDetailsFromContext(context, finalStackTraceString) + "\"}}";
+                                            requestPost(url, json);
+                                        }
                                         ReportByEmail.sendEmail2(CustomActivityOnCrash.getApplicationName(context), CustomActivityOnCrash.getAllErrorDetailsFromContext(context, finalStackTraceString));
                                         // 退出程序
                                         //干掉当前的程序
@@ -390,7 +408,7 @@ public final class CustomActivityOnCrash {
         return false;
     }
 
-    public static String  getAppDate(Context context, DateFormat dateFormat) {
+    public static String getAppDate(Context context, DateFormat dateFormat) {
         long lastUpdateTime = 0;
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -400,6 +418,7 @@ public final class CustomActivityOnCrash {
         }
         return dateFormat.format(new Date(lastUpdateTime));
     }
+
     private static String getBuildDateAsString(Context context, DateFormat dateFormat) {
         String buildDate;
 
@@ -436,6 +455,7 @@ public final class CustomActivityOnCrash {
         }
         return capitalize(manufacturer) + " " + model;
     }
+
     private static String getSupportedAbis() {
         String[] supportedAbis = Build.SUPPORTED_ABIS;
 
@@ -530,6 +550,100 @@ public final class CustomActivityOnCrash {
     private static void killCurrentProcess() {
         Process.killProcess(Process.myPid());
         System.exit(10);
+    }
+
+    /**
+     * Post请求
+     *
+     * @param httpUrl
+     * @param json
+     */
+    private static void requestPost(String httpUrl, String json) {
+        try {
+            String baseUrl = httpUrl;
+            //合成参数
+            StringBuilder tempParams = new StringBuilder();
+//            int pos = 0;
+//            for (String key : paramsMap.keySet()) {
+//                if (pos > 0) {
+//                    tempParams.append("&");
+//                }
+//                tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+//                pos++;
+//            }
+//            String params = tempParams.toString();
+            System.out.println("Post方式请求地址httpUrl--->" + httpUrl);
+//            System.out.println("Post方式请求参数params--->" + params);
+            // 请求的参数转换为byte数组
+//            byte[] postData = params.getBytes();
+            // 新建一个URL对象
+            URL url = new URL(baseUrl);
+            // 打开一个HttpURLConnection连接
+            HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+            // 设置连接超时时间
+            urlConn.setConnectTimeout(5 * 1000);
+            //设置从主机读取数据超时
+            urlConn.setReadTimeout(5 * 1000);
+            // Post请求必须设置允许输出 默认false
+            urlConn.setDoOutput(true);
+            //设置请求允许输入 默认是true
+            urlConn.setDoInput(true);
+            // Post请求不能使用缓存
+            urlConn.setUseCaches(false);
+            // 设置为Post请求
+            urlConn.setRequestMethod("POST");
+            //设置本次连接是否自动处理重定向
+            urlConn.setInstanceFollowRedirects(true);
+            // 配置请求Content-Type
+            //设置请求头里面的数据，以下设置用于解决http请求code415的问题
+            urlConn.setRequestProperty("Content-Type",
+                    "application/json");
+
+//            urlConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            // 开始连接
+            urlConn.connect();
+            // 发送请求参数
+            DataOutputStream dos = new DataOutputStream(urlConn.getOutputStream());
+            dos.write(json.getBytes());
+            dos.flush();
+            dos.close();
+            // 判断请求是否成功
+            if (urlConn.getResponseCode() == 200) {
+                // 获取返回的数据
+                String result = streamToString(urlConn.getInputStream());
+                System.out.println("Post方式请求成功，result--->" + result);
+            } else {
+                System.out.println("Post方式请求失败");
+            }
+            // 关闭连接
+            urlConn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将输入流转换成字符串
+     *
+     * @param is 从网络获取的输入流
+     * @return
+     */
+    public static String streamToString(InputStream is) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            baos.close();
+            is.close();
+            byte[] byteArray = baos.toByteArray();
+            return new String(byteArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

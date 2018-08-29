@@ -26,6 +26,7 @@ public class Myapplication extends Application {
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
         CustomActivityOnCrash.setEmailTo(new String[]{"13468857714@qq.com"});
+        CustomActivityOnCrash.setDingtalkUrl("https://oapi.dingtalk.com/robot/send?access_token=b5836af9d2ef7c83d7ddf48513214c1fe2d04130cc5a1cf1399561e20c820197");
         //http请求初始化设置
         Http.getHttp().setDebugMode(BuildConfig.DEBUG);
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "returnCode", "data", "returnMsg", 200);

@@ -214,10 +214,10 @@ public class WeChatPay {
             Toast.makeText(mContext, "您还未安装微信", Toast.LENGTH_SHORT).show();
             return this;
         }
-        if (!api.isWXAppSupportAPI()) {
-            Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
-            return this;
-        }
+//        if (!api.isWXAppSupportAPI()) {
+//            Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
+//            return this;
+//        }
         api.sendReq(mPayReq);
         return this;
     }

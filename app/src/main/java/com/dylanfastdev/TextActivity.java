@@ -85,6 +85,7 @@ public class TextActivity extends BaseActivity {
                         super.netOnFinish();
                     }
                 });
+        throw new RuntimeException("ssddss");
     }
 
     @Override
