@@ -25,7 +25,6 @@ public class Myapplication extends Application {
         Config.setIsImmersionStatus(false);
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
-        CustomActivityOnCrash.setEmailTo(new String[]{"13468857714@qq.com"});
         //http请求初始化设置
         Http.getHttp().setDebugMode(BuildConfig.DEBUG);
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "returnCode", "data", "returnMsg", 200);
