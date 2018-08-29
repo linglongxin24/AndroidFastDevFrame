@@ -13,7 +13,9 @@ import cn.bluemobi.dylan.http.MessageManager;
 import cn.bluemobi.dylan.uncaughtexception.CustomActivityOnCrash;
 
 /**
- * Created by yuandl on 2016/9/1 0001.
+ *
+ * @author yuandl
+ * @date 2016/9/1 0001
  */
 public class Myapplication extends Application {
     @Override
