@@ -153,7 +153,9 @@ public class RetrofitManager {
 
                 mMessage.append("\n");
                 mMessage.append("请求大小：");
-                mMessage.append(convertFileSize(original.body().contentLength()));
+                if (original.body() != null) {
+                    mMessage.append(convertFileSize(original.body().contentLength()));
+                }
 
                 Logger.d(mMessage.toString());
 
@@ -179,7 +181,9 @@ public class RetrofitManager {
                         .body(ResponseBody.create(mediaType, content))
                         .build();
                 mMessage.append("响应大小：");
-                mMessage.append(convertFileSize(responseNew.body().contentLength()));
+                if (original.body() != null) {
+                    mMessage.append(convertFileSize(responseNew.body().contentLength()));
+                }
                 mMessage.append("\n");
 
                 mMessage.append("响应数据：");
@@ -498,7 +502,11 @@ public class RetrofitManager {
                 Charset charset = contentType.charset(UTF8);
                 return buffer.readString(charset);
             } else if (contentType.type().equals("image")) {
-                return convertFileSize(requestBody.contentLength());
+                if (requestBody != null) {
+                    return convertFileSize(requestBody.contentLength());
+                } else {
+                    return "0b";
+                }
 //                Class<?> requestBodyClass = requestBody.getClass();
 //
 //                //访问私有属性
