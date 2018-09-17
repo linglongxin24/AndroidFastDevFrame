@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Xml;
 import android.widget.Toast;
 
+import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -215,10 +216,10 @@ public class WeChatPay {
             return this;
         }
         api.getWXAppSupportAPI();
-//        if (!api.isWXAppSupportAPI()) {
-//            Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
-//            return this;
-//        }
+        if (api.getWXAppSupportAPI()< Build.PAY_SUPPORTED_SDK_INT) {
+            Toast.makeText(mContext, "您的微信不支持微信支付或微信版本过低", Toast.LENGTH_SHORT).show();
+            return this;
+        }
         api.sendReq(mPayReq);
         return this;
     }
