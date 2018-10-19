@@ -77,6 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        beforeSetContentView();
         setContentView(R.layout.ac_base_title_bar);
         AppManager.getAppManager().addActivity(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,6 +96,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mContext = this;
         initData();
         addListener();
+    }
+
+    protected void beforeSetContentView() {
+
     }
 
     @Override
@@ -153,7 +158,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @return
      */
     private BaseActivity setLeftButton() {
-        if(AppConfig.getAppLeftResId()!=null){
+        if (AppConfig.getAppLeftResId() != null) {
             setLeftButtonIcon(AppConfig.getAppLeftResId())
                     .setLeftButtonOnClickListener(new OnClickListener() {
                         @Override
@@ -161,14 +166,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                             finish();
                         }
                     });
-        }else{
+        } else {
             setLeftButtonIcon(R.drawable.ic_return_white_24dp)
                     .setLeftButtonOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick() {
                             finish();
                         }
-                    });}
+                    });
+        }
         return this;
     }
 
@@ -295,7 +301,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void showToast(CharSequence charSequence) {
         if (null == toast) {
             toast = Toast.makeText(mContext, charSequence, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER,0,0);
+            toast.setGravity(Gravity.CENTER, 0, 0);
         } else {
             toast.setText(charSequence);
         }
@@ -311,6 +317,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
 
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -360,6 +367,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
+
     /**
      * 初始化设置标题栏
      */
