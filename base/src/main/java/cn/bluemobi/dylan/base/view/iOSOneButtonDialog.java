@@ -59,13 +59,13 @@ public class iOSOneButtonDialog extends Dialog {
         return this;
     }
 
-    public iOSOneButtonDialog setOneButtonText(String text) {
+    public iOSOneButtonDialog setOneButtonText(CharSequence text) {
         btn_one.setText(text);
         return this;
     }
 
-    public iOSOneButtonDialog setMessage(String message) {
-        textView.setVisibility(TextUtils.isEmpty(message) ? View.GONE : View.VISIBLE);
+    public iOSOneButtonDialog setMessage(CharSequence message) {
+        textView.setVisibility(TextUtils.isEmpty(message.toString()) ? View.GONE : View.VISIBLE);
         textView.setText(message);
         return this;
     }

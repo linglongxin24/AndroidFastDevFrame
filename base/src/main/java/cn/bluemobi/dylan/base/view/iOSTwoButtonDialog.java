@@ -65,12 +65,12 @@ public class iOSTwoButtonDialog extends Dialog {
         textView.setGravity(gravity);
         return this;
     }
-    public iOSTwoButtonDialog setLeftButtonText(String text) {
+    public iOSTwoButtonDialog setLeftButtonText(CharSequence text) {
         btn_one.setText(text);
         return this;
     }
 
-    public iOSTwoButtonDialog setRightButtonText(String text) {
+    public iOSTwoButtonDialog setRightButtonText(CharSequence text) {
         btn_two.setText(text);
         return this;
     }
@@ -85,8 +85,8 @@ public class iOSTwoButtonDialog extends Dialog {
         return this;
     }
 
-    public iOSTwoButtonDialog setMessage(String message) {
-        textView.setVisibility(TextUtils.isEmpty(message) ? View.GONE : View.VISIBLE);
+    public iOSTwoButtonDialog setMessage(CharSequence message) {
+        textView.setVisibility(TextUtils.isEmpty(message.toString()) ? View.GONE : View.VISIBLE);
         textView.setText(message);
         return this;
     }

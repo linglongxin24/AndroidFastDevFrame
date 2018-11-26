@@ -114,11 +114,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      *
      * @param title 要显示的文字
      */
-    protected BaseActivity setTitle(String title) {
+    @Override
+    public void setTitle(CharSequence title) {
         if (!TextUtils.isEmpty(title)) {
             tvTitle.setText(title);
         }
-        return this;
+    }
+
+    private CharSequence getMyTitle() {
+        return tvTitle.getText();
     }
 
     /**

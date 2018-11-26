@@ -57,7 +57,7 @@ public class iOSSelectDialog extends Dialog {
         return this;
     }
 
-    public iOSSelectDialog setOneButtonText(String text) {
+    public iOSSelectDialog setOneButtonText(CharSequence text) {
         btn_one.setText(text);
         return this;
     }
