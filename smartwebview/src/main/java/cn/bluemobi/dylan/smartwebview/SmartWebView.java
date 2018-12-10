@@ -19,10 +19,6 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import java.util.logging.Logger;
-
-import cn.bluemobi.dylan.smartwebview.ssl.SslWebViewClient;
-
 /**
  * 此WebViewWithProgress继承自Relativielayout,
  * 如果要设置webview的属性，要先调用getWebView()来取得
@@ -85,6 +81,54 @@ public class SmartWebView extends RelativeLayout {
 
     private void init() {
         mWebView = new WebView(context);
+        if (Build.VERSION.SDK_INT >= 19) {
+            mWebView.getSettings().setLoadsImagesAutomatically(true);
+        } else {
+            mWebView.getSettings().setLoadsImagesAutomatically(false);
+        }
+        // android 5.0以上默认不支持Mixed Content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mWebView.getSettings().setMixedContentMode(
+                    WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        }
+        mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        mWebView.getSettings().setUseWideViewPort(true);
+//        wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebView.setVerticalScrollBarEnabled(false);
+        mWebView.setVerticalScrollbarOverlay(false);
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setHorizontalScrollbarOverlay(false);
+        WebSettings webSettings = mWebView.getSettings();
+        //设置WebView属性，能够执行Javascript脚本
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setPluginState(WebSettings.PluginState.ON);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setBlockNetworkImage(false);//解决图片不显示
+        webSettings.setDefaultTextEncodingName("utf-8");
+        //设置可以访问文件
+        webSettings.setAllowFileAccess(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebView.getSettings().setDatabaseEnabled(true);
+        String dir = getContext().
+                getDir("database", Context.MODE_PRIVATE).getPath();
+        mWebView.getSettings().setGeolocationEnabled(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        mWebView.getSettings().setGeolocationDatabasePath(dir);
+        setScale(mWebView);
+//        setDefaultZoom();
+//        //让缩放显示的最小值为起始
+        mWebView.setInitialScale(3);
+        // 设置支持缩放
+        // 设置缩放工具的显示
+        webSettings.setBuiltInZoomControls(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webSettings.setAllowUniversalAccessFromFileURLs(true);
+            webSettings.setAllowFileAccessFromFileURLs(true);
+        }
+        webSettings.setSupportZoom(false);
+
         this.addView(mWebView, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         if (mProgressStyle == ProgressStyle.Horizontal.ordinal()) {
             progressBar = (ProgressBar) LayoutInflater.from(context).inflate(R.layout.ac_progress_horizontal, null);
@@ -105,6 +149,7 @@ public class SmartWebView extends RelativeLayout {
                 // 接受所有网站的证书，忽略SSL错误，执行访问网页
                 handler.proceed();
             }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // TODO Auto-generated method stub
@@ -149,24 +194,13 @@ public class SmartWebView extends RelativeLayout {
         });
     }
 
-
-    /**
-     * Description: 自己填写
-     *
-     * @param webViewClient
-     */
-    private void setWebChromeClient(WebViewClient webViewClient) {
-        // TODO Auto-generated method stub
-
-    }
-
     /**
      * Description: 自己填写
      *
      * @param url
      */
     public void loadUrl(String url) {
-        loadUrl(mWebView, url, null, null);
+        loadUrl(url, null, null);
         // TODO Auto-generated method stub
 
     }
@@ -177,7 +211,7 @@ public class SmartWebView extends RelativeLayout {
      * @param data
      */
     public void loadData(String data) {
-        loadUrl(mWebView, null, data, null);
+        loadUrl(null, data, null);
         // TODO Auto-generated method stub
 
     }
@@ -186,18 +220,29 @@ public class SmartWebView extends RelativeLayout {
      * @param data
      */
     public void loadData(String data, String baseUrl) {
-        loadUrl(mWebView, null, data, baseUrl);
+        loadUrl(null, data, baseUrl);
         // TODO Auto-generated method stub
 
     }
 
+    public void setOfflineCache() {
+        WebSettings settings = mWebView.getSettings();
+        settings.setAppCacheEnabled(true);
+        settings.setDatabaseEnabled(true);
+        //开启DOM缓存，关闭的话H5自身的一些操作是无效的
+        settings.setDomStorageEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+    }
 
     /**
      * Description: 自己填写
      *
      * @param webChromeClient
      */
-    private void setWebChromeClient(WebChromeClient webChromeClient) {
+    public void setWebChromeClient(WebChromeClient webChromeClient) {
+        if (mWebView != null) {
+            mWebView.setWebChromeClient(webChromeClient);
+        }
         // TODO Auto-generated method stub
 
     }
@@ -213,65 +258,17 @@ public class SmartWebView extends RelativeLayout {
     /**
      * 加载网页
      *
-     * @param wv
      * @param url
      */
-    protected void loadUrl(WebView wv, String url, String data, String baseUrl) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            wv.getSettings().setLoadsImagesAutomatically(true);
-        } else {
-            wv.getSettings().setLoadsImagesAutomatically(false);
-        }
-        // android 5.0以上默认不支持Mixed Content
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            wv.getSettings().setMixedContentMode(
-                    WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-        }
-        wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        wv.getSettings().setUseWideViewPort(true);
-//        wv.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wv.setVerticalScrollBarEnabled(false);
-        wv.setVerticalScrollbarOverlay(false);
-        wv.setHorizontalScrollBarEnabled(false);
-        wv.setHorizontalScrollbarOverlay(false);
-        WebSettings webSettings = wv.getSettings();
-        //设置WebView属性，能够执行Javascript脚本
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setPluginState(WebSettings.PluginState.ON);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setBlockNetworkImage(false);//解决图片不显示
-        webSettings.setDefaultTextEncodingName("utf-8");
-        //设置可以访问文件
-        webSettings.setAllowFileAccess(true);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wv.getSettings().setDatabaseEnabled(true);
-        String dir = getContext().
-                getDir("database", Context.MODE_PRIVATE).getPath();
-        wv.getSettings().setGeolocationEnabled(true);
-        wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        wv.getSettings().setGeolocationDatabasePath(dir);
-        setScale(wv);
-//        setDefaultZoom();
-//        //让缩放显示的最小值为起始
-        wv.setInitialScale(3);
-        // 设置支持缩放
-        // 设置缩放工具的显示
-        webSettings.setBuiltInZoomControls(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webSettings.setAllowUniversalAccessFromFileURLs(true);
-            webSettings.setAllowFileAccessFromFileURLs(true);
-        }
-        webSettings.setSupportZoom(false);
+    protected void loadUrl(String url, String data, String baseUrl) {
 
 //        wv.setWebViewClient(new SslWebViewClient());
         if (!TextUtils.isEmpty(url)) {
-            wv.loadUrl(url);
+            mWebView.loadUrl(url);
         } else if (!TextUtils.isEmpty(baseUrl)) {
-            wv.loadDataWithBaseURL(baseUrl, data, "text/html; charset=UTF-8", null, baseUrl);
+            mWebView.loadDataWithBaseURL(baseUrl, data, "text/html; charset=UTF-8", null, baseUrl);
         } else if (!TextUtils.isEmpty(data)) {
-            wv.loadData(data, "text/html; charset=UTF-8", null);
+            mWebView.loadData(data, "text/html; charset=UTF-8", null);
         }
     }
 
