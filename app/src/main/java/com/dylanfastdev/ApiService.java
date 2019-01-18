@@ -85,4 +85,17 @@ public interface ApiService {
             @Field("returnData") String returnData,
             @Field("accessToken") String accessToken
     );
+    /**
+     * 3.测试
+     *
+     * @return Observable
+     */
+    @FormUrlEncoded
+    @POST("http://180.169.57.5:8088/api/V1/WAccount/CESHIForgetPasswordSetPWD")
+    Observable<Response<ResponseBody>> restPassword(
+            @Field("UserName") String UserName,
+            @Field("Phone") String Phone,
+            @Field("NewPwd") String NewPwd,
+            @Field("YesPws") String YesPws
+    );
 }

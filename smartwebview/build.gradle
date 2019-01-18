@@ -4,7 +4,6 @@ def mavenVersionCode = 75
 def mavenVersionName = "0.7.5"
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
 
     defaultConfig {
         minSdkVersion 11

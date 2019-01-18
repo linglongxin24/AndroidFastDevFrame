@@ -4,13 +4,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
+import java.io.IOException;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.OriginalHttpResponse;
 import cn.bluemobi.dylan.http.ResponseInterceptor;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by lenovo on 2017/11/28.
@@ -67,6 +75,31 @@ public class TextActivity extends BaseActivity {
             }
 
         });
+        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).restPassword(
+                "", "", "", ""
+
+        )).setDataListener(new OriginalHttpResponse() {
+            @Override
+            public void netOnStart() {
+
+            }
+
+            @Override
+            public void netOnSuccess(String json) {
+
+            }
+
+            @Override
+            public void netOnFinish() {
+
+            }
+
+            @Override
+            public void netOnFailure(Throwable ex) {
+
+            }
+        });
+//        Http.getApiService(ApiService.class).getTopMove()
         Http.with(mContext)
                 .setObservable(
                         Http.getApiService(ApiService.class)
@@ -85,7 +118,7 @@ public class TextActivity extends BaseActivity {
                         super.netOnFinish();
                     }
                 });
-        throw new RuntimeException("ssddss");
+//        throw new RuntimeException("ssddss");
     }
 
     @Override

@@ -272,6 +272,119 @@ public class HttpRequest {
         }
         return subscribe;
     }
+    /**
+     * 【第四步】设置访问接口的返回监听
+     *
+     * @param httpResponse 请求相应监听
+     * @return 本类对象
+     */
+    public Subscription setDataListener(final OriginalHttpResponse httpResponse) {
+        String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
+        final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : MessageManager.getMessageManager().getErrorMessage();
+
+        if (!NetworkUtil.isNetworkAvailable(context.get())) {
+            Toast.makeText(context.get(), network_unusual, Toast.LENGTH_SHORT).show();
+            if (httpResponse != null) {
+                httpResponse.netOnFailure(new Exception(network_unusual));
+                httpResponse.netOnFinish();
+            }
+            return null;
+        }
+
+        if (isShowLoadingDialog) {
+            if (loadingDialog == null) {
+                loadingDialog = new LoadingDialog(context.get());
+            }
+        } else {
+            loadingDialog = null;
+        }
+        Subscription subscribe = observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<ResponseBody>>() {
+
+                    @Override
+                    public void onStart() {
+                        if (loadingDialog != null) {
+                            loadingDialog.show();
+                        }
+                        if (httpResponse != null) {
+                            httpResponse.netOnStart();
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+                        if (httpResponse != null) {
+                            httpResponse.netOnFinish();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (Http.getHttp().isDebugMode()) {
+                            e.printStackTrace();
+                        }
+                        if (isShowFailMessage) {
+                            Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                        }
+                        if (httpResponse != null) {
+                            httpResponse.netOnFailure(e);
+                        }
+                        onCompleted();
+
+                    }
+
+                    @Override
+                    public void onNext(Response<ResponseBody> responseBodyResponse) {
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+                        String responseString = "";
+                        boolean isSuccessful = responseBodyResponse.isSuccessful();
+                        try {
+                            if (!isSuccessful) {
+                                responseString = responseBodyResponse.errorBody().string();
+                                if (responseInterceptor != null) {
+                                    Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                                    boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                    if (isInterceptor) {
+                                        return;
+                                    }
+                                }
+                            } else {
+
+                                responseString = responseBodyResponse.body().string();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            if (httpResponse != null) {
+                                httpResponse.netOnSuccess(responseString);
+                            }
+                        } catch (Exception e) {
+                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
+                                Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                            }
+                            if (httpResponse != null) {
+                                httpResponse.netOnFailure(e);
+                            }
+                            if (Http.getHttp().isDebugMode()) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+        if (loadingDialog != null && subscribe != null) {
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe, canCancel));
+        }
+        return subscribe;
+    }
 
 
     private Map<String, Object> getRequestParement(Request original) {
