@@ -12,6 +12,7 @@ import com.orhanobut.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.http.JsonParse;
 import cn.bluemobi.dylan.http.OriginalHttpResponse;
+import cn.bluemobi.dylan.http.RequestParameter;
 import cn.bluemobi.dylan.http.ResponseInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -53,7 +55,7 @@ public class TextActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        new iOSOneButtonDialog(mContext).setMessage("三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  ").show();
+//        new iOSOneButtonDialog(mContext).setMessage("三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  ").show();
 
 //        startActivity(new Intent(mContext, PayActivity.class));
 //        Http.with(mContext)
@@ -86,31 +88,41 @@ public class TextActivity extends BaseActivity {
             }
 
         });
-        List<Map<String,Object>> mapList=new ArrayList<>();
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("UserName","");
-            jsonObject.put("Phone","");
-            jsonObject.put("NewPwd","");
-            jsonObject.put("YesPws","");
-        } catch (JSONException e) {
-            e.printStackTrace();
+//        List<Map<String, Object>> mapList = new ArrayList<>();
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("UserName", "");
+//            jsonObject.put("Phone", "");
+//            jsonObject.put("NewPwd", "");
+//            jsonObject.put("YesPws", "");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("name", "张三");
+//        map.put("phone", "13468857714");
+//        map.put("sex", "男");
+//
+//        Logger.json(JSON.toJSONString(map));
+//        Logger.d(JsonParse.jsonToMap(JSON.toJSONString(map)).toString());
+//
+//        mapList.add(map);
+//        Logger.json(JSON.toJSONString(mapList));
+//        Logger.d(JsonParse.jsonToListMap(JSON.toJSONString(mapList)).toString());
+//
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        File file = new File("storage/emulated/0/DCIM/Camera/IMG_20181024_144541.jpg");
+        if (file.exists()) {
+            Logger.d("文件存在");
         }
-        Map<String,Object> map=new HashMap<>();
-        map.put("name","张三");
-        map.put("phone","13468857714");
-        map.put("sex","男");
+        List<File> files=new ArrayList<>();
+        files.add(file);
 
-        Logger.json(JSON.toJSONString(map));
-        Logger.d(JsonParse.jsonToMap(JSON.toJSONString(map) ).toString());
-
-        mapList.add(map);
-        Logger.json(JSON.toJSONString(mapList));
-        Logger.d(JsonParse.jsonToListMap(JSON.toJSONString(mapList) ).toString());
-
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"),jsonObject.toString());
-        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).restPassword(
-                requestBody
+        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
+                RequestParameter.getRequestBody("5250"),
+                RequestParameter.getRequestBody("234"),
+                RequestParameter.getRequestBody("589"),
+                RequestParameter.getFilePartMap("file",files)
         )).setDataListener(new OriginalHttpResponse() {
             @Override
             public void netOnStart() {
@@ -133,24 +145,24 @@ public class TextActivity extends BaseActivity {
             }
         });
 //        Http.getApiService(ApiService.class).getTopMove()
-        Http.with(mContext)
-                .setObservable(
-                        Http.getApiService(ApiService.class)
-                                .test2("sds", "ss", "ss", "c0RFeGNMcXBySDJkL2xmTjFSaUlTdjlNNlB0ZTV4MnlpVDBHWkN3V3BPeThBS1B5N1o5QVhqbFF2NzM3emVVTWtsaEJMRVFKbEVvTG1ab1RsbHo5S2Z1ZElRT3dwT1FQRy9KTzRoM3J0azdHSGc4QmZsL1JVZ2VDZ2tMeW5IOTBTTHduNWx1OGsyNFNDWU16bWpDVHBTUjhMb3NZNm9KOE1IU2w3elp3MlMwPQ=="))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-//                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
-//                      List<String> s= JsonParse.getList(data, "data");
-//                        startActivity(new Intent(mContext,MainActivity.class));
-//                        finish();
-                    }
-
-                    @Override
-                    public void netOnFinish() {
-                        super.netOnFinish();
-                    }
-                });
+//        Http.with(mContext)
+//                .setObservable(
+//                        Http.getApiService(ApiService.class)
+//                                .test2("sds", "ss", "ss", "c0RFeGNMcXBySDJkL2xmTjFSaUlTdjlNNlB0ZTV4MnlpVDBHWkN3V3BPeThBS1B5N1o5QVhqbFF2NzM3emVVTWtsaEJMRVFKbEVvTG1ab1RsbHo5S2Z1ZElRT3dwT1FQRy9KTzRoM3J0azdHSGc4QmZsL1JVZ2VDZ2tMeW5IOTBTTHduNWx1OGsyNFNDWU16bWpDVHBTUjhMb3NZNm9KOE1IU2w3elp3MlMwPQ=="))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+////                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
+////                      List<String> s= JsonParse.getList(data, "data");
+////                        startActivity(new Intent(mContext,MainActivity.class));
+////                        finish();
+//                    }
+//
+//                    @Override
+//                    public void netOnFinish() {
+//                        super.netOnFinish();
+//                    }
+//                });
 //        throw new RuntimeException("ssddss");
     }
 

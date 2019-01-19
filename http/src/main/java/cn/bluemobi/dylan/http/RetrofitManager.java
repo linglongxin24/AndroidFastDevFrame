@@ -149,7 +149,7 @@ public class RetrofitManager {
 
                 mMessage.append("请求参数：");
                 Request.Builder requestBuilder = original.newBuilder();
-                addRequestParement(original);
+//                addRequestParement(original);
 
                 mMessage.append("\n");
                 mMessage.append("请求大小：");
@@ -168,7 +168,7 @@ public class RetrofitManager {
                 mMessage.append("\n");
 
                 mMessage.append("响应参数：");
-                addRequestParement(response.request());
+//                addRequestParement(response.request());
                 mMessage.append("\n");
 
                 mMessage.append("响应耗时：");

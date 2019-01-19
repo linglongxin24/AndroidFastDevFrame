@@ -1,9 +1,5 @@
 package com.dylanfastdev;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -12,11 +8,12 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import rx.Observable;
 
 /**
@@ -112,6 +109,18 @@ public interface ApiService {
      * @return Observable
      */
     @POST("http://180.169.57.5:8088/api/V1/WAccount/CESHIForgetPasswordSetPWD")
-    Observable<Response<ResponseBody>> restPassword(@Body RequestBody   requestBody
-                                                    );
+    Observable<Response<ResponseBody>> restPassword(@Body RequestBody   requestBody);
+    /**
+     * 3.测试
+     *
+     * @return Observable
+     */
+    @Multipart
+    @Streaming
+    @POST("http://180.169.57.5:8088/api/V1/WAccount/PostFiles")
+    Observable<Response<ResponseBody>> upload(@Part("Accountid")  RequestBody Accountid
+                                               , @Part("AttachingType")  RequestBody AttachingType
+                                               , @Part("Userid")  RequestBody Userid
+                                               , @PartMap Map<String, RequestBody> file
+    );
 }

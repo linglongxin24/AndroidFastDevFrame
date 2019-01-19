@@ -35,6 +35,15 @@ public class RequestParameter {
     public static RequestBody getRequestBody(File file) {
         return RequestBody.create(MediaType.parse("image/png"), file);
     }
+    /**
+     * 获取File通过Part封装后的RequestBody
+     *
+     * @param file
+     * @return
+     */
+    public static RequestBody getRequestBody2(File file) {
+        return RequestBody.create(MediaType.parse("json"), file);
+    }
 
     /**
      * 获取单个文件参数
