@@ -1,13 +1,22 @@
 package com.dylanfastdev;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
+import java.util.Map;
+
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -90,12 +99,19 @@ public interface ApiService {
      *
      * @return Observable
      */
-    @FormUrlEncoded
     @POST("http://180.169.57.5:8088/api/V1/WAccount/CESHIForgetPasswordSetPWD")
     Observable<Response<ResponseBody>> restPassword(
-            @Field("UserName") String UserName,
-            @Field("Phone") String Phone,
-            @Field("NewPwd") String NewPwd,
-            @Field("YesPws") String YesPws
+            @Query("UserName") String UserName,
+            @Query("Phone") String Phone,
+            @Query("NewPwd") String NewPwd,
+            @Query("YesPws") String YesPws
     );
+    /**
+     * 3.测试
+     *
+     * @return Observable
+     */
+    @POST("http://180.169.57.5:8088/api/V1/WAccount/CESHIForgetPasswordSetPWD")
+    Observable<Response<ResponseBody>> restPassword(@Body RequestBody   requestBody
+                                                    );
 }

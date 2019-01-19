@@ -1,6 +1,7 @@
 package cn.bluemobi.dylan.http;
 
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -150,6 +151,40 @@ public class JsonParse {
         returnData.put(code, getString(arrayMap, code));
         returnData.put(msg, getString(arrayMap, msg));
         return returnData;
+    }
+
+
+    /**
+     * Json解析
+     *
+     * @param json
+     * @return
+     * @throws JSONException
+     */
+    public static  ArrayMap<String, Object> jsonToMap(String json) throws JSONException {
+        ArrayMap<String, Object> arrayMap = new ArrayMap<>();
+        if (!TextUtils.isEmpty(json)) {
+            arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
+            }.getType());
+        }
+        return arrayMap;
+    }
+
+
+    /**
+     * Json解析
+     *
+     * @param json
+     * @return
+     * @throws JSONException
+     */
+    public static List<Map<String, Object>> jsonToListMap(String json) throws JSONException {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        if (!TextUtils.isEmpty(json)) {
+            mapList = JSON.parseObject(json, new TypeReference<List<Map<String, Object>>>() {
+            }.getType());
+        }
+        return mapList;
     }
 
     /**
@@ -306,6 +341,7 @@ public class JsonParse {
             return 0.0f;
         }
     }
+
     /**
      * 获取map中的double值
      *
@@ -391,8 +427,8 @@ public class JsonParse {
      * @param key map的key
      * @return map的值
      */
-    public static List<Map<String,Object>> getList(Map<String, Object> map, String key) {
-        List<Map<String,Object>> list = new ArrayList<>();
+    public static List<Map<String, Object>> getList(Map<String, Object> map, String key) {
+        List<Map<String, Object>> list = new ArrayList<>();
         if (map == null || map.size() == 0) {
             return list;
         } else if (isNull(key)) {
@@ -403,7 +439,7 @@ public class JsonParse {
                 return list;
             } else {
                 if (data instanceof List) {
-                    return (List<Map<String,Object>>) data;
+                    return (List<Map<String, Object>>) data;
                 } else {
                     return list;
                 }

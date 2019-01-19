@@ -2,20 +2,31 @@ package com.dylanfastdev;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.JsonParse;
 import cn.bluemobi.dylan.http.OriginalHttpResponse;
 import cn.bluemobi.dylan.http.ResponseInterceptor;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -75,9 +86,31 @@ public class TextActivity extends BaseActivity {
             }
 
         });
-        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).restPassword(
-                "", "", "", ""
+        List<Map<String,Object>> mapList=new ArrayList<>();
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("UserName","");
+            jsonObject.put("Phone","");
+            jsonObject.put("NewPwd","");
+            jsonObject.put("YesPws","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Map<String,Object> map=new HashMap<>();
+        map.put("name","张三");
+        map.put("phone","13468857714");
+        map.put("sex","男");
 
+        Logger.json(JSON.toJSONString(map));
+        Logger.d(JsonParse.jsonToMap(JSON.toJSONString(map) ).toString());
+
+        mapList.add(map);
+        Logger.json(JSON.toJSONString(mapList));
+        Logger.d(JsonParse.jsonToListMap(JSON.toJSONString(mapList) ).toString());
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"),jsonObject.toString());
+        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).restPassword(
+                requestBody
         )).setDataListener(new OriginalHttpResponse() {
             @Override
             public void netOnStart() {
