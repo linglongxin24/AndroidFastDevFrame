@@ -77,6 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         beforeSetContentView();
         setContentView(R.layout.ac_base_title_bar);
         AppManager.getAppManager().addActivity(this);
@@ -93,7 +94,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         //将继承 TopBarBaseActivity 的布局解析到 FrameLayout 里面
         LayoutInflater.from(this).inflate(getContentView(), viewContent);
         initViews(savedInstanceState);
-        mContext = this;
         initData();
         addListener();
     }
