@@ -58,6 +58,7 @@
         <!-- 是否模糊 -->
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowSoftInputMode">stateAlwaysVisible</item><!--显示软件盘-->
     </style>
     <style name="toolbar" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:navigationIcon">@drawable/ic_return_white_24dp</item>
