@@ -41,6 +41,7 @@ public class TextActivity extends BaseActivity {
     @Override
     public void initTitleBar() {
         setTitle("测试");
+        setRightButton("菜单",R.mipmap.dot_focus,null);
     }
 
     @Override
