@@ -147,20 +147,21 @@ public class RetrofitManager {
                 mMessage.append(original.url());
                 mMessage.append("\n");
 
-                mMessage.append("请求参数：");
+
                 Request.Builder requestBuilder = original.newBuilder();
-//                addRequestParement(original);
+                Request request = requestBuilder.build();
+                Response response = chain.proceed(request);
+                if("POST".equals(original.method())){
+                mMessage.append("请求参数：");
+                addRequestParement(original);
 
                 mMessage.append("\n");
                 mMessage.append("请求大小：");
                 if (original.body() != null) {
                     mMessage.append(convertFileSize(original.body().contentLength()));
                 }
-
                 Logger.d(mMessage.toString());
 
-                Request request = requestBuilder.build();
-                Response response = chain.proceed(request);
 
                 mMessage.setLength(0);
                 mMessage.append("响应地址：");
@@ -168,8 +169,9 @@ public class RetrofitManager {
                 mMessage.append("\n");
 
                 mMessage.append("响应参数：");
-//                addRequestParement(response.request());
+                addRequestParement(response.request());
                 mMessage.append("\n");
+                }
 
                 mMessage.append("响应耗时：");
                 mMessage.append(formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
