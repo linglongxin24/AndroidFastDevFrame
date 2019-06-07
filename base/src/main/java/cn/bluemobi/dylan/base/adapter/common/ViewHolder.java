@@ -190,6 +190,34 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public ViewHolder setRoundCornerImageUrl(int viewId, String url, final float cornerRadius, int emptyResourceId, int errorResourceId) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).asBitmap().error(errorResourceId).placeholder(emptyResourceId).centerCrop().into(new BitmapImageViewTarget(view) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                circularBitmapDrawable.setCornerRadius(cornerRadius);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+        return this;
+    }
+
+    public ViewHolder setRoundCornerImageUrl(int viewId, String url, final float cornerRadius) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
+                circularBitmapDrawable.setCornerRadius(cornerRadius);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+        return this;
+    }
+
     public ViewHolder setBackgroundColor(int viewId, int color) {
         View view = getView(viewId);
         view.setBackgroundColor(color);
