@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.StringSignature;
 
 import cn.bluemobi.dylan.photoview.library.PhotoViewAttacher;
 
@@ -57,7 +59,13 @@ public class ImageDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Glide.with(getContext()).load(mImageUrl).listener(new RequestListener<String, GlideDrawable>() {
+        String updateTime = String.valueOf(System.currentTimeMillis());
+        Glide.with(getContext()).load(mImageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE) // 不使用磁盘缓存
+                .centerCrop()
+                .dontAnimate()
+                .signature(new StringSignature(updateTime))
+                .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                 return false;
