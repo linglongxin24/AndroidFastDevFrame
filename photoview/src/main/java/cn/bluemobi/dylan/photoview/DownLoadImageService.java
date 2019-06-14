@@ -4,9 +4,11 @@ package cn.bluemobi.dylan.photoview;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -31,15 +33,32 @@ public class DownLoadImageService implements Runnable {
         this.imageCallBack = imageCallBack;
     }
 
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+        System.out.println("Drawable转Bitmap");
+        Bitmap.Config config =
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565;
+        Bitmap bitmap = Bitmap.createBitmap(w, h, config);
+        //注意，下面三行代码要用到，否则在View或者SurfaceView里的canvas.drawBitmap会看不到图
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, w, h);
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
     @Override
     public void run() {
         Bitmap bitmap = null;
         try {
-            bitmap = Glide.with(context)
+            Drawable drawable = Glide.with(context)
                     .load(url)
-                    .asBitmap()
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
+            bitmap = drawableToBitmap(drawable);
             if (bitmap != null) {
                 // 在这里执行图片保存方法
                 saveImageToGallery(context, bitmap);
@@ -48,11 +67,11 @@ public class DownLoadImageService implements Runnable {
             e.printStackTrace();
         } finally {
             if (bitmap != null && currentFile.exists()) {//成功
-                if(imageCallBack!=null){
+                if (imageCallBack != null) {
                     imageCallBack.onSuccess();
                 }
             } else {//失败
-                if(imageCallBack!=null){
+                if (imageCallBack != null) {
                     imageCallBack.onFail();
                 }
             }

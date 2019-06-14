@@ -322,11 +322,33 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCircleImage() {
-        String url = "http://img.blog.csdn.net/20161016171244996";
+        final String url = "http://img.blog.csdn.net/20161016171244996";
         CircleImageView circleImageView = (CircleImageView) findViewById(R.id.ci);
-        MyImageLoader.loadRoundImage(mContext,url,circleImageView);
+        MyImageLoader.loadRoundImage(mContext, url, circleImageView);
 //        x.Ext.init(getApplication());
 //        x.image().bind(circleImageView, url, new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] arr = new String[]{url};
+                showBigImage(arr, 1);
+            }
+        });
+    }
+
+    /**
+     * 浏览图片
+     *
+     * @param arr      图片地址集合
+     * @param position 当前位置
+     */
+    private void showBigImage(String[] arr, int position) {
+        Intent intent = new Intent(mContext, ImagePagerActivity.class);
+        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, arr);
+        intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+        startActivity(intent);
+        //切换Activity的过渡动
+        overridePendingTransition(R.anim.zoom_ente, R.anim.zoom_exit);
     }
 
     private void setMyRatingBar() {
