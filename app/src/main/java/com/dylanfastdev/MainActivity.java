@@ -9,36 +9,27 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
-import org.xutils.image.ImageOptions;
-import org.xutils.x;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import cn.bluemobi.dylan.base.BaseActivity;
+import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
+import cn.bluemobi.dylan.base.adapter.common.ViewHolder;
+import cn.bluemobi.dylan.base.adapter.common.abslistview.CommonAdapter;
+import cn.bluemobi.dylan.base.utils.MyImageLoader;
+import cn.bluemobi.dylan.base.view.CircleImageView;
+import cn.bluemobi.dylan.base.view.CycleViewPager;
+import cn.bluemobi.dylan.base.view.RatingBar;
+import cn.bluemobi.dylan.base.view.SelectPopupWindow;
 import cn.bluemobi.dylan.base.view.iOSSelectDialog;
 import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
-import cn.bluemobi.dylan.fastdev.adapter.GridViewAddImagesAdapter;
-import cn.bluemobi.dylan.fastdev.base.BasePhotoActivity;
-import cn.bluemobi.dylan.fastdev.utils.CommonAdapter;
-import cn.bluemobi.dylan.fastdev.utils.CommonViewHolder;
-import cn.bluemobi.dylan.fastdev.view.CircleImageView;
-import cn.bluemobi.dylan.fastdev.view.CycleViewPager;
-import cn.bluemobi.dylan.fastdev.view.RatingBar;
-import cn.bluemobi.dylan.fastdev.view.SelectPopupWindow;
-import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
-public class MainActivity extends BasePhotoActivity {
+public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
     private WebView webView;
@@ -52,33 +43,6 @@ public class MainActivity extends BasePhotoActivity {
     private Button bt_pay;
     private Button bt_dialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setMyRatingBar();
-        showCircleImage();
-        showCycleViewPager();
-        showSelectPopupWindow();
-//        showAddImageDialog();
-//        new   LoadingDialog(this).show();
-//        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
-        testHttp();
-        testPay();
-        testiOSDialog();
-//        new iOSTwoButtonDialog(this)
-//                .setCenterCustomView(R.layout.customview)
-//                .setLeftButtonOnClickListener(new iOSTwoButtonDialog.LeftButtonOnClick() {
-//            @Override
-//            public void buttonLeftOnClick() {
-//                showToast("点击了取消按钮");
-//            }
-//        }).setRightButtonOnClickListener(new iOSTwoButtonDialog.RightButtonOnClick() {
-//            @Override
-//            public void buttonRightOnClick() {
-//                showToast("点击了确定按钮");
-//            }
-//        }).show();
-    }
 
     /**
      * 仿iOS对话框
@@ -88,7 +52,7 @@ public class MainActivity extends BasePhotoActivity {
         bt_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new iOSTwoButtonDialog(context).setCenterCustomView(R.layout.dialog_add_score_radiot).show();
+                new iOSTwoButtonDialog(mContext).setCenterCustomView(R.layout.dialog_add_score_radiot).show();
                 if (true) {
                     return;
                 }
@@ -145,26 +109,6 @@ public class MainActivity extends BasePhotoActivity {
     }
 
     /**
-     * 回调压缩后的图片路径
-     *
-     * @param file 图片文件
-     */
-    @Override
-    public void photoPath(File file) {
-//        Http.with(context)
-//                .setObservable(Http.getApiService(ApiService3.class)
-//                        .editInfo(RequestParameter.getRequestBody("144"), null, null, null, RequestParameter.getFilePart("imageHead", file)))
-//                .setDataListener(new HttpCallBack() {
-//                    @Override
-//                    public void netOnSuccess(Map<String, Object> data) {
-////                        LoginUser.getLoginUser().setHeadImageUrl(JsonParse.getValue(data, "data"));
-////                        Glide.with(getContext()).load( ApiService.BASE_URL+ LoginUser.getLoginUser().getHeadImageUrl()).into(iv_head);
-//                    }
-//                });
-
-    }
-
-    /**
      * retrofit测试
      */
     private void testHttp() {
@@ -195,12 +139,12 @@ public class MainActivity extends BasePhotoActivity {
 //                .init(ApiService.class, ApiService4.BASE_URL, "returnCode", "data", "returnMsg", 200)
 //                .setShowMessageModel(MessageManager.MessageModel.All);
 //                .init(ApiService.class, ApiService4.BASE_URL, "state", "data", "msg", 1);
-        ci.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
+//        ci.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showDialog();
+//            }
+//        });
 //        Http.with(context)
 //                .setObservable(Http.getApiService(ApiService4.class).getCompetitionList("", 1, 10))
 //                .setDataListener(new HttpCallBack() {
@@ -292,12 +236,12 @@ public class MainActivity extends BasePhotoActivity {
     private void showAddImageDialog() {
         gv = (GridView) findViewById(R.id.gv);
         paths = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, context, 5, 10);
+        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, mContext, 5, 10);
         gv.setAdapter(gridViewAddImgesAdpter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                showDialog();
+//                showDialog();
             }
         });
     }
@@ -338,13 +282,14 @@ public class MainActivity extends BasePhotoActivity {
                 datas.add("选择4");
                 datas.add("选择4");
                 datas.add("选择4");
-                SelectPopupWindow selectPopupWind = new SelectPopupWindow(MainActivity.this, bt, new CommonAdapter<String>(context, datas, R.layout.item) {
-                    @Override
-                    protected void convertView(View item, String s) {
-
-                    }
-                }, fm);
-                selectPopupWind.show();
+//                SelectPopupWindow selectPopupWind = new SelectPopupWindow(MainActivity.this, bt, new CommonAdapter<String>(mContext, datas, R.layout.item) {
+//                    @Override
+//                    public void convert(ViewHolder holder, String s) {
+//
+//                    }
+//
+//                }, fm);
+//                selectPopupWind.show();
             }
         });
 
@@ -363,7 +308,7 @@ public class MainActivity extends BasePhotoActivity {
             @Override
             public void onImageClick(String url, int position, View imageView) {
                 Logger.d("点击了=" + position);
-                Intent intent = new Intent(context, ImagePagerActivity.class);
+                Intent intent = new Intent(mContext, ImagePagerActivity.class);
                 // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
                 String[] arr = new String[urls.size()];
                 arr = urls.toArray(arr);
@@ -379,8 +324,9 @@ public class MainActivity extends BasePhotoActivity {
     private void showCircleImage() {
         String url = "http://img.blog.csdn.net/20161016171244996";
         CircleImageView circleImageView = (CircleImageView) findViewById(R.id.ci);
-        x.Ext.init(getApplication());
-        x.image().bind(circleImageView, url, new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
+        MyImageLoader.loadRoundImage(mContext,url,circleImageView);
+//        x.Ext.init(getApplication());
+//        x.image().bind(circleImageView, url, new ImageOptions.Builder().setImageScaleType(ImageView.ScaleType.CENTER_CROP).build());
     }
 
     private void setMyRatingBar() {
@@ -411,40 +357,40 @@ public class MainActivity extends BasePhotoActivity {
      * 普通适配器的方法
      */
     private void myAdapterTest() {
-        setContentView(R.layout.pub_activity_main);
-        ListView listView = (ListView) findViewById(R.id.listview);
-        List<String> datas = new ArrayList<>();
-        datas.add("普通适配器测试1");
-        datas.add("普通适配器测试2");
-        datas.add("普通适配器测试3");
-        datas.add("普通适配器测试4");
-        listView.setAdapter(new MyAdapter(context, datas));
+//        setContentView(R.layout.pub_activity_main);
+//        ListView listView = (ListView) findViewById(R.id.listview);
+//        List<String> datas = new ArrayList<>();
+//        datas.add("普通适配器测试1");
+//        datas.add("普通适配器测试2");
+//        datas.add("普通适配器测试3");
+//        datas.add("普通适配器测试4");
+//        listView.setAdapter(new MyAdapter(context, datas));
     }
 
     /**
      * 万能适配器的方法
      */
     private void commonAdapterTest() {
-        setContentView(R.layout.pub_activity_main);
-        ListView listView = (ListView) findViewById(R.id.listview);
-        List<String> datas = new ArrayList<>();
-        for (int i = 0; i < 18; i++) {
-            datas.add("万能适配器测试" + i);
-        }
-        listView.setAdapter(new CommonAdapter<String>(context, datas, R.layout.item) {
-
-            @Override
-            protected void convertView(View item, String s) {
-                TextView textView = CommonViewHolder.get(item, R.id.textView);
-                textView.setText(s);
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showDialog();
-            }
-        });
+//        setContentView(R.layout.pub_activity_main);
+//        ListView listView = (ListView) findViewById(R.id.listview);
+//        List<String> datas = new ArrayList<>();
+//        for (int i = 0; i < 18; i++) {
+//            datas.add("万能适配器测试" + i);
+//        }
+//        listView.setAdapter(new CommonAdapter<String>(context, datas, R.layout.item) {
+//
+//            @Override
+//            protected void convertView(View item, String s) {
+//                TextView textView = CommonViewHolder.get(item, R.id.textView);
+//                textView.setText(s);
+//            }
+//        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                showDialog();
+//            }
+//        });
     }
 
     public void textException(View v) {
@@ -532,11 +478,27 @@ public class MainActivity extends BasePhotoActivity {
     }
 
     @Override
-    public void initViews() {
+    protected int getContentView() {
+        return R.layout.ac_ratingbar;
+    }
+
+    @Override
+    public void initViews(Bundle savedInstanceState) {
+
+        setMyRatingBar();
+        showCircleImage();
+        showCycleViewPager();
+        showSelectPopupWindow();
+//        showAddImageDialog();
+//        new   LoadingDialog(this).show();
+//        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
+        testHttp();
+        testPay();
+        testiOSDialog();
+    }
 
 //        setContentView(R.layout.pub_activity_main);
 
-    }
 
     @Override
     public void initData() {
@@ -544,14 +506,14 @@ public class MainActivity extends BasePhotoActivity {
 //        ajax(requestParams);
     }
 
-    @Override
-    public void netOnSuccess(Map<String, Object> data) {
-        super.netOnSuccess(data);
-    }
 
     @Override
     public void addListener() {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

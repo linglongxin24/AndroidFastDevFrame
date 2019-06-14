@@ -2,36 +2,20 @@ package com.dylanfastdev;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.ArrayMap;
 import android.view.View;
 
-import com.alibaba.fastjson.JSON;
-import com.google.gson.JsonObject;
 import com.orhanobut.logger.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.HttpCallBack;
-import cn.bluemobi.dylan.http.JsonParse;
 import cn.bluemobi.dylan.http.OriginalHttpResponse;
 import cn.bluemobi.dylan.http.RequestParameter;
 import cn.bluemobi.dylan.http.ResponseInterceptor;
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by lenovo on 2017/11/28.
@@ -41,7 +25,7 @@ public class TextActivity extends BaseActivity {
     @Override
     public void initTitleBar() {
         setTitle("测试");
-        setRightButton("菜单",R.mipmap.dot_focus,null);
+        setRightButton("菜单", R.mipmap.dot_focus, null);
     }
 
     @Override
@@ -116,14 +100,14 @@ public class TextActivity extends BaseActivity {
         if (file.exists()) {
             Logger.d("文件存在");
         }
-        List<File> files=new ArrayList<>();
+        List<File> files = new ArrayList<>();
         files.add(file);
 
         Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
                 RequestParameter.getRequestBody("5250"),
                 RequestParameter.getRequestBody("234"),
                 RequestParameter.getRequestBody("589"),
-                RequestParameter.getFilePartMap("file",files)
+                RequestParameter.getFilePartMap("file", files)
         )).setDataListener(new OriginalHttpResponse() {
             @Override
             public void netOnStart() {

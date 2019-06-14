@@ -19,8 +19,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()//新增的
+        jcenter()
         maven {
             url 'https://maven.google.com/'
             name 'Google'

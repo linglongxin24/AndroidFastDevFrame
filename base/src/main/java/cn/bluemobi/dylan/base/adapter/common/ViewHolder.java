@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -23,7 +21,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
+import cn.bluemobi.dylan.base.utils.MyImageLoader;
 
 
 public class ViewHolder extends RecyclerView.ViewHolder {
@@ -164,57 +163,25 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public ViewHolder setRoundImageUrl(int viewId, String url, int emptyResourceId, int errorResourceId) {
         ImageView view = getView(viewId);
-        Glide.with(mContext).load(url).asBitmap().error(errorResourceId).placeholder(emptyResourceId).centerCrop().into(new BitmapImageViewTarget(view) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                view.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        MyImageLoader.loadRoundImage(mContext, url, view, emptyResourceId, errorResourceId);
         return this;
     }
 
     public ViewHolder setRoundImageUrl(int viewId, String url) {
         ImageView view = getView(viewId);
-        Glide.with(mContext).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                view.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        MyImageLoader.loadRoundImage(mContext, url, view);
         return this;
     }
 
-    public ViewHolder setRoundCornerImageUrl(int viewId, String url, final float cornerRadius, int emptyResourceId, int errorResourceId) {
+    public ViewHolder setRoundCornerImageUrl(int viewId, String url, int cornerRadius, int emptyResourceId, int errorResourceId) {
         ImageView view = getView(viewId);
-        Glide.with(mContext).load(url).asBitmap().error(errorResourceId).placeholder(emptyResourceId).centerCrop().into(new BitmapImageViewTarget(view) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                circularBitmapDrawable.setCornerRadius(cornerRadius);
-                view.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        MyImageLoader.loadRoundCornerImage(mContext, url, view, emptyResourceId, errorResourceId, cornerRadius);
         return this;
     }
 
-    public ViewHolder setRoundCornerImageUrl(int viewId, String url, final float cornerRadius) {
+    public ViewHolder setRoundCornerImageUrl(int viewId, String url, int cornerRadius) {
         ImageView view = getView(viewId);
-        Glide.with(mContext).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                circularBitmapDrawable.setCornerRadius(cornerRadius);
-                view.setImageDrawable(circularBitmapDrawable);
-            }
-        });
+        MyImageLoader.loadRoundCornerImage(mContext, url, view, cornerRadius);
         return this;
     }
 
