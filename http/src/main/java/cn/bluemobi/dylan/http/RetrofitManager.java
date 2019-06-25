@@ -239,8 +239,8 @@ public class RetrofitManager {
         };
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //设置超时
-        builder.readTimeout(3, TimeUnit.MINUTES)
-                .connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES);
+        builder.readTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS);
 
         /**
          * 添加其他自定义拦截器
