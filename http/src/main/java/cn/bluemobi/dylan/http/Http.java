@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Interceptor;
 
 /**
@@ -77,7 +79,7 @@ public class Http {
      * @param debugMode
      */
     public Http setDebugMode(boolean debugMode) {
-        this.debugMode=debugMode;
+        this.debugMode = debugMode;
         RetrofitManager.getRetrofitManager().setDebugMode(debugMode);
         return http;
     }
@@ -113,8 +115,14 @@ public class Http {
      * @param interceptor 拦截器
      */
 
-    public void addInterceptor(Interceptor interceptor) {
+    public Http addInterceptor(Interceptor interceptor) {
         RetrofitManager.getRetrofitManager().addInterceptor(interceptor);
+        return this;
+    }
+
+    public Http setTimeout(long timeout, TimeUnit unit) {
+        RetrofitManager.getRetrofitManager().setTimeout(timeout, unit);
+        return this;
     }
 
     /**

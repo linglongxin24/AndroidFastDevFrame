@@ -151,26 +151,26 @@ public class RetrofitManager {
                 Request.Builder requestBuilder = original.newBuilder();
                 Request request = requestBuilder.build();
                 Response response = chain.proceed(request);
-                if("POST".equals(original.method())){
-                mMessage.append("请求参数：");
-                addRequestParement(original);
+                if ("POST".equals(original.method())) {
+                    mMessage.append("请求参数：");
+                    addRequestParement(original);
 
-                mMessage.append("\n");
-                mMessage.append("请求大小：");
-                if (original.body() != null) {
-                    mMessage.append(convertFileSize(original.body().contentLength()));
-                }
-                Logger.d(mMessage.toString());
+                    mMessage.append("\n");
+                    mMessage.append("请求大小：");
+                    if (original.body() != null) {
+                        mMessage.append(convertFileSize(original.body().contentLength()));
+                    }
+                    Logger.d(mMessage.toString());
 
 
-                mMessage.setLength(0);
-                mMessage.append("响应地址：");
-                mMessage.append(response.request().url());
-                mMessage.append("\n");
+                    mMessage.setLength(0);
+                    mMessage.append("响应地址：");
+                    mMessage.append(response.request().url());
+                    mMessage.append("\n");
 
-                mMessage.append("响应参数：");
-                addRequestParement(response.request());
-                mMessage.append("\n");
+                    mMessage.append("响应参数：");
+                    addRequestParement(response.request());
+                    mMessage.append("\n");
                 }
 
                 mMessage.append("响应耗时：");
@@ -239,8 +239,8 @@ public class RetrofitManager {
         };
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //设置超时
-        builder.readTimeout(15, TimeUnit.SECONDS)
-                .connectTimeout(15, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS);
+        builder.readTimeout(defaultTimeout, defaultUnit)
+                .connectTimeout(defaultTimeout, defaultUnit).writeTimeout(defaultTimeout, defaultUnit);
 
         /**
          * 添加其他自定义拦截器
@@ -293,6 +293,17 @@ public class RetrofitManager {
     public void changeBaseUrl(String newBaseUrl) {
         retrofit = retrofitBuilder
                 .baseUrl(newBaseUrl).build();
+    }
+
+    private long defaultTimeout = 30;
+    private TimeUnit defaultUnit = TimeUnit.SECONDS;
+
+    /**
+     * 设置超时
+     */
+    public void setTimeout(long timeout, TimeUnit unit) {
+        defaultTimeout = timeout;
+        defaultUnit = unit;
     }
 
     /**
