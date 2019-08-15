@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ios_shape_bg"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
@@ -25,6 +24,13 @@
             android:textColor="#000000"
             android:textSize="20sp" />
 
+        <View
+            android:id="@+id/line_title"
+            android:visibility="gone"
+            android:layout_above="@+id/lay_twoButton"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="#c0c0c0" />
         <ScrollView
             android:layout_width="match_parent"
             android:scrollbars="none"
@@ -32,8 +38,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:padding="10dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 

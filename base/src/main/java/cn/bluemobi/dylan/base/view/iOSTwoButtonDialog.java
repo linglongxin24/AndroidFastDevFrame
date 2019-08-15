@@ -25,6 +25,7 @@ public class iOSTwoButtonDialog extends Dialog {
     private final TextView tv_title;
     private final Button btn_one;
     private final Button btn_two;
+    private final View line_title;
     private LeftButtonOnClick lefttButtonOnClick;
     private RightButtonOnClick rightButtonOnClick;
 
@@ -41,6 +42,7 @@ public class iOSTwoButtonDialog extends Dialog {
         tv_title = (TextView) findViewById(R.id.tv_title);
         btn_one = (Button) findViewById(R.id.btn_one);
         btn_two = (Button) findViewById(R.id.btn_two);
+        line_title = findViewById(R.id.line_title);
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,5 +109,9 @@ public class iOSTwoButtonDialog extends Dialog {
 
     public interface RightButtonOnClick {
         void buttonRightOnClick();
+    }
+    public iOSTwoButtonDialog setTitleLineVisiBility(int visibility) {
+        line_title.setVisibility(visibility);
+        return this;
     }
 }

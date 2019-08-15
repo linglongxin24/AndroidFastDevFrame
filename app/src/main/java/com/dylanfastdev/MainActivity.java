@@ -24,6 +24,7 @@ import cn.bluemobi.dylan.base.view.CircleImageView;
 import cn.bluemobi.dylan.base.view.CycleViewPager;
 import cn.bluemobi.dylan.base.view.RatingBar;
 import cn.bluemobi.dylan.base.view.SelectPopupWindow;
+import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.base.view.iOSSelectDialog;
 import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
@@ -52,20 +53,23 @@ public class MainActivity extends BaseActivity {
         bt_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new iOSTwoButtonDialog(mContext).setCenterCustomView(R.layout.dialog_add_score_radiot).show();
-                if (true) {
-                    return;
-                }
-                new iOSSelectDialog(MainActivity.this)
-                        .setTitle("请选择邀请方式")
-                        .addMenuText("手机号")
-                        .addMenuText("微信")
-                        .setMenuClickLisentner(new iOSSelectDialog.MenuClick() {
-                            @Override
-                            public void onMenuClick(String menuText) {
-                                Logger.d("menuText=" + menuText);
-                            }
-                        }).show();
+//                new iOSTwoButtonDialog(mContext).setCenterCustomView(R.layout.dialog_add_score_radiot).show();
+////                if (true) {
+////                    return;
+////                }
+////                new iOSSelectDialog(MainActivity.this)
+////                        .setTitle("请选择邀请方式")
+////                        .addMenuText("手机号")
+////                        .addMenuText("微信")
+////                        .setMenuClickLisentner(new iOSSelectDialog.MenuClick() {
+////                            @Override
+////                            public void onMenuClick(String menuText) {
+////                                Logger.d("menuText=" + menuText);
+////                            }
+////                        }).show();
+                new iOSOneButtonDialog(mContext).setMessage("请不要这样")
+                        .setTitleLineVisiBility(View.VISIBLE)
+                        .show();
 
             }
         });

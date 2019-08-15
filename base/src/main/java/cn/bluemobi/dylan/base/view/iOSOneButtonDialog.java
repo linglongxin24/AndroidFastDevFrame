@@ -24,6 +24,7 @@ public class iOSOneButtonDialog extends Dialog {
     private final TextView textView;
     private final TextView tv_title;
     private final Button btn_one;
+    private final View line_title;
     private View.OnClickListener onClickListener;
 
     public iOSOneButtonDialog(@NonNull Context context) {
@@ -38,6 +39,7 @@ public class iOSOneButtonDialog extends Dialog {
         textView = (TextView) findViewById(R.id.text_message);
         tv_title = (TextView) findViewById(R.id.tv_title);
         btn_one = (Button) findViewById(R.id.btn_one);
+        line_title = findViewById(R.id.line_title);
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +79,11 @@ public class iOSOneButtonDialog extends Dialog {
 
     public iOSOneButtonDialog setButtonOnClickListener(final View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+        return this;
+    }
+
+    public iOSOneButtonDialog setTitleLineVisiBility(int visibility) {
+        line_title.setVisibility(visibility);
         return this;
     }
 }
