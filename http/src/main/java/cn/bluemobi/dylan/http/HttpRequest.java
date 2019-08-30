@@ -57,6 +57,9 @@ public class HttpRequest {
     private Observable<? extends Response<ResponseBody>> observable;
     private LoadingDialog loadingDialog = null;
 
+    public LoadingDialog getLoadingDialog() {
+        return loadingDialog;
+    }
 
     /**
      * 【第一步】设置上下文
