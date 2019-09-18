@@ -22,7 +22,7 @@ import cn.bluemobi.dylan.base.R;
  * com.bm.falvzixun.adapter.GridViewAddImgAdpter
  *
  * @author yuandl on 2015/12/24.
- *         添加上传图片适配器
+ * 添加上传图片适配器
  */
 public class GridViewAddImagesAdapter extends BaseAdapter {
     private List<String> paths;
@@ -30,7 +30,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private int itemWidth;
 
-    private int addImageResourceId= R.drawable.image_add;
+    private int addImageResourceId = R.drawable.image_add;
     /**
      * 可以动态设置最多上传几张，之后就不显示+号了，用户也无法上传了
      * 默认9张
@@ -41,12 +41,13 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
         this.paths = paths;
         this.context = context;
         int displayWidth = context.getResources().getDisplayMetrics().widthPixels;
-         itemWidth = (displayWidth - spacing * (numColumns + 1)) / numColumns;
+        itemWidth = (displayWidth - spacing * (numColumns + 1)) / numColumns;
         inflater = LayoutInflater.from(context);
     }
 
     /**
      * 设置默认的加号图片
+     *
      * @param addImageResourceId
      * @return
      */
@@ -54,6 +55,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
         this.addImageResourceId = addImageResourceId;
         return this;
     }
+
     /**
      * 获取最大上传张数
      *
@@ -123,7 +125,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
 
             final File file = new File(paths.get(position));
             Glide.with(context)
-                    .load(paths.get(position).startsWith("http")?paths.get(position):file)
+                    .load(paths.get(position).startsWith("http") ? paths.get(position) : file)
                     .priority(Priority.HIGH)
                     .into(viewHolder.ivimage);
             viewHolder.btdel.setVisibility(View.VISIBLE);
@@ -135,6 +137,14 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
                     }
                     paths.remove(position);
                     notifyDataSetChanged();
+                }
+            });
+            viewHolder.ivimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (imageClickListener != null) {
+                        imageClickListener.onImageClick(position);
+                    }
                 }
             });
         } else {
@@ -149,6 +159,24 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
 
         return convertView;
 
+    }
+
+    private ImageClickListener imageClickListener;
+
+    public GridViewAddImagesAdapter setImageClickListener(ImageClickListener imageClickListener) {
+        this.imageClickListener = imageClickListener;
+        return this;
+    }
+
+    /**
+     * 点击图片回调
+     */
+    public interface ImageClickListener {
+        /**
+         * 点击图片回到
+         * @param position 位置
+         */
+        void onImageClick(int position);
     }
 
     public class ViewHolder {

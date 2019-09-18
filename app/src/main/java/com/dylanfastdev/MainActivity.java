@@ -248,6 +248,12 @@ public class MainActivity extends BaseActivity {
 //                showDialog();
             }
         });
+        gridViewAddImgesAdpter.setImageClickListener(new GridViewAddImagesAdapter.ImageClickListener() {
+            @Override
+            public void onImageClick(int position) {
+                Logger.d("position="+position);
+            }
+        });
     }
 //
 //    @Override
