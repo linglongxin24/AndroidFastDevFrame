@@ -28,6 +28,7 @@ public class iOSTwoButtonDialog extends Dialog {
     private final View line_title;
     private LeftButtonOnClick lefttButtonOnClick;
     private RightButtonOnClick rightButtonOnClick;
+    private boolean isClickAutoCancel = true;
 
     public iOSTwoButtonDialog(@NonNull Context context) {
         super(context, R.style.ios_dialog_theme);
@@ -46,7 +47,9 @@ public class iOSTwoButtonDialog extends Dialog {
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                if (isClickAutoCancel) {
+                    dismiss();
+                }
                 if (lefttButtonOnClick != null) {
                     lefttButtonOnClick.buttonLeftOnClick();
                 }
@@ -54,8 +57,9 @@ public class iOSTwoButtonDialog extends Dialog {
         });
         btn_two.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { if(isClickAutoCancel){
                 dismiss();
+            }
                 if (rightButtonOnClick != null) {
                     rightButtonOnClick.buttonRightOnClick();
                 }
@@ -63,10 +67,15 @@ public class iOSTwoButtonDialog extends Dialog {
         });
     }
 
+    public iOSTwoButtonDialog setClickAutoCancel(boolean clickAutoCancel) {
+        isClickAutoCancel = clickAutoCancel;
+        return this;
+    }
     public iOSTwoButtonDialog setMessageGrivity(int gravity) {
         textView.setGravity(gravity);
         return this;
     }
+
     public iOSTwoButtonDialog setLeftButtonText(CharSequence text) {
         btn_one.setText(text);
         return this;
@@ -110,6 +119,7 @@ public class iOSTwoButtonDialog extends Dialog {
     public interface RightButtonOnClick {
         void buttonRightOnClick();
     }
+
     public iOSTwoButtonDialog setTitleLineVisiBility(int visibility) {
         line_title.setVisibility(visibility);
         return this;

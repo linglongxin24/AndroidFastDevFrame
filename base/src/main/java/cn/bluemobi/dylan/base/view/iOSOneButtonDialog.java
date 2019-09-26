@@ -26,6 +26,7 @@ public class iOSOneButtonDialog extends Dialog {
     private final Button btn_one;
     private final View line_title;
     private View.OnClickListener onClickListener;
+    private boolean isClickAutoCancel = true;
 
     public iOSOneButtonDialog(@NonNull Context context) {
         super(context, R.style.ios_dialog_theme);
@@ -43,12 +44,19 @@ public class iOSOneButtonDialog extends Dialog {
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                if(isClickAutoCancel){
+                    dismiss();
+                }
                 if (onClickListener != null) {
                     onClickListener.onClick(v);
                 }
             }
         });
+    }
+
+    public iOSOneButtonDialog setClickAutoCancel(boolean clickAutoCancel) {
+        isClickAutoCancel = clickAutoCancel;
+        return this;
     }
 
     public iOSOneButtonDialog setMessageGrivity(int gravity) {
