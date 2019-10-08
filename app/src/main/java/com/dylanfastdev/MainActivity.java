@@ -14,6 +14,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
@@ -27,6 +28,8 @@ import cn.bluemobi.dylan.base.view.SelectPopupWindow;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.base.view.iOSSelectDialog;
 import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -159,20 +162,21 @@ public class MainActivity extends BaseActivity {
 //                });
 
         /**设置网络请求**/
-//        Http.getHttp().init(ApiService.class, ApiService2.BASE_HOST, "status", "data", "msg", 0);
+        Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
 
-//        Http.with(context)
-//                .setObservable(Http.getApiService(ApiService2.class).getAd("Advert", "Advertr_an_HomeList"))
-//                .setDataListener(new HttpCallBack() {
-//                                     @Override
-//                                     public void netOnSuccess(Map<String, Object> data) {
-//
-//                                     }
-//                                 }
-//                );
+        Http.with(this)
+                .setLoadingMessage("正在登录")
+                .setObservable(Http.getApiService(ApiService.class).login("Advert", "Advertr_an_HomeList"))
+                .setDataListener(new HttpCallBack() {
+                                     @Override
+                                     public void netOnSuccess(Map<String, Object> data) {
+
+                                     }
+                                 }
+                );
 
 
-//       Http.with(context)
+//       Http.with(this)
 //               .setObservable( Http.getApiService(ApiService4.class)
 //                       .getHomeData())
 //                .setDataListener(new HttpCallBack() {

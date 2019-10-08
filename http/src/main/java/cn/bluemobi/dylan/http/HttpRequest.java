@@ -121,6 +121,13 @@ public class HttpRequest {
         return this;
     }
 
+    private String loadingMessage;
+
+    public HttpRequest setLoadingMessage(String loadingMessage) {
+        this.loadingMessage = loadingMessage;
+        return this;
+    }
+
     private ResponseInterceptor responseInterceptor;
 
     public HttpRequest setResponseInterceptor(ResponseInterceptor responseInterceptor) {
@@ -161,7 +168,7 @@ public class HttpRequest {
                     @Override
                     public void onStart() {
                         if (loadingDialog != null) {
-                            loadingDialog.show();
+                            loadingDialog.show(loadingMessage);
                         }
                         if (httpResponse != null) {
                             httpResponse.netOnStart();
@@ -275,6 +282,7 @@ public class HttpRequest {
         }
         return subscribe;
     }
+
     /**
      * 【第四步】设置访问接口的返回监听
      *
@@ -308,7 +316,7 @@ public class HttpRequest {
                     @Override
                     public void onStart() {
                         if (loadingDialog != null) {
-                            loadingDialog.show();
+                            loadingDialog.show(loadingMessage);
                         }
                         if (httpResponse != null) {
                             httpResponse.netOnStart();

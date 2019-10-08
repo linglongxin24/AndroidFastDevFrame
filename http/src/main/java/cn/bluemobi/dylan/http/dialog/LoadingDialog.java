@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -37,13 +38,20 @@ public class LoadingDialog {
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public Dialog show() {
+    public Dialog show(String loadingMessage) {
         if (Http.getHttp().getLoadingDialogLayoutId() != null) {
             dialog.setContentView(Http.getHttp().getLoadingDialogLayoutId());
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
             dialog.setContentView(view);
+        }
+        try {
             tv_text = (TextView) dialog.findViewById(R.id.tv_text);
+            if(tv_text!=null&& !TextUtils.isEmpty(loadingMessage)){
+                tv_text.setText(loadingMessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         if (!dialog.isShowing()) {
             //get the Context object that was used to great the dialog
