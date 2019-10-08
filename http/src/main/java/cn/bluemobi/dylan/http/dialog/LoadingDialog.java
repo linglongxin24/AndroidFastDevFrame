@@ -38,6 +38,10 @@ public class LoadingDialog {
         dialog.setCanceledOnTouchOutside(false);
     }
 
+    public Dialog show() {
+        return show(null);
+    }
+
     public Dialog show(String loadingMessage) {
         if (Http.getHttp().getLoadingDialogLayoutId() != null) {
             dialog.setContentView(Http.getHttp().getLoadingDialogLayoutId());
@@ -47,7 +51,7 @@ public class LoadingDialog {
         }
         try {
             tv_text = (TextView) dialog.findViewById(R.id.tv_text);
-            if(tv_text!=null&& !TextUtils.isEmpty(loadingMessage)){
+            if (tv_text != null && !TextUtils.isEmpty(loadingMessage)) {
                 tv_text.setText(loadingMessage);
             }
         } catch (Exception e) {
