@@ -22,7 +22,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".ApplyAvoidRunActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
