@@ -238,6 +238,7 @@ public class MainActivity extends BaseActivity {
 //        requestParams.addBodyParameter("serve_content_id", "6");
 //        requestParams.addBodyParameter("city_id", "142");
 //        ajax(requestParams);
+        showAddImageDialog();
     }
 
 

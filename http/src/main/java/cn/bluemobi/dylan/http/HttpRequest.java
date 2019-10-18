@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -191,7 +192,9 @@ public class HttpRequest {
                         if (Http.getHttp().isDebugMode()) {
                             e.printStackTrace();
                         }
-                        if (isShowFailMessage) {
+                        if (e instanceof SocketTimeoutException) {
+                            Toast.makeText(context.get(), "请求超时", Toast.LENGTH_SHORT).show();
+                        } else if (isShowFailMessage) {
                             Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
                         }
                         if (httpResponse != null) {

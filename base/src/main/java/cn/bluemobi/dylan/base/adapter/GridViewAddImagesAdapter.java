@@ -139,14 +139,6 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
                     notifyDataSetChanged();
                 }
             });
-            viewHolder.ivimage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (imageClickListener != null) {
-                        imageClickListener.onImageClick(position);
-                    }
-                }
-            });
         } else {
             /**代表+号的需要+号图片显示图片**/
             Glide.with(context)
