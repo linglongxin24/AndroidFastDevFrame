@@ -22,7 +22,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".DialogBugActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

@@ -37,17 +37,20 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimaryDark
+        </item>
     </style>
     <!--自定义对话框-->
-    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
+    <style name="custom_dialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">#00000000</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">50%</item>
+        <item name="android:windowMinWidthMinor">50%</item>
     </style>
 
-    <style name="ios_dialog_theme" parent="android:style/Theme.Dialog">
+    <style name="ios_dialog_theme" parent="Theme.AppCompat.Dialog">
 
         <!-- 背景颜色及透明程度 -->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -59,7 +62,10 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:windowSoftInputMode">adjustPan</item><!--显示软件盘-->
+        <item name="android:windowMinWidthMajor">50%</item>
+        <item name="android:windowMinWidthMinor">50%</item>
     </style>
+
     <style name="toolbar" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:navigationIcon">@drawable/ic_return_white_24dp</item>
     </style>
