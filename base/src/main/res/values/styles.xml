@@ -41,14 +41,14 @@
         </item>
     </style>
     <!--自定义对话框-->
-    <style name="custom_dialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="custom_dialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">#00000000</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="ios_dialog_theme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="ios_dialog_theme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
 
         <!-- 背景颜色及透明程度 -->
         <item name="android:windowBackground">@android:color/transparent</item>

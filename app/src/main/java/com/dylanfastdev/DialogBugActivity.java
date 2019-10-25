@@ -29,12 +29,15 @@ public class DialogBugActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                new iOSOneButtonDialog(mContext).setMessage("测试弹框有没有出来").show();
-            }
-        }, 30 * 1000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                new iOSOneButtonDialog(mContext).setMessage("测试弹框有没有出来").show();
+//            }
+//        }, 30 * 1000);
+        new iOSOneButtonDialog(mContext)
+                .setCenterCustomView(R.layout.dialog)
+                .setMessage("测试弹框有没有出来").show();
 
     }
 
