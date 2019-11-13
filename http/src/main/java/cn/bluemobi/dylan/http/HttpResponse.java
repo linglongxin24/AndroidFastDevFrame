@@ -25,6 +25,11 @@ public interface HttpResponse extends ProgressResponseListener {
     void netOnSuccess(Map<String, Object> data, String msg);
 
     /**
+     * 访问网络成功,带msg
+     */
+    void netOnSuccessServerError(int code, String errorMessage);
+
+    /**
      * 访问网络成功的其他状态
      */
     void netOnOtherStatus(int status, String msg);

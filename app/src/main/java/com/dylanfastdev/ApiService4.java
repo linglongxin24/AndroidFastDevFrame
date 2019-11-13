@@ -2,6 +2,7 @@ package com.dylanfastdev;
 
 import cn.bluemobi.dylan.http.download.ProgressResponseBody;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -46,4 +47,30 @@ public interface ApiService4 {
     Observable<ResponseBody> getCompetitionList(@Field("competitionId") String competitionId,
                                                 @Field("pageIndex") int pageIndex,
                                                 @Field("pageSize") int pageSize);
+    /**
+     * 6.添加提交跑步记录
+     *
+     * @return Observable
+     */
+    @FormUrlEncoded
+    @POST("http://192.168.1.175:8080/campus/app/appSportRecord/appAddSportRecord")
+    Observable<Response<ResponseBody>> addRunRecorder(@Field("userId") String userId,
+                                                      @Field("runType") int runType,
+                                                      @Field("startTime") long startTime,
+                                                      @Field("endTime") long endTime,
+                                                      @Field("gitudeLatitude") String latLngList,
+                                                      @Field("identify") String identify,
+                                                      @Field("formatSportTime") String formatSportTime,
+                                                      @Field("formatSportRange") String formatSportRange,
+                                                      @Field("avgspeed") String avgSpeed,
+                                                      @Field("speed") String speed,
+                                                      @Field("okPointList") String okPointList,
+                                                      @Field("brand") String brand,
+                                                      @Field("model") String model,
+                                                      @Field("system") String system,
+                                                      @Field("version") String version,
+                                                      @Field("appVersion") String appVersion,
+                                                      @Field("stepNumbers") String stepNumbers,
+                                                      @Field("isFaceStatus") String isFaceStatus
+    );
 }

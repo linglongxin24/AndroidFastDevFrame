@@ -19,6 +19,11 @@ public abstract class HttpCallBack implements HttpResponse {
     }
 
     @Override
+    public void netOnSuccessServerError(int code, String errorMessage) {
+
+    }
+
+    @Override
     public void netOnFinish() {
 
     }

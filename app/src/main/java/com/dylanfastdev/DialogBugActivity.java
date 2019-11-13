@@ -4,8 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
+import java.util.Map;
+
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.HttpCallBack;
 
 /**
  * @author dylan
@@ -35,9 +41,23 @@ public class DialogBugActivity extends BaseActivity {
 //                new iOSOneButtonDialog(mContext).setMessage("测试弹框有没有出来").show();
 //            }
 //        }, 30 * 1000);
-        new iOSOneButtonDialog(mContext)
-                .setCenterCustomView(R.layout.dialog)
-                .setMessage("测试弹框有没有出来").show();
+
+
+       Http.with(this)
+               .setObservable( Http.getApiService(ApiService4.class)
+                       .addRunRecorder("4356",123665444,12366324,0,"","","","","","","","","","","","","",""))
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+
+                    }
+
+                    @Override
+                    public void netOnSuccessServerError(int code, String errorMessage) {
+                        super.netOnSuccessServerError(code, errorMessage);
+                        Logger.d("code="+code+"errorMessage="+errorMessage);
+                    }
+                });
 
     }
 
