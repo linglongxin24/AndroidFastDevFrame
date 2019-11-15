@@ -96,6 +96,29 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
+     * 设置View是否可用
+     *
+     * @param viewId
+     * @return
+     */
+    public ViewHolder setEnabled(int viewId, boolean enabled) {
+        View tv = getView(viewId);
+        tv.setEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * 获取View是否可用
+     *
+     * @param viewId
+     * @return
+     */
+    public boolean getEnabled(int viewId) {
+        View tv = getView(viewId);
+        return tv.isEnabled();
+    }
+
+    /**
      * 设置TextView的值
      *
      * @param viewId
