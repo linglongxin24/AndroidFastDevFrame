@@ -13,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.logging.Logger;
-
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.R;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 
 
 /**
@@ -25,7 +25,7 @@ import cn.bluemobi.dylan.http.R;
  * Date: 2014-12-29
  * Time: 13:34
  */
-public class LoadingDialog {
+public class LoadingDialog implements LifecycleListener {
     protected Dialog dialog;
     protected Context context;
     private TextView tv_text;
@@ -36,6 +36,7 @@ public class LoadingDialog {
         /**设置对话框背景透明*/
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
+        addLifeCycle(context);
     }
 
     public Dialog show() {
@@ -82,6 +83,10 @@ public class LoadingDialog {
         dialog.setOnKeyListener(onKeyListener);
     }
 
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        dialog.setOnDismissListener(onDismissListener);
+    }
+
     public void setMessage(String message) {
         if (tv_text != null) {
             tv_text.setText(message);
@@ -124,4 +129,29 @@ public class LoadingDialog {
             }
         }
     }
-} 
+
+    private void addLifeCycle(Context mContext) {
+        if (mContext instanceof Activity) {
+            Activity activity = (Activity) mContext;
+            LifecycleDetector.getInstance().observer(activity, this);
+        }
+
+    }
+
+    @Override
+    public void onStart() {
+
+    }
+
+    @Override
+    public void onStop() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+
+    }
+}

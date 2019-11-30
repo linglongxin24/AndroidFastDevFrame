@@ -43,24 +43,6 @@ public class TextActivity extends BaseActivity {
 //        new iOSOneButtonDialog(mContext).setMessage("三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  ").show();
 
 //        startActivity(new Intent(mContext, PayActivity.class));
-//        Http.with(mContext)
-//                .setObservable(
-//                        Http.getApiService(ApiService.class)
-//                                .test("13284", 10,1))
-//                .setDataListener(new HttpCallBack() {
-//                    @Override
-//                    public void netOnSuccess(Map<String, Object> data) {
-////                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
-////                      List<String> s= JsonParse.getList(data, "data");
-////                        startActivity(new Intent(mContext,MainActivity.class));
-////                        finish();
-//                    }
-//
-//                    @Override
-//                    public void netOnFinish() {
-//                        super.netOnFinish();
-//                    }
-//                });
         Http.getHttp().setResponseInterceptor(new ResponseInterceptor() {
             @Override
             public boolean onResponseStart(Context context, String url, Map<String, Object> requestParameter, String responseString, int httpResponseCode) {

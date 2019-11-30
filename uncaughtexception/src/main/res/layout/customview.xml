@@ -92,6 +92,9 @@
             android:layout_weight="1"
             />
     </LinearLayout>
-    
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout><!-- From: file:/E:/RTSoft/git/CustomActivityOnCrash/library/src/main/res/layout/customview.xml -->

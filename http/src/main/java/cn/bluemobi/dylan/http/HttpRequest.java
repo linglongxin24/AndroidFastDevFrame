@@ -1,19 +1,23 @@
 package cn.bluemobi.dylan.http;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import cn.bluemobi.dylan.http.dialog.DialogOnDismissListener;
+import cn.bluemobi.dylan.http.dialog.DialogOnKeyListener;
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -162,7 +166,7 @@ public class HttpRequest {
         } else {
             loadingDialog = null;
         }
-        Subscription subscribe = observable.subscribeOn(Schedulers.io())
+        final Subscription subscribe = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<ResponseBody>>() {
 
@@ -292,7 +296,9 @@ public class HttpRequest {
                 });
 
         if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe, canCancel));
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
+            loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
+
         }
         return subscribe;
     }
@@ -323,7 +329,7 @@ public class HttpRequest {
         } else {
             loadingDialog = null;
         }
-        Subscription subscribe = observable.subscribeOn(Schedulers.io())
+        final Subscription subscribe = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<ResponseBody>>() {
 
@@ -406,7 +412,8 @@ public class HttpRequest {
                 });
 
         if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, subscribe, canCancel));
+            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
+            loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
         }
         return subscribe;
     }
@@ -517,7 +524,7 @@ public class HttpRequest {
         return "";
     }
 
-    public static String convertFileSize(long size) {
+    private   String convertFileSize(long size) {
         long kb = 1024;
         long mb = kb * 1024;
         long gb = mb * 1024;

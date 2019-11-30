@@ -1,4 +1,4 @@
-package cn.bluemobi.dylan.http;
+package cn.bluemobi.dylan.http.dialog;
 
 /**
  * Created by yuandl on 2017-03-31.
@@ -7,6 +7,8 @@ package cn.bluemobi.dylan.http;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.KeyEvent;
+
+import com.orhanobut.logger.Logger;
 
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 import rx.Subscription;
@@ -18,12 +20,10 @@ import rx.Subscription;
  */
 public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
     private LoadingDialog dialog;
-    private Subscription subscribe;
     private boolean canCancel;
 
-    public DialogOnKeyListener(LoadingDialog dialog, Subscription subscribe, boolean canCancel) {
+    public DialogOnKeyListener(LoadingDialog dialog,  boolean canCancel) {
         this.dialog = dialog;
-        this.subscribe = subscribe;
         this.canCancel = canCancel;
     }
 
@@ -31,9 +31,7 @@ public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (canCancel) {
-                if (subscribe != null && !subscribe.isUnsubscribed()) {
-                    subscribe.unsubscribe();
-                }
+                Logger.d("dialog-KEYCODE_BACK(");
                 if (this.dialog != null && this.dialog.isShowing()) {
                     this.dialog.dismiss();
                 }

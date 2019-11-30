@@ -1,7 +1,6 @@
 package com.dylanfastdev;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import com.orhanobut.logger.Logger;
@@ -9,7 +8,6 @@ import com.orhanobut.logger.Logger;
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
 
@@ -42,28 +40,27 @@ public class DialogBugActivity extends BaseActivity {
 //            }
 //        }, 30 * 1000);
 
-
-       Http.with(this)
-               .setObservable( Http.getApiService(ApiService4.class)
-                       .addRunRecorder("4356",123665444,12366324,0,"","","","","","","","","","","","","",""))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-
-                    }
-
-                    @Override
-                    public void netOnSuccessServerError(int code, String errorMessage) {
-                        super.netOnSuccessServerError(code, errorMessage);
-                        Logger.d("code="+code+"errorMessage="+errorMessage);
-                    }
-                });
+//       Http.with(this)
+//               .setObservable( Http.getApiService(ApiService4.class)
+//                       .addRunRecorder("4356",123665444,12366324,0,"","","","","","","","","","","","","",""))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+//
+//                    }
+//
+//                    @Override
+//                    public void netOnSuccessServerError(int code, String errorMessage) {
+//                        super.netOnSuccessServerError(code, errorMessage);
+//                        Logger.d("code="+code+"errorMessage="+errorMessage);
+//                    }
+//                });
 
     }
 
     @Override
     public void addListener() {
-
+        getSupportFragmentManager().beginTransaction().add(R.id.rl, new TestFragment()).commit();
     }
 
     @Override
