@@ -25,9 +25,7 @@ public class DialogOnDismissListener implements DialogInterface.OnDismissListene
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        Logger.d("dialog-onDismiss(");
         if (subscribe != null && !subscribe.isUnsubscribed()) {
-            Logger.d("subscribe.unsubscribe()");
             subscribe.unsubscribe();
         }
     }

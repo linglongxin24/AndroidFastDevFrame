@@ -31,7 +31,6 @@ public class DialogOnKeyListener implements DialogInterface.OnKeyListener {
     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (canCancel) {
-                Logger.d("dialog-KEYCODE_BACK(");
                 if (this.dialog != null && this.dialog.isShowing()) {
                     this.dialog.dismiss();
                 }
