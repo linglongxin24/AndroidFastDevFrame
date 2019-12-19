@@ -268,7 +268,7 @@ public class JsonParse {
      * @param defaultValue 默认值
      * @return map的int值
      */
-    public static long getLong(Map<String, Object> map, String key, int defaultValue) {
+    public static long getLong(Map<String, Object> map, String key, long defaultValue) {
         try {
             return Long.parseLong(getString(map, key));
         } catch (NullPointerException e) {
