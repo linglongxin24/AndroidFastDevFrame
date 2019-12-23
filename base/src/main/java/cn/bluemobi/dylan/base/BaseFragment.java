@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +24,7 @@ import cn.bluemobi.dylan.base.utils.AppManager;
  * 2.切换到其他页面时停止加载数据（可选）
  *
  * @author yuandl on 2016/1/15.
- *         基类Fragment
+ * 基类Fragment
  */
 public abstract class BaseFragment extends Fragment implements View.OnClickListener {
     /**
@@ -44,6 +45,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      * 上下文
      */
     protected Context mContext;
+    protected Activity mActivity;
 
     @Nullable
     @Override
@@ -52,6 +54,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         AppManager.getAppManager().addFragment(this);
         isInit = true;
         mContext = getContext();
+        mActivity = getActivity();
         initView(view);
         /*初始化的时候去加载数据**/
         isCanLoadData();

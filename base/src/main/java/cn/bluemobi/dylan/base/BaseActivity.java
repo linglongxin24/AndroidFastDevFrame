@@ -1,6 +1,7 @@
 package cn.bluemobi.dylan.base;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -60,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 上下文
      */
     protected Context mContext;
+    protected Activity mActivity;
 
     /**
      * 获取中间布局
@@ -77,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity = this;
         mContext = this;
         beforeSetContentView();
         setContentView(R.layout.ac_base_title_bar);
