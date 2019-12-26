@@ -40,21 +40,21 @@ public class DialogBugActivity extends BaseActivity {
 //            }
 //        }, 30 * 1000);
 
-//       Http.with(this)
-//               .setObservable( Http.getApiService(ApiService4.class)
-//                       .addRunRecorder("4356",123665444,12366324,0,"","","","","","","","","","","","","",""))
-//                .setDataListener(new HttpCallBack() {
-//                    @Override
-//                    public void netOnSuccess(Map<String, Object> data) {
-//
-//                    }
-//
-//                    @Override
-//                    public void netOnSuccessServerError(int code, String errorMessage) {
-//                        super.netOnSuccessServerError(code, errorMessage);
-//                        Logger.d("code="+code+"errorMessage="+errorMessage);
-//                    }
-//                });
+       Http.with(this)
+               .setObservable( Http.getApiService(ApiService4.class)
+                       .addRunRecorder("4356",123665444,12366324,0,"","","","","","","","","","","","","",""))
+                .setDataListener(new HttpCallBack() {
+                    @Override
+                    public void netOnSuccess(Map<String, Object> data) {
+
+                    }
+
+                    @Override
+                    public void netOnSuccessServerError(int code, String errorMessage) {
+                        super.netOnSuccessServerError(code, errorMessage);
+                        Logger.d("code="+code+"errorMessage="+errorMessage);
+                    }
+                });
 
     }
 
