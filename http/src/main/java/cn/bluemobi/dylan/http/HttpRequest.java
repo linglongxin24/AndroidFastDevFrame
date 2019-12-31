@@ -1,11 +1,9 @@
 package cn.bluemobi.dylan.http;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
-
-import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,6 +17,8 @@ import java.util.Map;
 import cn.bluemobi.dylan.http.dialog.DialogOnDismissListener;
 import cn.bluemobi.dylan.http.dialog.DialogOnKeyListener;
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -295,10 +295,13 @@ public class HttpRequest {
                     }
                 });
 
-        if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
-            loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
-
+        if (subscribe != null) {
+            if (loadingDialog != null) {
+                loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
+                loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
+            } else {
+                addLifeCycle(context.get(), subscribe);
+            }
         }
         return subscribe;
     }
@@ -411,13 +414,41 @@ public class HttpRequest {
                     }
                 });
 
-        if (loadingDialog != null && subscribe != null) {
-            loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
-            loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
+        if (subscribe != null) {
+            if (loadingDialog != null) {
+                loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
+                loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
+            } else {
+                addLifeCycle(context.get(), subscribe);
+            }
         }
         return subscribe;
     }
 
+    private void addLifeCycle(Context mContext, final Subscription subscribe) {
+        if (mContext instanceof Activity) {
+            Activity activity = (Activity) mContext;
+            LifecycleDetector.getInstance().observer(activity, new LifecycleListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onStop() {
+
+                }
+
+                @Override
+                public void onDestroy() {
+                    if (subscribe != null && !subscribe.isUnsubscribed()) {
+                        subscribe.unsubscribe();
+                    }
+                }
+            });
+        }
+
+    }
 
     private Map<String, Object> getRequestParement(Request original) {
         Map<String, Object> map = new ArrayMap<>();
@@ -524,7 +555,7 @@ public class HttpRequest {
         return "";
     }
 
-    private   String convertFileSize(long size) {
+    private String convertFileSize(long size) {
         long kb = 1024;
         long mb = kb * 1024;
         long gb = mb * 1024;

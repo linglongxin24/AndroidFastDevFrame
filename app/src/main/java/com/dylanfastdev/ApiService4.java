@@ -1,6 +1,5 @@
 package com.dylanfastdev;
 
-import cn.bluemobi.dylan.http.download.ProgressResponseBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Field;

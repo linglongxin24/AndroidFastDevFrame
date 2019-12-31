@@ -161,7 +161,7 @@ public class JsonParse {
      * @return
      * @throws JSONException
      */
-    public static  ArrayMap<String, Object> jsonToMap(String json) throws JSONException {
+    public static ArrayMap<String, Object> jsonToMap(String json) throws JSONException {
         ArrayMap<String, Object> arrayMap = new ArrayMap<>();
         if (!TextUtils.isEmpty(json)) {
             arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
@@ -188,22 +188,33 @@ public class JsonParse {
     }
 
     /**
+     * 获取map中的int值
+     *
+     * @param map map
+     * @param key map的key
+     * @return map的int值
+     */
+    public static String getString(Map<String, Object> map, String key) {
+        return getString(map, key, "");
+    }
+
+    /**
      * 获取map中的值
      *
      * @param map map
      * @param key map的key
      * @return map的值
      */
-    public static String getString(Map<String, Object> map, String key) {
+    public static String getString(Map<String, Object> map, String key, String defaultValue) {
         if (map == null || map.size() == 0) {
-            return "";
+            return defaultValue;
         } else if (isNull(key)) {
-            return "";
+            return defaultValue;
         } else if (map.containsKey(key)) {
             Object data = map.get(key);
             if (data instanceof String) {
                 if (isNull2((String) map.get(key))) {
-                    return "";
+                    return defaultValue;
                 } else {
                     return map.get(key).toString();
                 }
@@ -212,7 +223,7 @@ public class JsonParse {
             }
 
         } else {
-            return "";
+            return defaultValue;
         }
     }
 

@@ -51,7 +51,7 @@ public class TestFragment extends BaseFragment {
                 });
 //        Glide.with(mContext).load("https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=180092f702f431adbcd2443f730dcb92/f636afc379310a5519aea991b94543a9832610c8.jpg")
 //                .into(iv);
-        new Handler().postDelayed(() -> getActivity().finish(),2*1000);
+//        new Handler().postDelayed(() -> getActivity().finish(),2*1000);
     }
 
     @Override
