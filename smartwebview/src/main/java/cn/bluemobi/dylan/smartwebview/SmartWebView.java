@@ -104,6 +104,7 @@ public class SmartWebView extends RelativeLayout {
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setDomStorageEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
+        webSettings.setSavePassword(false);
         webSettings.setBlockNetworkImage(false);//解决图片不显示
         webSettings.setDefaultTextEncodingName("utf-8");
         //设置可以访问文件
