@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- android:name="cat.ereza.customactivityoncrash.SampleCrashingApplication" -->
-    <application android:allowBackup="true" >
+    <application>
         >
 
         <!-- <activity -->
