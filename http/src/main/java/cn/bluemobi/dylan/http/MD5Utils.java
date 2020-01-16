@@ -15,6 +15,8 @@ public class MD5Utils {
 		MessageDigest md5 = null;
 		try {
 			md5 = MessageDigest.getInstance("MD5");
+			// 这句是关键
+			md5.update(inStr.getBytes("UTF-8"));
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			e.printStackTrace();
@@ -26,7 +28,7 @@ public class MD5Utils {
 		for (int i = 0; i < charArray.length; i++)
 			byteArray[i] = (byte) charArray[i];
 
-		byte[] md5Bytes = md5.digest(byteArray);
+		byte[] md5Bytes = md5.digest();
 
 		StringBuffer hexValue = new StringBuffer();
 
