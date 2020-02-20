@@ -142,7 +142,11 @@ public class JsonParse {
         }
         Set<String> keys2 = arrayMap.keySet();
         for (String s : keys2) {
+            //data之外的数据
             if (!s.equals(dataStrKey)) {
+                if(rrData.containsKey(s)){
+                    s+="2";
+                }
                 rrData.put(s, arrayMap.get(s));
             }
         }
