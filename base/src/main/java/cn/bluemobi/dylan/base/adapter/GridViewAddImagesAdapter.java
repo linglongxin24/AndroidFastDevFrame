@@ -148,6 +148,14 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.FIT_XY);
             viewHolder.btdel.setVisibility(View.GONE);
         }
+        viewHolder.ivimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imageClickListener!=null){
+                    imageClickListener.onImageClick(position);
+                }
+            }
+        });
 
         return convertView;
 
