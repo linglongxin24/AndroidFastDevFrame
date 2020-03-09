@@ -148,37 +148,10 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.FIT_XY);
             viewHolder.btdel.setVisibility(View.GONE);
         }
-        viewHolder.ivimage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(imageClickListener!=null){
-                    imageClickListener.onImageClick(position);
-                }
-            }
-        });
 
         return convertView;
 
     }
-
-    private ImageClickListener imageClickListener;
-
-    public GridViewAddImagesAdapter setImageClickListener(ImageClickListener imageClickListener) {
-        this.imageClickListener = imageClickListener;
-        return this;
-    }
-
-    /**
-     * 点击图片回调
-     */
-    public interface ImageClickListener {
-        /**
-         * 点击图片回到
-         * @param position 位置
-         */
-        void onImageClick(int position);
-    }
-
     public class ViewHolder {
         public final ImageView ivimage;
         public final Button btdel;

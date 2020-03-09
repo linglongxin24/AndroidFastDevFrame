@@ -114,8 +114,9 @@ public class ApplyAvoidRunActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        paths.add("http://pic.boxkj.com/testresources%2Fupload%2Fclockphoto75ee101e-2be5-4577-a3a6-41a1f11142bb.jpg?e=1583746126&token=tMj9vn7fPk1I3acqYWULRCosbgeQ3o6T7FW7EbzF:D6i_HwYzrE89RZIHqzdJxZyaHmY=");
         gridViewAddImagesAdapter = new GridViewAddImagesAdapter(paths, mContext, 4, Tools.DPtoPX(10, mContext));
-        gridViewAddImagesAdapter.setMaxImages(3);
+        gridViewAddImagesAdapter.setMaxImages(1);
         gv_images.setAdapter(gridViewAddImagesAdapter);
     }
 
