@@ -145,13 +145,12 @@ public class LoadingDialog implements LifecycleListener {
 
     @Override
     public void onStop() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
     }
 
     @Override
     public void onDestroy() {
-
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 }
