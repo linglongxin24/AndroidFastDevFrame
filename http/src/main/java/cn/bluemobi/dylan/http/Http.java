@@ -120,11 +120,6 @@ public class Http {
         return this;
     }
 
-    public Http setTimeout(long timeout, TimeUnit unit) {
-        RetrofitManager.getRetrofitManager().setTimeout(timeout, unit);
-        return this;
-    }
-
     /**
      * 获取ApiService
      *

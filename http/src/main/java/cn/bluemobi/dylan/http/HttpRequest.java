@@ -13,6 +13,7 @@ import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.bluemobi.dylan.http.dialog.DialogOnDismissListener;
 import cn.bluemobi.dylan.http.dialog.DialogOnKeyListener;
@@ -86,6 +87,10 @@ public class HttpRequest {
         return this;
     }
 
+    public HttpRequest setTimeout(long timeout, TimeUnit unit) {
+        RetrofitManager.getRetrofitManager().setTimeout(timeout, unit);
+        return this;
+    }
     /**
      * 【第三步】设置访问的几口接口
      *

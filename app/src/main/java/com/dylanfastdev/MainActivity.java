@@ -166,8 +166,8 @@ public class MainActivity extends BaseActivity {
         /**设置网络请求**/
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
 
-        Http.getHttp().setTimeout(1, TimeUnit.MINUTES)
-                .with(this)
+        Http.with(this)
+                .setTimeout(1, TimeUnit.MINUTES)
                 .setLoadingMessage("正在登录")
                 .setObservable(Http.getApiService(ApiService.class).login("Advert", "Advertr_an_HomeList"))
                 .setDataListener(new HttpCallBack() {
