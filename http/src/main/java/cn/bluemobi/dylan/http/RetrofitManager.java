@@ -302,6 +302,24 @@ public class RetrofitManager {
     private long currentTimeout = defaultTimeout;
     private TimeUnit currentTimeoutUnit = defaultTimeoutUnit;
 
+
+    /**
+     * 设置默认超时时间
+     *
+     * @param timeout
+     * @param unit
+     */
+    public void setDefaultTimeout(long timeout, TimeUnit unit) {
+        this.defaultTimeout = timeout;
+        this.defaultTimeoutUnit = unit;
+        if (retrofitBuilder != null) {
+            okhttpBuilder.readTimeout(defaultTimeout, defaultTimeoutUnit)
+                    .connectTimeout(defaultTimeout, defaultTimeoutUnit)
+                    .writeTimeout(defaultTimeout, defaultTimeoutUnit);
+            retrofit = retrofitBuilder.client(okhttpBuilder.build()).build();
+        }
+    }
+
     /**
      * 设置超时
      */

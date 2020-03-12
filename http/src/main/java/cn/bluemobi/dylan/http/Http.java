@@ -121,6 +121,18 @@ public class Http {
     }
 
     /**
+     * 8.设置默认超时时间
+     *
+     * @param timeout 时长
+     * @param unit    单位
+     * @return
+     */
+    public Http setDefaultTimeout(long timeout, TimeUnit unit) {
+        RetrofitManager.getRetrofitManager().setDefaultTimeout(timeout, unit);
+        return this;
+    }
+
+    /**
      * 获取ApiService
      *
      * @return
