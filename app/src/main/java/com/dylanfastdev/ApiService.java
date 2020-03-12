@@ -63,7 +63,7 @@ public interface ApiService {
      * @return Observable
      */
     @FormUrlEncoded
-    @POST("http://192.168.1.110:8080/campus/app/appstu/login")
+    @POST("http://192.168.1.178:8080/campus/app/appstu/login")
     Observable<Response<ResponseBody>> login(@Field("uname") String username,
                                    @Field("pwd") String password);
 

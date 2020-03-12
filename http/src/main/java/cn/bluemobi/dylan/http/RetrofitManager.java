@@ -57,6 +57,7 @@ public class RetrofitManager {
     private Retrofit retrofit;
     private Object apiService;
     private Retrofit.Builder retrofitBuilder;
+    private OkHttpClient.Builder okhttpBuilder;
 
     private RetrofitManager() {
     }
@@ -237,26 +238,26 @@ public class RetrofitManager {
                 }
             }
         };
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        okhttpBuilder = new OkHttpClient.Builder();
         //设置超时
-        builder.readTimeout(defaultTimeout, defaultUnit)
-                .connectTimeout(defaultTimeout, defaultUnit).writeTimeout(defaultTimeout, defaultUnit);
+        okhttpBuilder.readTimeout(defaultTimeout, defaultTimeoutUnit)
+                .connectTimeout(defaultTimeout, defaultTimeoutUnit).writeTimeout(defaultTimeout, defaultTimeoutUnit);
 
         /**
          * 添加其他自定义拦截器
          */
         for (Interceptor interceptor : interceptorList) {
-            builder.addInterceptor(interceptor);
+            okhttpBuilder.addInterceptor(interceptor);
         }
         /**添加公共参数拦截器**/
-        builder.addInterceptor(commParamsIntInterceptor);
+        okhttpBuilder.addInterceptor(commParamsIntInterceptor);
         if (debugMode) {
             /**添加打印日志拦截器**/
-            builder.addInterceptor(httpInterceptor);
+            okhttpBuilder.addInterceptor(httpInterceptor);
         }
         /**设置证书**/
         if (overlockCard) {
-            builder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
+            okhttpBuilder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
                     .hostnameVerifier(new HostnameVerifier() {
                         @Override
                         public boolean verify(String hostname, SSLSession session) {
@@ -265,11 +266,11 @@ public class RetrofitManager {
                     });
         } else {
             if (factory != null) {
-                builder.sslSocketFactory(factory);
+                okhttpBuilder.sslSocketFactory(factory);
             }
         }
 
-        mOkHttpClient = builder.build();
+        mOkHttpClient = okhttpBuilder.build();
         retrofitBuilder = new Retrofit.Builder();
         retrofit = retrofitBuilder
                 .baseUrl(baseUrl)
@@ -296,14 +297,17 @@ public class RetrofitManager {
     }
 
     private long defaultTimeout = 30;
-    private TimeUnit defaultUnit = TimeUnit.SECONDS;
+    private TimeUnit defaultTimeoutUnit = TimeUnit.SECONDS;
+
+    private long currentTimeout = defaultTimeout;
+    private TimeUnit currentTimeoutUnit = defaultTimeoutUnit;
 
     /**
      * 设置超时
      */
     public void setTimeout(long timeout, TimeUnit unit) {
-        defaultTimeout = timeout;
-        defaultUnit = unit;
+        currentTimeout = timeout;
+        currentTimeoutUnit = unit;
     }
 
     /**
@@ -314,7 +318,24 @@ public class RetrofitManager {
      * @return
      */
     public <T> T getApiService(Class<T> apiService) {
-        return retrofit.create(apiService);
+        if (defaultTimeout != currentTimeout || currentTimeoutUnit != defaultTimeoutUnit) {
+            //设置超时
+            okhttpBuilder.readTimeout(currentTimeout, currentTimeoutUnit)
+                    .connectTimeout(currentTimeout, currentTimeoutUnit)
+                    .writeTimeout(currentTimeout, currentTimeoutUnit);
+            retrofit = retrofitBuilder.client(okhttpBuilder.build()).build();
+            T t = retrofit.create(apiService);
+            //重新設置默認超时
+            okhttpBuilder.readTimeout(defaultTimeout, defaultTimeoutUnit)
+                    .connectTimeout(defaultTimeout, defaultTimeoutUnit)
+                    .writeTimeout(defaultTimeout, defaultTimeoutUnit);
+            retrofit = retrofitBuilder.client(okhttpBuilder.build()).build();
+            currentTimeout = defaultTimeout;
+            currentTimeoutUnit = defaultTimeoutUnit;
+            return t;
+        }
+        T t = retrofit.create(apiService);
+        return t;
     }
 
     /**

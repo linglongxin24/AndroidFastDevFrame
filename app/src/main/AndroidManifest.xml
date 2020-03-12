@@ -11,8 +11,7 @@
     <application
         android:name=".Myapplication"
         android:theme="@style/AppTheme"
-        tools:replace="android:theme"
-        >
+        tools:replace="android:theme">
         <meta-data
             android:name="design_width"
             android:value="750"
@@ -22,7 +21,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".ApplyAvoidRunActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

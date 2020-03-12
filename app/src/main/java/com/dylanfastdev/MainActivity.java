@@ -2,6 +2,7 @@ package com.dylanfastdev;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -15,6 +16,7 @@ import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
@@ -164,7 +166,8 @@ public class MainActivity extends BaseActivity {
         /**设置网络请求**/
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
 
-        Http.with(this)
+        Http.getHttp().setTimeout(1, TimeUnit.MINUTES)
+                .with(this)
                 .setLoadingMessage("正在登录")
                 .setObservable(Http.getApiService(ApiService.class).login("Advert", "Advertr_an_HomeList"))
                 .setDataListener(new HttpCallBack() {
@@ -174,6 +177,21 @@ public class MainActivity extends BaseActivity {
                                      }
                                  }
                 );
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Http.with(mContext)
+                        .setLoadingMessage("正在登录")
+                        .setObservable(Http.getApiService(ApiService.class).login("Advert", "Advertr_an_HomeList"))
+                        .setDataListener(new HttpCallBack() {
+                                             @Override
+                                             public void netOnSuccess(Map<String, Object> data) {
+
+                                             }
+                                         }
+                        );
+            }
+        },2*60*1000);
 
 
 //       Http.with(this)
@@ -524,8 +542,8 @@ public class MainActivity extends BaseActivity {
 //        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
-        testPay();
-        testiOSDialog();
+//        testPay();
+//        testiOSDialog();
     }
 
 //        setContentView(R.layout.pub_activity_main);
