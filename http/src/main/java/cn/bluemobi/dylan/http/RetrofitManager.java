@@ -342,6 +342,7 @@ public class RetrofitManager {
                     .connectTimeout(currentTimeout, currentTimeoutUnit)
                     .writeTimeout(currentTimeout, currentTimeoutUnit);
             retrofit = retrofitBuilder.client(okhttpBuilder.build()).build();
+            T t = retrofit.create(apiService);
             //重新設置默認超时
             okhttpBuilder.readTimeout(defaultTimeout, defaultTimeoutUnit)
                     .connectTimeout(defaultTimeout, defaultTimeoutUnit)
@@ -349,7 +350,7 @@ public class RetrofitManager {
             retrofit = retrofitBuilder.client(okhttpBuilder.build()).build();
             currentTimeout = defaultTimeout;
             currentTimeoutUnit = defaultTimeoutUnit;
-            return retrofit.create(apiService);
+            return t;
         }
         return retrofit.create(apiService);
     }
