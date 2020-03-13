@@ -450,6 +450,11 @@ public class HttpRequest {
                         subscribe.unsubscribe();
                     }
                 }
+
+                @Override
+                public void onResume() {
+
+                }
             });
         }
 

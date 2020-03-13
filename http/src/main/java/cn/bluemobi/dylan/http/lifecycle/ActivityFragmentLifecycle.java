@@ -12,6 +12,7 @@ public class ActivityFragmentLifecycle implements Lifecycle {
     private final Set<LifecycleListener> lifecycleListeners =
             Collections.newSetFromMap(new WeakHashMap<LifecycleListener, Boolean>());
     private boolean isStarted;
+    private boolean isResume;
     private boolean isDestroyed;
 
 
@@ -23,6 +24,8 @@ public class ActivityFragmentLifecycle implements Lifecycle {
             listener.onDestroy();
         } else if (isStarted) {
             listener.onStart();
+        }  else if (isResume) {
+            listener.onResume();
         } else {
             listener.onStop();
         }
@@ -44,6 +47,13 @@ public class ActivityFragmentLifecycle implements Lifecycle {
 
     void onDestroy() {
         isDestroyed = true;
+        for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) {
+            lifecycleListener.onDestroy();
+        }
+    }
+
+     void onResume() {
+        isResume = true;
         for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) {
             lifecycleListener.onDestroy();
         }

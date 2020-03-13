@@ -21,4 +21,6 @@ public interface LifecycleListener {
      * called.
      */
     void onDestroy();
+
+    void onResume();
 }

@@ -25,6 +25,11 @@ public class LifecycleManagerFragment extends Fragment {
     public ActivityFragmentLifecycle getLifecycle() {
         return lifecycle;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        lifecycle.onResume();
+    }
 
     @Override
     public void onStart() {
