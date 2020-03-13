@@ -153,4 +153,9 @@ public class LoadingDialog implements LifecycleListener {
             dialog.dismiss();
         }
     }
+
+    @Override
+    public void onResume() {
+
+    }
 }
