@@ -55,7 +55,7 @@ public class ActivityFragmentLifecycle implements Lifecycle {
      void onResume() {
         isResume = true;
         for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) {
-            lifecycleListener.onDestroy();
+            lifecycleListener.onResume();
         }
     }
 }
