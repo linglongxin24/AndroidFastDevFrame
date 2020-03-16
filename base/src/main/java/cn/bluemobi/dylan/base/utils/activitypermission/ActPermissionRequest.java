@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.base.utils.activitypermission;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
@@ -13,8 +14,26 @@ public class ActPermissionRequest {
         fragment = getEventDispatchFragment(activity);
     }
 
+    public ActPermissionRequest(Fragment fragment) {
+        this.fragment = getEventDispatchFragment(fragment);
+    }
+
     private OnActPermissionEventDispatcherFragment getEventDispatchFragment(FragmentActivity activity) {
         final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        OnActPermissionEventDispatcherFragment fragment = findEventDispatchFragment(fragmentManager);
+        if (fragment == null) {
+            fragment = new OnActPermissionEventDispatcherFragment();
+            fragmentManager
+                    .beginTransaction()
+                    .add(fragment, OnActPermissionEventDispatcherFragment.TAG)
+                    .commitAllowingStateLoss();
+            fragmentManager.executePendingTransactions();
+        }
+        return fragment;
+    }
+
+    private OnActPermissionEventDispatcherFragment getEventDispatchFragment(Fragment fragmentOutside) {
+        final FragmentManager fragmentManager = fragmentOutside.getChildFragmentManager();
         OnActPermissionEventDispatcherFragment fragment = findEventDispatchFragment(fragmentManager);
         if (fragment == null) {
             fragment = new OnActPermissionEventDispatcherFragment();

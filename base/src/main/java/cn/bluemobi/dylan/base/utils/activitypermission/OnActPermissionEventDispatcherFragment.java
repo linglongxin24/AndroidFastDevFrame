@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class OnActPermissionEventDispatcherFragment extends Fragment {
 
-    public static final String TAG = "on_act_result_event_dispatcher";
+    public static final String TAG = "on_act_permission_event_dispatcher";
 
     private SparseArray<ActPermissionRequest.PermissionCheckCallBack> mCallbacks = new SparseArray<>();
 

@@ -110,10 +110,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
     public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
-        new ActResultRequest(getActivity()).startForResult(intent, callback);
+        new ActResultRequest(this).startForResult(intent, callback);
     }
     public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
-        new ActPermissionRequest(getActivity()).requestPermission(permissions, callback);
+        new ActPermissionRequest(this).requestPermission(permissions, callback);
     }
 
     /**
