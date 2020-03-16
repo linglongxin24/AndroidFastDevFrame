@@ -14,6 +14,8 @@ import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
 import cn.bluemobi.dylan.base.utils.activityresult.ActResultRequest;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
+import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 
 /**
  * @author dylan
@@ -34,24 +36,24 @@ public class TestFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        Http.with(mContext)
-                .setObservable(
-                        Http.getApiService(ApiService.class)
-                                .test("13284", 10, 1))
-                .setDataListener(new HttpCallBack() {
-                    @Override
-                    public void netOnSuccess(Map<String, Object> data) {
-//                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
-//                      List<String> s= JsonParse.getList(data, "data");
-//                        startActivity(new Intent(mContext,MainActivity.class));
-//                        finish();
-                    }
-
-                    @Override
-                    public void netOnFinish() {
-                        super.netOnFinish();
-                    }
-                });
+//        Http.with(mContext)
+//                .setObservable(
+//                        Http.getApiService(ApiService.class)
+//                                .test("13284", 10, 1))
+//                .setDataListener(new HttpCallBack() {
+//                    @Override
+//                    public void netOnSuccess(Map<String, Object> data) {
+////                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
+////                      List<String> s= JsonParse.getList(data, "data");
+////                        startActivity(new Intent(mContext,MainActivity.class));
+////                        finish();
+//                    }
+//
+//                    @Override
+//                    public void netOnFinish() {
+//                        super.netOnFinish();
+//                    }
+//                });
 //        Glide.with(mContext).load("https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=180092f702f431adbcd2443f730dcb92/f636afc379310a5519aea991b94543a9832610c8.jpg")
 //                .into(iv);
 //        new Handler().postDelayed(() -> getActivity().finish(),2*1000);
@@ -81,6 +83,28 @@ public class TestFragment extends BaseFragment {
                 Logger.d("不再询问");
             }
         });
+//        LifecycleDetector.getInstance().observer(getActivity(), new LifecycleListener() {
+//
+//            @Override
+//            public void onStart() {
+//                Logger.d("LifecycleDetector---onStart");
+//            }
+//
+//            @Override
+//            public void onStop() {
+//                Logger.d("LifecycleDetector---onStop");
+//            }
+//
+//            @Override
+//            public void onDestroy() {
+//                Logger.d("LifecycleDetector---onDestroy");
+//            }
+//
+//            @Override
+//            public void onResume() {
+//                Logger.d("LifecycleDetector---onResume");
+//            }
+//        });
         startActivityForResult(new Intent(mContext, TextActivity.class), new ActResultRequest.Callback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {

@@ -43,18 +43,18 @@ public class TextActivity extends BaseActivity {
 //        new iOSOneButtonDialog(mContext).setMessage("三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i 三到四所地所都哦is地偶死都哦已已已已已已已i  ").show();
 
 //        startActivity(new Intent(mContext, PayActivity.class));
-        Http.getHttp().setResponseInterceptor(new ResponseInterceptor() {
-            @Override
-            public boolean onResponseStart(Context context, String url, Map<String, Object> requestParameter, String responseString, int httpResponseCode) {
-                return false;
-            }
-
-            @Override
-            public boolean onResponse(Context context, int status, String msg, Map<String, Object> data, String url) {
-                return false;
-            }
-
-        });
+//        Http.getHttp().setResponseInterceptor(new ResponseInterceptor() {
+//            @Override
+//            public boolean onResponseStart(Context context, String url, Map<String, Object> requestParameter, String responseString, int httpResponseCode) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onResponse(Context context, int status, String msg, Map<String, Object> data, String url) {
+//                return false;
+//            }
+//
+//        });
 //        List<Map<String, Object>> mapList = new ArrayList<>();
 //        JSONObject jsonObject = new JSONObject();
 //        try {
@@ -85,32 +85,32 @@ public class TextActivity extends BaseActivity {
         List<File> files = new ArrayList<>();
         files.add(file);
 
-        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
-                RequestParameter.getRequestBody("5250"),
-                RequestParameter.getRequestBody("234"),
-                RequestParameter.getRequestBody("589"),
-                RequestParameter.getFilePartMap("file", files)
-        )).setDataListener(new OriginalHttpResponse() {
-            @Override
-            public void netOnStart() {
-
-            }
-
-            @Override
-            public void netOnSuccess(String json) {
-
-            }
-
-            @Override
-            public void netOnFinish() {
-
-            }
-
-            @Override
-            public void netOnFailure(Throwable ex) {
-
-            }
-        });
+//        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
+//                RequestParameter.getRequestBody("5250"),
+//                RequestParameter.getRequestBody("234"),
+//                RequestParameter.getRequestBody("589"),
+//                RequestParameter.getFilePartMap("file", files)
+//        )).setDataListener(new OriginalHttpResponse() {
+//            @Override
+//            public void netOnStart() {
+//
+//            }
+//
+//            @Override
+//            public void netOnSuccess(String json) {
+//
+//            }
+//
+//            @Override
+//            public void netOnFinish() {
+//
+//            }
+//
+//            @Override
+//            public void netOnFailure(Throwable ex) {
+//
+//            }
+//        });
 //        Http.getApiService(ApiService.class).getTopMove()
 //        Http.with(mContext)
 //                .setObservable(
