@@ -1,5 +1,6 @@
 package com.dylanfastdev;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,16 +21,12 @@ import java.util.concurrent.TimeUnit;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
-import cn.bluemobi.dylan.base.adapter.common.ViewHolder;
-import cn.bluemobi.dylan.base.adapter.common.abslistview.CommonAdapter;
 import cn.bluemobi.dylan.base.utils.MyImageLoader;
+import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
 import cn.bluemobi.dylan.base.view.CircleImageView;
 import cn.bluemobi.dylan.base.view.CycleViewPager;
 import cn.bluemobi.dylan.base.view.RatingBar;
-import cn.bluemobi.dylan.base.view.SelectPopupWindow;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
-import cn.bluemobi.dylan.base.view.iOSSelectDialog;
-import cn.bluemobi.dylan.base.view.iOSTwoButtonDialog;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
@@ -191,7 +188,7 @@ public class MainActivity extends BaseActivity {
                                          }
                         );
             }
-        },2*60*1000);
+        }, 2 * 60 * 1000);
 
 
 //       Http.with(this)
@@ -542,6 +539,33 @@ public class MainActivity extends BaseActivity {
 //        new   LoadingDialog(this).show();
 //        cn.bluemobi.dylan.http.Http.getHttp().setLoadingDialog(LoadingDialog.class);
         testHttp();
+
+        String[] PERMISSIONS = new String[]{
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//            Manifest.permission.CAMERA,
+//            Manifest.permission.ACCESS_COARSE_LOCATION,
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+        };
+        new ActPermissionRequest(this).requestPermission(PERMISSIONS, new ActPermissionRequest.PermissionCheckCallBack() {
+            @Override
+            public void onSucceed() {
+                Logger.d("同意");
+            }
+
+            @Override
+            public void onReject(String... permission) {
+                Logger.d("拒绝");
+            }
+
+            @Override
+            public void onRejectAndNoAsk(String... permission) {
+                Logger.d("不再询问");
+            }
+        });
+
+
 //        testPay();
 //        testiOSDialog();
     }
