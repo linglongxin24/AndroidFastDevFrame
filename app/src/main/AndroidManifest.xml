@@ -22,7 +22,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".AActivity">
+        <activity android:name=".WebViewActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

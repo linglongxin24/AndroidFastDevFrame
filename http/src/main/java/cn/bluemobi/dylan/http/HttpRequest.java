@@ -2,6 +2,7 @@ package cn.bluemobi.dylan.http;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
@@ -152,11 +153,20 @@ public class HttpRequest {
      * @return 本类对象
      */
     public Subscription setDataListener(final HttpCallBack httpResponse) {
+        final Context context = this.context.get();
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if(activity.isDestroyed()){
+                    return null;
+                }
+            }
+        }
         String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
         final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : MessageManager.getMessageManager().getErrorMessage();
 
-        if (!NetworkUtil.isNetworkAvailable(context.get())) {
-            Toast.makeText(context.get(), network_unusual, Toast.LENGTH_SHORT).show();
+        if (!NetworkUtil.isNetworkAvailable(context)) {
+            Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             if (httpResponse != null) {
                 httpResponse.netOnFailure(new Exception(network_unusual));
                 httpResponse.netOnFinish();
@@ -166,7 +176,7 @@ public class HttpRequest {
 
         if (isShowLoadingDialog) {
             if (loadingDialog == null) {
-                loadingDialog = new LoadingDialog(context.get());
+                loadingDialog = new LoadingDialog(context);
             }
         } else {
             loadingDialog = null;
@@ -203,9 +213,9 @@ public class HttpRequest {
                         }
                         if (isShowFailMessage) {
                             if (e instanceof SocketTimeoutException) {
-                                Toast.makeText(context.get(), "网络连接超时,请重新再试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "网络连接超时,请重新再试", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
                             }
                         }
                         if (httpResponse != null) {
@@ -227,7 +237,7 @@ public class HttpRequest {
                                 responseString = responseBodyResponse.errorBody().string();
                                 if (responseInterceptor != null) {
                                     Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                    boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                    boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
                                     if (isInterceptor) {
                                         return;
                                     }
@@ -251,7 +261,7 @@ public class HttpRequest {
                                 int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
                                 Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
                                 if (responseInterceptor != null) {
-                                    boolean isInterceptor = responseInterceptor.onResponse(context.get(), code, msg, data, responseBodyResponse.raw().request().url().url().toString());
+                                    boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
                                     if (isInterceptor) {
                                         return;
                                     }
@@ -260,7 +270,7 @@ public class HttpRequest {
                                 if (code == JsonParse.getJsonParse().getSuccessCode()) {
                                     if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
                                         if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
-                                            Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     if (httpResponse != null) {
@@ -270,7 +280,7 @@ public class HttpRequest {
                                 } else {
                                     if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
                                         if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
-                                            Toast.makeText(context.get(), msg, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     if (httpResponse != null) {
@@ -280,7 +290,7 @@ public class HttpRequest {
                                 }
                             } else {
                                 if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                    Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
                                 }
                                 if (httpResponse != null) {
                                     httpResponse.netOnSuccessServerError(responseBodyResponse.code(), responseBodyResponse.message());
@@ -288,7 +298,7 @@ public class HttpRequest {
                             }
                         } catch (Exception e) {
                             if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                Toast.makeText(context.get(), network_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
                             }
                             if (httpResponse != null) {
                                 httpResponse.netOnFailure(e);
@@ -305,7 +315,7 @@ public class HttpRequest {
                 loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
                 loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
             } else {
-                addLifeCycle(context.get(), subscribe);
+                addLifeCycle(context, subscribe);
             }
         }
         return subscribe;

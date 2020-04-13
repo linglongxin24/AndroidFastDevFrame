@@ -29,6 +29,7 @@ public class AActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        new TTSManager(this);
         LifecycleDetector.getInstance().observer(this, new LifecycleListener() {
             @Override
             public void onStart() {
@@ -53,11 +54,11 @@ public class AActivity extends BaseActivity {
         startActivityForResult(new Intent(mContext, BActivity.class), (resultCode, data) -> {
 
         });
+
     }
 
     @Override
     public void addListener() {
-
     }
 
     @Override

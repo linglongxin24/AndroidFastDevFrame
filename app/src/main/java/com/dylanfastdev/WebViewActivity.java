@@ -35,7 +35,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        smartWebView.loadUrl("https://www.jianshu.com/p/193634cca86a");
+        smartWebView.loadUrl("https://www.bilibili.com/video/BV1S64y1u7bL");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
