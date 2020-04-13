@@ -2,6 +2,7 @@ package cn.bluemobi.dylan.smartwebview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.text.TextUtils;
@@ -153,9 +154,14 @@ public class SmartWebView extends RelativeLayout {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
-                view.loadUrl(url);
-                return true;
+                // 4.0以上必须要加
+                if (url.startsWith("http://") || url.startsWith("https://")) {
+                    view.loadUrl(url);
+                    return true;
+                }else if("bilibili".equalsIgnoreCase(Uri.parse(url).getScheme())){
+                    return true;
+                }
+                return false;
             }
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
