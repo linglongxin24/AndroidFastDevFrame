@@ -1,25 +1,32 @@
 ECLIPSE ANDROID PROJECT IMPORT SUMMARY
 ======================================
 
-Ignored Files:
---------------
-The following files were *not* copied into the new Gradle project; you
-should evaluate whether these are still needed in your project and if
-so manually move them:
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
 
-* debug.keystore
+android-support-v4.jar => com.android.support:support-v4:21.0.3
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => amm_sdk_sample\src\main\AndroidManifest.xml
-* assets\ => amm_sdk_sample\src\main\assets
-* libs\libammsdk.jar => amm_sdk_sample\libs\libammsdk.jar
-* libs\wechat-sdk-android-with-mta-1.0.2.jar => amm_sdk_sample\libs\wechat-sdk-android-with-mta-1.0.2.jar
-* res\ => amm_sdk_sample\src\main\res\
-* src\ => amm_sdk_sample\src\main\java\
+* AndroidManifest.xml => projectFirst\src\main\AndroidManifest.xml
+* assets\ => projectFirst\src\main\assets\
+* libs\apiEngine v1.1.0.jar => projectFirst\libs\apiEngine v1.1.0.jar
+* libs\armeabi-v7a\libsec.so => projectFirst\src\main\jniLibs\armeabi-v7a\libsec.so
+* libs\armeabi\libsec.so => projectFirst\src\main\jniLibs\armeabi\libsec.so
+* libs\x86\libsec.so => projectFirst\src\main\jniLibs\x86\libsec.so
+* lint.xml => projectFirst\lint.xml
+* res\ => projectFirst\src\main\res\
+* src\ => projectFirst\src\main\java\
 
 Next Steps:
 -----------

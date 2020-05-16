@@ -1,66 +1,188 @@
 package com.dylanfastdev;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.orhanobut.logger.Logger;
 
-import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.smartwebview.SmartWebView;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
-/**
- * @author dylan
- * @date 2019-07-16
- */
+import cn.bluemobi.dylan.base.BaseActivity;
+import cn.bluemobi.dylan.base.utils.Tools;
+
 public class WebViewActivity extends BaseActivity {
-    private SmartWebView smartWebView;
+    private InsideWebChromeClient mInsideWebChromeClient;
+    private String url, action, titleName, createTime, type;
+    private boolean mNew;
+    private int playCount;
+    private String jsData = "";
+
+    private WebView webview;
+    private FrameLayout  mFrameLayout;
 
     @Override
     public void initTitleBar() {
-        setTitle("趣头条");
+        setTitle("存储");
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.ac_webview;
+        return R.layout.ac_webview2;
     }
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        smartWebView = findViewById(R.id.smartWebView);
+        webview = findViewById(R.id.webView);
+        mFrameLayout = findViewById(R.id.flVideoContainer);
     }
 
+    @SuppressLint({"SetJavaScriptEnabled", "SetTextI18n"})
     @Override
     public void initData() {
-//        smartWebView.loadUrl("http:192.168.1.186:8080/video.html");
+//        if (null == getIntent().getExtras()) return;
+//        url = getIntent().getExtras().getString("url");
+        url = "https://player.bilibili.com/player.html?aid=582731140&bvid=BV1S64y1u7bL&cid=174633886&page=1";
+        mInsideWebChromeClient = new InsideWebChromeClient();
+        InsideWebViewClient mInsideWebViewClient = new InsideWebViewClient();
+        webview.setWebViewClient(mInsideWebViewClient);//IE内核
+        webview.setWebChromeClient(mInsideWebChromeClient);
+//        webview.loadUrl(jsData);
+        webview.loadUrl(url);
+
+        WebSettings setting = webview.getSettings();
+        setting.setJavaScriptEnabled(true);//支持js
+        setting.setAppCacheEnabled(true);
+        setting.setDomStorageEnabled(true);
+        setting.setSupportZoom(false);//不支持缩放
+        setting.setBuiltInZoomControls(false);//不出现放大和缩小的按钮
+        setting.setPluginState(WebSettings.PluginState.ON);
+        setting.setJavaScriptCanOpenWindowsAutomatically(true);
+        //settings.setPluginsEnabled(true);
+        setting.setAllowFileAccess(false);
+//        setting.setLoadWithOverviewMode(true);
+        setting.setUseWideViewPort(true);
+        setting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        Logger.d("Tools.getScreenSize()="+ Arrays.toString(Tools.getScreenSize(mContext)));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        }
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void addListener() {
-        final WebView webView = smartWebView.getWebView();
-        smartWebView.getWebView().getSettings().setSupportZoom(true);
-        smartWebView.getWebView().getSettings().setDisplayZoomControls(true);
-        smartWebView.getWebView().getSettings().setBuiltInZoomControls(true);
-        // 必须
-        smartWebView.getWebView().getSettings().setJavaScriptEnabled(true);
-        smartWebView.getWebView().getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-//        smartWebView.loadUrl("https://player.bilibili.com/player.html?aid=582731140&bvid=BV1S64y1u7bL&cid=174633886&page=1");
 
-        String htmlStr="<iframe src=\"//player.bilibili.com/player.html?bvid=BV1S64y1u7bL&cid=174633886&page=1\" scrolling=\"no\" border=\"0\" frameborder=\"no\" framespacing=\"0\"></iframe>";
-
-        htmlStr = htmlStr.replaceAll("iframe\\s+src\\s*=\\s*\"//","iframe src=\"https://");
-//        webView.loadData(htmlStr, "text/html; charset=UTF-8", null);
-
-        smartWebView.loadUrl("https://www.bilibili.com/video/BV1S64y1u7bL");
     }
 
     @Override
     public void onClick(View v) {
 
+    }
+
+    private class InsideWebChromeClient extends WebChromeClient {
+        private View mCustomView;
+        private CustomViewCallback mCustomViewCallback;
+
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            super.onShowCustomView(view, callback);
+            if (mCustomView != null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+            mCustomView = view;
+            mFrameLayout.addView(mCustomView);
+            mCustomViewCallback = callback;
+            webview.setVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        public void onHideCustomView() {
+            webview.setVisibility(View.VISIBLE);
+            if (mCustomView == null) {
+                return;
+            }
+            mCustomView.setVisibility(View.GONE);
+            mFrameLayout.removeView(mCustomView);
+            mCustomViewCallback.onCustomViewHidden();
+            mCustomView = null;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            super.onHideCustomView();
+        }
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+        }
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            Logger.d("url:" + url + ";message:" + message);
+            return super.onJsAlert(view, url, message, result);
+        }
+    }
+
+    private class InsideWebViewClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // TODO Auto-generated method stub
+//            view.loadUrl(url);
+            return false;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            //mWebView.loadUrl(javascript);
+            view.evaluateJavascript("(function(){var meta = document.createElement('meta');meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no';meta.name = 'viewport';document.getElementsByTagName('head')[0].appendChild(meta);var body = document.getElementsByTagName('body')[0];body.style.cssText = 'width:100%;overflow-x:hidden;font-size:14px;margin:0;padding:10px;box-sizing:border-box;';var tb = document.getElementsByTagName('table');for (var k = 0; k < tb.length; k++){var nd = tb[k];nd.style.cssText += ';color:#101010;font-size: 14px;width:100%;overflow-x:hidden;';};var ps = document.getElementsByTagName('p');for (var j = 0; j < ps.length; j++){var nd = ps[j];var str = nd.innerHTML;str = str.replace(/&nbsp;/g, '');nd.innerHTML = str;nd.style.cssText += ';color:#101010;font-size: 14px;width:100%;overflow-x:hidden;';}})()", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        webview.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        webview.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webview.canGoBack()) {
+            webview.goBack();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onDestroy() {
+        webview.destroy();
+        super.onDestroy();
     }
 }
