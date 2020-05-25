@@ -78,6 +78,37 @@ public class LoadingDialog implements LifecycleListener {
         return dialog;
     }
 
+    public Dialog showDefaultStyle(String loadingMessage) {
+        View view = LayoutInflater.from(context).inflate(R.layout.pub_loading, null);
+        dialog.setContentView(view);
+        try {
+            tv_text = (TextView) dialog.findViewById(R.id.tv_text);
+            if (tv_text != null && !TextUtils.isEmpty(loadingMessage)) {
+                tv_text.setText(loadingMessage);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!dialog.isShowing()) {
+            //get the Context object that was used to great the dialog
+            Context context = ((ContextWrapper) dialog.getContext()).getBaseContext();
+
+            //if the Context used here was an activity AND it hasn't been finished or destroyed
+            //then dismiss it
+            if (context instanceof Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (!((Activity) context).isFinishing()) {
+                        dialog.show();
+                    }
+                }
+            } else {
+                //if the Context used wasnt an Activity, then dismiss it too
+                dialog.show();
+            }
+        }
+        return dialog;
+    }
+
 
     public void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
         dialog.setOnKeyListener(onKeyListener);
