@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.dylanfastdev"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0" // 控制日志Log 输出打印
         buildConfigField("boolean", "enableLog", "true")
@@ -47,14 +47,14 @@ repositories {
             }
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
 //    compile project(':fastdev')
 //    compile project(':httputils')
+    api project(':base')
     compile project(':uncaughtexception')
     compile project(':photoview')
     compile project(':smartwebview')
     compile project(':http')
-    compile project(':base')
     compile project(':pay')
 
 
