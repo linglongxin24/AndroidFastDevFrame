@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.base.adapter.common.abslistview.CommonAdapter;
 import cn.bluemobi.dylan.base.utils.Base64;
 import cn.bluemobi.dylan.base.utils.Tools;
 import cn.bluemobi.dylan.base.view.MyGridView;
+import cn.bluemobi.dylan.base.*;
 
 /**
  * @author lenovo

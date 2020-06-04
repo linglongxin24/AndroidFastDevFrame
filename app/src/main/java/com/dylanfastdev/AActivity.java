@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.dylanfastdev.R;
 import com.orhanobut.logger.Logger;
 
-import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.base.utils.activityresult.ActResultRequest;
 import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
 import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
-
+import cn.bluemobi.dylan.base.*;
 public class AActivity extends BaseActivity {
     @Override
     public void initTitleBar() {

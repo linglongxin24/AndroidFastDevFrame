@@ -1,6 +1,5 @@
 package com.dylanfastdev;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,13 +8,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.OriginalHttpResponse;
-import cn.bluemobi.dylan.http.RequestParameter;
-import cn.bluemobi.dylan.http.ResponseInterceptor;
+import cn.bluemobi.dylan.base.*;
 
 /**
  * Created by lenovo on 2017/11/28.

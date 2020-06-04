@@ -2,14 +2,7 @@ package com.dylanfastdev;
 
 import android.os.Bundle;
 import android.view.View;
-
-import com.orhanobut.logger.Logger;
-
-import java.util.Map;
-
-import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.base.*;
 
 /**
  * @author dylan

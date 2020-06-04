@@ -14,15 +14,10 @@ import android.widget.FrameLayout;
 
 import com.orhanobut.logger.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.utils.Tools;
+import cn.bluemobi.dylan.base.*;
 
 public class WebViewActivity extends BaseActivity {
     private InsideWebChromeClient mInsideWebChromeClient;

@@ -3,13 +3,11 @@ package com.dylanfastdev;
 import android.os.Bundle;
 import android.view.View;
 
-import com.dylanfastdev.R;
-
 import java.util.Map;
 
-import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.base.*;
 
 public class BActivity extends BaseActivity {
     @Override
