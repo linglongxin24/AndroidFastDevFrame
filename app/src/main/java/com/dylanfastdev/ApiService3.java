@@ -1,6 +1,6 @@
 package com.dylanfastdev;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

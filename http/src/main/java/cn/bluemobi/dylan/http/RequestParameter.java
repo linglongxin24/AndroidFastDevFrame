@@ -1,6 +1,6 @@
 package cn.bluemobi.dylan.http;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import java.io.File;
 import java.util.List;

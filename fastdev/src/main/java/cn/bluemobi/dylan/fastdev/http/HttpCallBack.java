@@ -1,7 +1,7 @@
 package cn.bluemobi.dylan.fastdev.http;
 
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -10,14 +10,11 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 import com.orhanobut.logger.Logger;
 
-import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
 import org.xutils.x;
 
-import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 

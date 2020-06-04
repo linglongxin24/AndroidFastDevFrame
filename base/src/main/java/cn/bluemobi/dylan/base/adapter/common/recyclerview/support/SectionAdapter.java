@@ -1,7 +1,7 @@
 package cn.bluemobi.dylan.base.adapter.common.recyclerview.support;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.LinkedHashMap;
 import java.util.List;

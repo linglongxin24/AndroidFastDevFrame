@@ -1,7 +1,7 @@
 package cn.bluemobi.dylan.fastdev.http;
 
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import cn.bluemobi.dylan.fastdev.utils.CheckNetwork;
-import cn.bluemobi.dylan.fastdev.utils.MD5Utils;
 import cn.bluemobi.dylan.fastdev.view.LoadingDialog;
 
 /**

@@ -3,7 +3,7 @@ package cn.bluemobi.dylan.http;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.widget.Toast;
 
 import java.io.IOException;

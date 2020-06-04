@@ -15,7 +15,7 @@ import cn.bluemobi.dylan.base.utils.Tools;
  * Created by lenovo on 2017/10/14.
  */
 
-public class UnderLineTextView extends android.support.v7.widget.AppCompatTextView {
+public class UnderLineTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private Rect mRect;
     private Paint mPaint;

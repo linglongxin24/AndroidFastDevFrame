@@ -1,11 +1,10 @@
 package cn.bluemobi.dylan.httputils;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v4.util.ArrayMap;
+
+import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -32,7 +31,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import cn.bluemobi.dylan.httputils.http.DialogOnKeyListener;
 import cn.bluemobi.dylan.httputils.ssl.Tls12SocketFactory;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;

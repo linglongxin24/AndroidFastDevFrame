@@ -45,7 +45,6 @@ public class Http {
      * @return
      */
     public <T> Http init(Class<T> apiService, String baseUrl, String code, String data, String msg, int successCode) {
-        Logger.init(TAG);
         RetrofitManager.getRetrofitManager().initRetrofit(apiService, baseUrl);
         JsonParse.getJsonParse().initJson(code, data, msg, successCode);
         return http;

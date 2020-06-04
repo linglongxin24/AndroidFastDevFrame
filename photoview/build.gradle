@@ -11,7 +11,7 @@ android {
         versionCode mavenVersionCode
         versionName mavenVersionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
     }
     buildTypes {
@@ -24,14 +24,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.0.1'
+    androidTestCompile('androidx.test.espresso:espresso-core:3.1.0')
+    compile 'androidx.appcompat:appcompat:1.0.0'
 //    compile files('libs/uk_photoview.jar')
-    compile ('com.github.bumptech.glide:glide:4.9.0', {
-        exclude group: "com.android.support"
-    })
+    compile ('com.github.bumptech.glide:glide:4.9.0')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 //    compile 'com.github.chrisbanes:PhotoView'
 //    compile 'com.github.chrisbanes.photoview.1.2.2'

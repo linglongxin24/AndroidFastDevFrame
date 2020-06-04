@@ -1,6 +1,9 @@
 package com.dylanfastdev;
 
 import android.app.Application;
+import android.content.Context;
+
+import androidx.multidex.MultiDex;
 
 import com.orhanobut.logger.Logger;
 
@@ -21,11 +24,16 @@ import okhttp3.Response;
  * @date 2016/9/1 0001
  */
 public class Myapplication extends Application {
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
     @Override
     public void onCreate() {
         super.onCreate();
 //        x.Ext.init(this);
-        Logger.init("yanhao");
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
         //http请求初始化设置

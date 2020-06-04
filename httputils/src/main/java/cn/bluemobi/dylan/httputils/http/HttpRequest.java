@@ -1,7 +1,7 @@
 package cn.bluemobi.dylan.httputils.http;
 
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;

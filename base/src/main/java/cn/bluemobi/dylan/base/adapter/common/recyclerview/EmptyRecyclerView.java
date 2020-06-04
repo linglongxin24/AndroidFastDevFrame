@@ -1,12 +1,10 @@
 package cn.bluemobi.dylan.base.adapter.common.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 /**
  * https://gist.github.com/adelnizamutdinov/31c8f054d1af4588dc5c

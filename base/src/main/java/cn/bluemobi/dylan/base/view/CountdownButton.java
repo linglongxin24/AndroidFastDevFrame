@@ -16,7 +16,7 @@ import java.util.TimerTask;
  *         [佛祖保佑 永无BUG]
  *         Created by Dylan on 2016/10/5 0005.
  */
-public class CountdownButton extends android.support.v7.widget.AppCompatButton {
+public class CountdownButton extends androidx.appcompat.widget.AppCompatButton {
     /**
      * 倒计时时长，默认倒计时时间60秒；
      */

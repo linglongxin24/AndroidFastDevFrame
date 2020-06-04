@@ -1,6 +1,6 @@
 package cn.bluemobi.dylan.httputils.http;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

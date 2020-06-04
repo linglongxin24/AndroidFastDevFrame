@@ -562,7 +562,7 @@ public class MainActivity extends BaseActivity {
 //                Logger.d("不再询问");
 //            }
 //        });
-        getSupportFragmentManager().beginTransaction().add(R.id.fm, new TestFragment()).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.fm, new TestFragment()).commit();
 
 
 //        testPay();

@@ -3,8 +3,8 @@ package cn.bluemobi.dylan.fastdev.view;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bluemobi.dylan.fastdev.R;
-import cn.bluemobi.dylan.fastdev.utils.Tools;
 
 /**
  * Created by yuandl on 2016-11-30.

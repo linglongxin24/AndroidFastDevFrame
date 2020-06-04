@@ -23,7 +23,7 @@ import cn.bluemobi.dylan.base.utils.ImageSizeUtil;
  * 自定义圆形头像
  * Created by Dylan on 2015/11/26 0026.
  */
-public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
+public class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
     /**
      * 圆形头像默认，CENTER_CROP!=系统默认的CENTER_CROP；
      * 将图片等比例缩放，让图像的长边边与ImageView的边长度相同，短边不够的留空白，缩放后截取圆形部分进行显示。
