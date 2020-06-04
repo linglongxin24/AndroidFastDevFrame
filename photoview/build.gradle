@@ -28,6 +28,8 @@ dependencies {
     compile 'androidx.appcompat:appcompat:1.0.0'
 //    compile files('libs/uk_photoview.jar')
     compile ('com.github.bumptech.glide:glide:4.9.0')
+
+    annotationProcessor 'androidx.annotation:annotation:1.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 //    compile 'com.github.chrisbanes:PhotoView'
 //    compile 'com.github.chrisbanes.photoview.1.2.2'
