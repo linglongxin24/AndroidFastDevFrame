@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-def mavenVersionCode = 230
-def mavenVersionName = "2.3.0"
+def mavenVersionCode = 300
+def mavenVersionName = "3.0.0"
 
 android {
     compileSdkVersion 25
@@ -21,14 +21,14 @@ android {
 }
 
 dependencies {
-    compile 'com.squareup.retrofit2:retrofit:2.9.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
-    compile 'com.squareup.okhttp3:okhttp:4.7.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:4.7.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.orhanobut:logger:2.2.0'
-    compile 'com.alibaba:fastjson:1.1.71.android'
-    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
+    api 'com.squareup.okhttp3:okhttp:4.7.2'
+    api 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    api 'io.reactivex:rxandroid:1.1.0'
+    api 'com.orhanobut:logger:2.2.0'
+    api 'com.alibaba:fastjson:1.1.71.android'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
 
 }

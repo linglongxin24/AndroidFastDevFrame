@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-def mavenVersionCode = 167
-def mavenVersionName = "1.6.7"
+def mavenVersionCode = 300
+def mavenVersionName = "3.0.0"
 android {
     compileSdkVersion 28
 
@@ -28,13 +28,13 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'androidx.appcompat:appcompat:1.0.0'
-    compile 'androidx.recyclerview:recyclerview:1.0.0'
-    compile 'com.google.android.material:material:1.0.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
     annotationProcessor 'androidx.annotation:annotation:1.0.0'
 
-    compile ('com.github.bumptech.glide:glide:4.9.0')
+    api ('com.github.bumptech.glide:glide:4.9.0')
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
