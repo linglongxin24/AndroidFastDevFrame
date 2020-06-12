@@ -11,6 +11,10 @@ android {
         buildConfigField("boolean", "enableLog", "true")
         multiDexEnabled true
     }
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
