@@ -55,7 +55,20 @@ public class ActPermissionRequest {
     }
 
     public void requestPermission(String[] permissions, PermissionCheckCallBack callback) {
-        fragment.requestPermissions(permissions, callback);
+        requestPermission(permissions).setPermissionCheckCallBack(callback);
+    }
+
+    private String[] permissions;
+
+    public ActPermissionRequest requestPermission(String... permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    public void setPermissionCheckCallBack(PermissionCheckCallBack callback) {
+        if (callback != null) {
+            fragment.requestPermissions(permissions, callback);
+        }
     }
 
     public interface PermissionCheckCallBack {
