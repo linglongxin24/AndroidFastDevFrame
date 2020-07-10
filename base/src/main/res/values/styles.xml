@@ -7,7 +7,7 @@
         <!--导航栏状态栏的底色，注意这里只支持Android5.0以上的手机。-->
         <item name="colorPrimaryDark">@color/accent_material_light</item>
         <!--colorPrimaryDark标题文字颜色-->
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
         <!--Activity的窗体默认背景颜色。-->
         <item name="android:windowBackground">@color/material_grey_300</item>
         <!--按钮选中或者点击获得焦点后的颜色:CheckBox，RadioButton，SwitchCompat等控件的点击选中颜色-->

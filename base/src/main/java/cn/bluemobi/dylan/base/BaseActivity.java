@@ -380,11 +380,23 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    private String[] permissions;
+
+    public BaseActivity onRequestPermissionsResult(@NonNull String... permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    public void setPermissionCheckCallBack(ActPermissionRequest.PermissionCheckCallBack callback) {
+        new ActPermissionRequest(this).requestPermission(permissions).setPermissionCheckCallBack(callback);
+    }
+
     public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
         new ActPermissionRequest(this).requestPermission(permissions, callback);
     }
+
     public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
-        new ActResultRequest(this).startForResult(intent,callback);
+        new ActResultRequest(this).startForResult(intent, callback);
     }
 
     /**

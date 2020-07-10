@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">@color/accent_material_light</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">@android:color/white</color>
+    <color name="titleTextColor">@android:color/white</color>
     <!--<color name="colorGrayBg">#f1f1f1</color>-->
 </resources>

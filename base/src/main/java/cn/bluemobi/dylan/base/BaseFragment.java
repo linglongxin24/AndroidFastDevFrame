@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -112,6 +114,18 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
         new ActResultRequest(this).startForResult(intent, callback);
     }
+
+    private String[] permissions;
+
+    public BaseFragment onRequestPermissionsResult(@NonNull String... permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    public void setPermissionCheckCallBack(ActPermissionRequest.PermissionCheckCallBack callback) {
+        new ActPermissionRequest(this).requestPermission(permissions).setPermissionCheckCallBack(callback);
+    }
+
     public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
         new ActPermissionRequest(this).requestPermission(permissions, callback);
     }
