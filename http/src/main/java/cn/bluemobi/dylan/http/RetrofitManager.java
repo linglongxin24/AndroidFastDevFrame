@@ -179,6 +179,10 @@ public class RetrofitManager {
                 mMessage.append("响应耗时：");
                 mMessage.append(formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 mMessage.append("\n");
+                mMessage.append("HTTP状态："+response.code());
+                mMessage.append("\n");
+                mMessage.append("HTTP消息："+response.message());
+                mMessage.append("\n");
 
                 String content = response.body().string();
                 okhttp3.MediaType mediaType = response.body().contentType();

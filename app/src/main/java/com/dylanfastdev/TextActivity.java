@@ -8,7 +8,13 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import cn.bluemobi.dylan.base.*;
+import cn.bluemobi.dylan.http.Http;
+import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.OriginalHttpResponse;
+import cn.bluemobi.dylan.http.RequestParameter;
 
 /**
  * Created by lenovo on 2017/11/28.
@@ -78,51 +84,32 @@ public class TextActivity extends BaseActivity {
         List<File> files = new ArrayList<>();
         files.add(file);
 
-//        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
-//                RequestParameter.getRequestBody("5250"),
-//                RequestParameter.getRequestBody("234"),
-//                RequestParameter.getRequestBody("589"),
-//                RequestParameter.getFilePartMap("file", files)
-//        )).setDataListener(new OriginalHttpResponse() {
-//            @Override
-//            public void netOnStart() {
-//
-//            }
-//
-//            @Override
-//            public void netOnSuccess(String json) {
-//
-//            }
-//
-//            @Override
-//            public void netOnFinish() {
-//
-//            }
-//
-//            @Override
-//            public void netOnFailure(Throwable ex) {
-//
-//            }
-//        });
-//        Http.getApiService(ApiService.class).getTopMove()
-//        Http.with(mContext)
-//                .setObservable(
-//                        Http.getApiService(ApiService.class)
-//                                .test2("sds", "ss", "ss", "c0RFeGNMcXBySDJkL2xmTjFSaUlTdjlNNlB0ZTV4MnlpVDBHWkN3V3BPeThBS1B5N1o5QVhqbFF2NzM3emVVTWtsaEJMRVFKbEVvTG1ab1RsbHo5S2Z1ZElRT3dwT1FQRy9KTzRoM3J0azdHSGc4QmZsL1JVZ2VDZ2tMeW5IOTBTTHduNWx1OGsyNFNDWU16bWpDVHBTUjhMb3NZNm9KOE1IU2w3elp3MlMwPQ=="))
-//                .setDataListener(new HttpCallBack() {
-//                    @Override
-//                    public void netOnSuccess(Map<String, Object> data) {
-////                      List<Map<String,Object>> list= JsonParse.getList(data, "data");
-////                      List<String> s= JsonParse.getList(data, "data");
-////                        startActivity(new Intent(mContext,MainActivity.class));
-////                        finish();
-//                    }
-//
-//                    @Override
-//                    public void netOnFinish() {
-//                        super.netOnFinish();
-//                    }
-//                });
+        Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
+                RequestParameter.getRequestBody("5250"),
+                RequestParameter.getRequestBody("234"),
+                RequestParameter.getRequestBody("589"),
+                RequestParameter.getFilePartMap("file", files)
+        )).setDataListener(new OriginalHttpResponse() {
+            @Override
+            public void netOnStart() {
+
+            }
+
+            @Override
+            public void netOnSuccess(String json) {
+
+            }
+
+            @Override
+            public void netOnFinish() {
+
+            }
+
+            @Override
+            public void netOnFailure(Throwable ex) {
+
+            }
+        });
 //        throw new RuntimeException("ssddss");
     }
 
