@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-def mavenVersionCode = 302
-def mavenVersionName = "3.0.2"
+def mavenVersionCode = 303
+def mavenVersionName = "3.0.3"
 android {
     compileSdkVersion 28
 
@@ -35,6 +35,10 @@ dependencies {
     annotationProcessor 'androidx.annotation:annotation:1.0.0'
 
     api ('com.github.bumptech.glide:glide:4.9.0')
+    //图片压缩鲁班
+    api 'top.zibin:Luban:1.1.2'
+    //图片浏览
+    api 'cn.bluemobi.dylan:photoview:1.7'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }

@@ -85,10 +85,10 @@ public class TextActivity extends BaseActivity {
         files.add(file);
 
         Http.with(mContext).setObservable(Http.getApiService(ApiService.class).upload(
-                RequestParameter.getRequestBody("5250"),
-                RequestParameter.getRequestBody("234"),
-                RequestParameter.getRequestBody("589"),
-                RequestParameter.getFilePartMap("file", files)
+                RequestParameter.getStringRequestBody("5250"),
+                RequestParameter.getStringRequestBody("234"),
+                RequestParameter.getStringRequestBody("589"),
+                RequestParameter.getImageFilePartMap("file", files)
         )).setDataListener(new OriginalHttpResponse() {
             @Override
             public void netOnStart() {

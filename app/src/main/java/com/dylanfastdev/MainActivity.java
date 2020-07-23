@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.adapter.GridViewAddImagesAdapter;
 import cn.bluemobi.dylan.base.utils.MyImageLoader;
 import cn.bluemobi.dylan.base.view.CircleImageView;
@@ -28,7 +29,6 @@ import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
-import cn.bluemobi.dylan.base.*;
 
 public class MainActivity extends BaseActivity {
 
@@ -258,7 +258,7 @@ public class MainActivity extends BaseActivity {
     private void showAddImageDialog() {
         gv = (GridView) findViewById(R.id.gv);
         paths = new ArrayList<>();
-        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(paths, mContext, 5, 10);
+        gridViewAddImgesAdpter = new GridViewAddImagesAdapter(mActivity, 5, 10);
         gv.setAdapter(gridViewAddImgesAdpter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

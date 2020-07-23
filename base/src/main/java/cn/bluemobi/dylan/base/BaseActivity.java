@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 
 import cn.bluemobi.dylan.base.utils.AppManager;
 import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
@@ -66,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 上下文
      */
     protected Context mContext;
-    protected Activity mActivity;
+    protected FragmentActivity mActivity;
 
     /**
      * 获取中间布局
