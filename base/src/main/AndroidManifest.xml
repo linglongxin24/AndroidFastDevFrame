@@ -6,6 +6,5 @@
         <meta-data
             android:name="cn.bluemobi.dylan.base.utils.CustomGlideModule"
             android:value="GlideModule" />
-
     </application>
 </manifest>

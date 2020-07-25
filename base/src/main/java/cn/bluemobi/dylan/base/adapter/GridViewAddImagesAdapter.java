@@ -156,6 +156,7 @@ public class GridViewAddImagesAdapter extends BaseAdapter {
             Glide.with(mContext)
                     .load(paths.get(position).startsWith("http") ? paths.get(position) : file)
                     .priority(Priority.HIGH)
+                    .centerCrop()
                     .into(viewHolder.ivimage);
             viewHolder.btdel.setVisibility(View.VISIBLE);
             viewHolder.btdel.setOnClickListener(new View.OnClickListener() {
