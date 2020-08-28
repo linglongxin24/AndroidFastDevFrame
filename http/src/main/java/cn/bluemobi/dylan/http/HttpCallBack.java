@@ -19,17 +19,12 @@ public abstract class HttpCallBack implements HttpResponse {
     }
 
     @Override
-    public void netOnSuccessServerError(int code, String errorMessage) {
-
-    }
-
-    @Override
     public void netOnFinish() {
 
     }
 
     @Override
-    public void netOnFailure(Throwable ex) {
+    public void netOnFailure(int httpCode, String httpMessage,Throwable ex) {
 
     }
 

@@ -3,8 +3,11 @@ package cn.bluemobi.dylan.http;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import androidx.collection.ArrayMap;
 import android.widget.Toast;
+
+import androidx.collection.ArrayMap;
+
+import com.alibaba.fastjson.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -92,6 +95,7 @@ public class HttpRequest {
         RetrofitManager.getRetrofitManager().setTimeout(timeout, unit);
         return this;
     }
+
     /**
      * 【第三步】设置访问的几口接口
      *
@@ -157,7 +161,7 @@ public class HttpRequest {
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                if(activity.isDestroyed()){
+                if (activity.isDestroyed()) {
                     return null;
                 }
             }
@@ -168,7 +172,7 @@ public class HttpRequest {
         if (!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             if (httpResponse != null) {
-                httpResponse.netOnFailure(new Exception(network_unusual));
+                httpResponse.netOnFailure(-1, "", new Exception(network_unusual));
                 httpResponse.netOnFinish();
             }
             return null;
@@ -181,8 +185,9 @@ public class HttpRequest {
         } else {
             loadingDialog = null;
         }
-        final Subscription subscribe = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        observable.subscribeOn(Schedulers.io());
+        observable.observeOn(AndroidSchedulers.mainThread());
+        final Subscription subscribe = observable
                 .subscribe(new Subscriber<Response<ResponseBody>>() {
 
                     @Override
@@ -219,7 +224,7 @@ public class HttpRequest {
                             }
                         }
                         if (httpResponse != null) {
-                            httpResponse.netOnFailure(e);
+                            httpResponse.netOnFailure(-1, "", e);
                         }
                         onCompleted();
 
@@ -230,82 +235,80 @@ public class HttpRequest {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
-                        String responseString = "";
+                        /**************************开始拦截****************************/
                         boolean isSuccessful = responseBodyResponse.isSuccessful();
                         try {
-                            if (!isSuccessful) {
-                                responseString = responseBodyResponse.errorBody().string();
-                                if (responseInterceptor != null) {
-                                    Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                    boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
-                                    if (isInterceptor) {
-                                        return;
-                                    }
-                                }
-                            } else {
-
-                                responseString = responseBodyResponse.body().string();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-//
-//                        if (result instanceof ProgressResponseBody) {
-//
-//                        }
-                        ArrayMap<String, Object> jsonBean;
-                        try {
                             if (isSuccessful) {
-                                jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
-                                String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
-                                int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
-                                Map<String, Object> data = JsonParse.getMap(jsonBean,JsonParse.getJsonParse().getData());
-                                if (responseInterceptor != null) {
-                                    boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
-                                    if (isInterceptor) {
-                                        return;
-                                    }
-                                }
-
-                                if (code == JsonParse.getJsonParse().getSuccessCode()) {
-                                    if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
-                                        if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
-                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    if (httpResponse != null) {
-                                        httpResponse.netOnSuccess(data);
-                                        httpResponse.netOnSuccess(data, msg);
-                                    }
-                                } else {
-                                    if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
-                                        if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
-                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    if (httpResponse != null) {
-                                        httpResponse.netOnOtherStatus(code, msg);
-                                        httpResponse.netOnOtherStatus(code, msg, data);
-                                    }
-                                }
+                                delResult(responseBodyResponse);
                             } else {
-                                if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                    Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
-                                }
-                                if (httpResponse != null) {
-                                    httpResponse.netOnSuccessServerError(responseBodyResponse.code(), responseBodyResponse.message());
+                                try {
+                                    delResult(responseBodyResponse);
+                                } catch (JSONException e) {
+                                    showErrorMessage(responseBodyResponse, e);
                                 }
                             }
                         } catch (Exception e) {
-                            if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
+                            showErrorMessage(responseBodyResponse, e);
+                        }
+                    }
+
+                    /**
+                     * 处理结果
+                     * @param responseBodyResponse 响应数据对象
+                     */
+                    private void delResult(Response<ResponseBody> responseBodyResponse) {
+                        try {
+                            String responseString = responseBodyResponse.body().string();
+                            ArrayMap<String, Object> jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
+                            String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
+                            int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
+                            Map<String, Object> data = JsonParse.getMap(jsonBean, JsonParse.getJsonParse().getData());
+                            if (responseInterceptor != null) {
+                                boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
+                                if (isInterceptor) {
+                                    return;
+                                }
                             }
-                            if (httpResponse != null) {
-                                httpResponse.netOnFailure(e);
+                            if (code == JsonParse.getJsonParse().getSuccessCode()) {
+                                if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
+                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                if (httpResponse != null) {
+                                    httpResponse.netOnSuccess(data);
+                                    httpResponse.netOnSuccess(data, msg);
+                                }
+                            } else {
+                                if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
+                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                if (httpResponse != null) {
+                                    httpResponse.netOnOtherStatus(code, msg);
+                                    httpResponse.netOnOtherStatus(code, msg, data);
+                                }
                             }
-                            if (Http.getHttp().isDebugMode()) {
-                                e.printStackTrace();
-                            }
+                        } catch (Exception e) {
+                            showErrorMessage(responseBodyResponse, e);
+                        }
+                    }
+
+                    /**
+                     * 显示错误消息
+                     * @param responseBodyResponse 响应数据对象
+                     * @param e 异常信息
+                     */
+                    private void showErrorMessage(Response<ResponseBody> responseBodyResponse, Exception e) {
+                        if (httpResponse != null) {
+                            httpResponse.netOnFailure(responseBodyResponse.code(), responseBodyResponse.message(), e);
+                        }
+                        if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
+                            Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
+                        }
+                        if (Http.getHttp().isDebugMode()) {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -405,7 +408,6 @@ public class HttpRequest {
                                     }
                                 }
                             } else {
-
                                 responseString = responseBodyResponse.body().string();
                             }
                         } catch (IOException e) {
@@ -413,7 +415,7 @@ public class HttpRequest {
                         }
                         try {
                             if (httpResponse != null) {
-                                httpResponse.netOnSuccess(responseBodyResponse.code(),responseString);
+                                httpResponse.netOnSuccess(responseBodyResponse.code(), responseString);
                             }
                         } catch (Exception e) {
                             if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
