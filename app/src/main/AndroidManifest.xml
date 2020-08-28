@@ -12,10 +12,13 @@
 
     <application
         android:name=".Myapplication"
-        android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
+        android:networkSecurityConfig="@xml/network_config"
+        android:theme="@style/AppTheme"
         tools:replace="android:theme">
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <!--Android7.0文件配置-->
         <provider
@@ -27,6 +30,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <meta-data
             android:name="design_width"
             android:value="750"
@@ -36,7 +40,9 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".ApplyAvoidRunActivity" android:hardwareAccelerated="true">
+        <activity
+            android:name=".MainActivity"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

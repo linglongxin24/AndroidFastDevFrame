@@ -96,10 +96,9 @@ public class TextActivity extends BaseActivity {
             }
 
             @Override
-            public void netOnSuccess(String json) {
+            public void netOnSuccess(int httpCode, String json) {
 
             }
-
             @Override
             public void netOnFinish() {
 

@@ -185,9 +185,8 @@ public class HttpRequest {
         } else {
             loadingDialog = null;
         }
-        observable.subscribeOn(Schedulers.io());
-        observable.observeOn(AndroidSchedulers.mainThread());
-        final Subscription subscribe = observable
+        Subscription subscribe = observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Response<ResponseBody>>() {
 
                     @Override
@@ -239,10 +238,10 @@ public class HttpRequest {
                         boolean isSuccessful = responseBodyResponse.isSuccessful();
                         try {
                             if (isSuccessful) {
-                                delResult(responseBodyResponse);
+                                delResult(responseBodyResponse,responseBodyResponse.body().string());
                             } else {
                                 try {
-                                    delResult(responseBodyResponse);
+                                    delResult(responseBodyResponse,responseBodyResponse.errorBody().string());
                                 } catch (JSONException e) {
                                     showErrorMessage(responseBodyResponse, e);
                                 }
@@ -256,9 +255,8 @@ public class HttpRequest {
                      * 处理结果
                      * @param responseBodyResponse 响应数据对象
                      */
-                    private void delResult(Response<ResponseBody> responseBodyResponse) {
+                    private void delResult(Response<ResponseBody> responseBodyResponse,String responseString) {
                         try {
-                            String responseString = responseBodyResponse.body().string();
                             ArrayMap<String, Object> jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
                             String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));

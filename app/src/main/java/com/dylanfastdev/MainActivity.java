@@ -2,7 +2,6 @@ package com.dylanfastdev;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -27,6 +26,7 @@ import cn.bluemobi.dylan.base.view.RatingBar;
 import cn.bluemobi.dylan.base.view.iOSOneButtonDialog;
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.HttpCallBack;
+import cn.bluemobi.dylan.http.OriginalHttpResponse;
 import cn.bluemobi.dylan.photoview.ImagePagerActivity;
 import cn.bluemobi.dylan.smartwebview.SmartWebView;
 
@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity {
 
         /**设置网络请求**/
         Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
-
+        Http.getHttp().setDebugMode(BuildConfig.DEBUG);
         Http.with(this)
                 .setTimeout(1, TimeUnit.MINUTES)
                 .setLoadingMessage("正在登录")
@@ -172,22 +172,27 @@ public class MainActivity extends BaseActivity {
                                      }
                                  }
                 );
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Http.with(mContext)
-                        .setLoadingMessage("正在登录")
-                        .setObservable(Http.getApiService(ApiService.class).login("Advert", "Advertr_an_HomeList"))
-                        .setDataListener(new HttpCallBack() {
-                                             @Override
-                                             public void netOnSuccess(Map<String, Object> data) {
-
-                                             }
-                                         }
-                        );
-            }
-        }, 2 * 60 * 1000);
-
+//                .setDataListener(new OriginalHttpResponse() {
+//                    @Override
+//                    public void netOnStart() {
+//
+//                    }
+//
+//                    @Override
+//                    public void netOnSuccess(int httpCode, String json) {
+//
+//                    }
+//
+//                    @Override
+//                    public void netOnFinish() {
+//
+//                    }
+//
+//                    @Override
+//                    public void netOnFailure(Throwable ex) {
+//                        ex.printStackTrace();
+//                    }
+//                });
 
 //       Http.with(this)
 //               .setObservable( Http.getApiService(ApiService4.class)
