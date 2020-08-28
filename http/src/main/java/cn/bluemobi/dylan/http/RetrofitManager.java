@@ -30,7 +30,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import cn.bluemobi.dylan.http.ssl.Tls12SocketFactory;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -154,34 +153,29 @@ public class RetrofitManager {
                 Request.Builder requestBuilder = original.newBuilder();
                 Request request = requestBuilder.build();
                 Response response = chain.proceed(request);
-                if ("POST".equals(original.method())) {
-                    mMessage.append("请求参数：");
-                    addRequestParement(original);
 
+                addRequestParement("请求参数：",original);
+
+                if (original.body() != null) {
                     mMessage.append("\n");
                     mMessage.append("请求大小：");
-                    if (original.body() != null) {
-                        mMessage.append(convertFileSize(original.body().contentLength()));
-                    }
-                    Logger.d(mMessage.toString());
-
-
-                    mMessage.setLength(0);
-                    mMessage.append("响应地址：");
-                    mMessage.append(response.request().url());
-                    mMessage.append("\n");
-
-                    mMessage.append("响应参数：");
-                    addRequestParement(response.request());
-                    mMessage.append("\n");
+                    mMessage.append(convertFileSize(original.body().contentLength()));
                 }
+                Logger.d(mMessage.toString());
 
+                mMessage.setLength(0);
+                mMessage.append("响应地址：");
+                mMessage.append(response.request().url());
+
+                addRequestParement("\n响应参数：",response.request());
+
+                mMessage.append("\n");
                 mMessage.append("响应耗时：");
                 mMessage.append(formatDuring(response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 mMessage.append("\n");
-                mMessage.append("HTTP状态："+response.code());
+                mMessage.append("HTTP状态：" + response.code());
                 mMessage.append("\n");
-                mMessage.append("HTTP消息："+response.message());
+                mMessage.append("HTTP消息：" + response.message());
                 mMessage.append("\n");
 
                 String content = response.body().string();
@@ -189,8 +183,8 @@ public class RetrofitManager {
                 Response responseNew = response.newBuilder()
                         .body(ResponseBody.create(mediaType, content))
                         .build();
-                mMessage.append("响应大小：");
                 if (original.body() != null) {
+                    mMessage.append("响应大小：");
                     mMessage.append(convertFileSize(responseNew.body().contentLength()));
                 }
                 mMessage.append("\n");
@@ -205,9 +199,10 @@ public class RetrofitManager {
                 return responseNew;
             }
 
-            private void addRequestParement(Request original) {
+            private boolean addRequestParement(String head,Request original) {
                 //请求体定制：统一添加sign参数
                 if (original.body() instanceof FormBody) {
+                    mMessage.append(head);
 //                    FormBody.Builder newFormBody = new FormBody.Builder();
                     FormBody oidFormBody = (FormBody) original.body();
                     for (int i = 0; i < oidFormBody.size(); i++) {
@@ -222,7 +217,9 @@ public class RetrofitManager {
                         mMessage.append("=");
                         mMessage.append(value);
                     }
+                    return true;
                 } else if (original.body() instanceof MultipartBody) {
+                    mMessage.append(head);
                     MultipartBody multipartBody = (MultipartBody) original.body();
                     for (MultipartBody.Part part : multipartBody.parts()) {
                         String name = getPartHeaders(part);
@@ -241,7 +238,9 @@ public class RetrofitManager {
                         mMessage.append("=");
                         mMessage.append(value);
                     }
+                    return true;
                 }
+                return false;
             }
         };
         okhttpBuilder = new OkHttpClient.Builder();
@@ -284,7 +283,7 @@ public class RetrofitManager {
             sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
             SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
             if (overlockCard) {
-                okhttpBuilder.sslSocketFactory(sslSocketFactory,trustManager)
+                okhttpBuilder.sslSocketFactory(sslSocketFactory, trustManager)
                         .hostnameVerifier(new HostnameVerifier() {
                             @Override
                             public boolean verify(String hostname, SSLSession session) {
@@ -293,7 +292,7 @@ public class RetrofitManager {
                         });
             } else {
                 if (factory != null) {
-                    okhttpBuilder.sslSocketFactory(factory,trustManager);
+                    okhttpBuilder.sslSocketFactory(factory, trustManager);
                 }
             }
 
