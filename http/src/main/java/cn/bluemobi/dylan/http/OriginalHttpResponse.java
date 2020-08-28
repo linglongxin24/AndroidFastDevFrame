@@ -14,7 +14,7 @@ public interface OriginalHttpResponse {
     /**
      * 访问网络成功
      */
-    void netOnSuccess(String json);
+    void netOnSuccess(int httpCode,String json);
 
     /**
      * 访问网络结束

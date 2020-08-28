@@ -259,7 +259,7 @@ public class HttpRequest {
                                 jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
                                 String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                                 int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
-                                Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
+                                Map<String, Object> data = JsonParse.getMap(jsonBean,JsonParse.getJsonParse().getData());
                                 if (responseInterceptor != null) {
                                     boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
                                     if (isInterceptor) {
@@ -413,7 +413,7 @@ public class HttpRequest {
                         }
                         try {
                             if (httpResponse != null) {
-                                httpResponse.netOnSuccess(responseString);
+                                httpResponse.netOnSuccess(responseBodyResponse.code(),responseString);
                             }
                         } catch (Exception e) {
                             if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
