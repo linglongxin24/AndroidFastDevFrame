@@ -3,11 +3,10 @@ package cn.bluemobi.dylan.http;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.collection.ArrayMap;
-
-import com.alibaba.fastjson.JSONException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -172,7 +171,7 @@ public class HttpRequest {
         if (!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             if (httpResponse != null) {
-                httpResponse.netOnFailure(-1, "", new Exception(network_unusual));
+                httpResponse.netOnFailure(-1, "网络不可用", new Exception(network_unusual));
                 httpResponse.netOnFinish();
             }
             return null;
@@ -223,7 +222,7 @@ public class HttpRequest {
                             }
                         }
                         if (httpResponse != null) {
-                            httpResponse.netOnFailure(-1, "", e);
+                            httpResponse.netOnFailure(-1, e.getMessage(), e);
                         }
                         onCompleted();
 
@@ -234,77 +233,95 @@ public class HttpRequest {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
-                        /**************************开始拦截****************************/
+                        /**************************获取http请求状态****************************/
                         boolean isSuccessful = responseBodyResponse.isSuccessful();
                         try {
+                            /**************************获取http请求body****************************/
+                            String responseString = "";
                             if (isSuccessful) {
-                                delResult(responseBodyResponse,responseBodyResponse.body().string());
+                                responseString = responseBodyResponse.body().string();
                             } else {
-                                try {
-                                    delResult(responseBodyResponse,responseBodyResponse.errorBody().string());
-                                } catch (JSONException e) {
-                                    showErrorMessage(responseBodyResponse, e);
-                                }
+                                responseString = responseBodyResponse.errorBody().string();
                             }
-                        } catch (Exception e) {
-                            showErrorMessage(responseBodyResponse, e);
+                            delResult(responseBodyResponse, responseString);
+                        } catch (IOException e) {
+                            jsonParseError(responseBodyResponse, e);
                         }
                     }
 
                     /**
                      * 处理结果
                      * @param responseBodyResponse 响应数据对象
+                     * @param responseString http响应的body
                      */
-                    private void delResult(Response<ResponseBody> responseBodyResponse,String responseString) {
+                    private void delResult(Response<ResponseBody> responseBodyResponse, String responseString) {
                         try {
+                            /****开始按照
+                             *           {"code":1,
+                             *            "msg":"请求成功",
+                             *            "data":{}
+                             *           }
+                             *这种模式开始解析服务器返回的json数据**/
                             ArrayMap<String, Object> jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
-                            String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
+                            String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                             Map<String, Object> data = JsonParse.getMap(jsonBean, JsonParse.getJsonParse().getData());
+                            /**************************开始拦截****************************/
                             if (responseInterceptor != null) {
-                                boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
+                                //设置拦截器如果有拦截器拦截
+                                boolean isInterceptor = responseInterceptor.onResponse(context, responseBodyResponse.code(), code, msg, data, responseBodyResponse.raw().request().url().toString());
                                 if (isInterceptor) {
+                                    //拦截器返回true不往下执行
                                     return;
                                 }
                             }
                             if (code == JsonParse.getJsonParse().getSuccessCode()) {
+                                /**************************开始处理状态码为成功的情况****************************/
                                 if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
-                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                    //设置如果提示成功消息则提示
+                                    if (!TextUtils.isEmpty(msg) && !"null".equalsIgnoreCase(msg)) {
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 if (httpResponse != null) {
+                                    //服务器成功回调
                                     httpResponse.netOnSuccess(data);
                                     httpResponse.netOnSuccess(data, msg);
                                 }
                             } else {
+                                /**************************开始处理状态码为失败的情况****************************/
                                 if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
-                                    if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                    if (!TextUtils.isEmpty(msg) && !"null".equalsIgnoreCase(msg)) {
+                                        //设置如果提示其他情况消息则提示
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 if (httpResponse != null) {
+                                    //服务器其他状态回调
                                     httpResponse.netOnOtherStatus(code, msg);
                                     httpResponse.netOnOtherStatus(code, msg, data);
                                 }
                             }
                         } catch (Exception e) {
-                            showErrorMessage(responseBodyResponse, e);
+                            jsonParseError(responseBodyResponse, e);
                         }
                     }
 
                     /**
-                     * 显示错误消息
+                     * 处理http请求接口返回json解析错误的情况
                      * @param responseBodyResponse 响应数据对象
                      * @param e 异常信息
                      */
-                    private void showErrorMessage(Response<ResponseBody> responseBodyResponse, Exception e) {
+                    private void jsonParseError(Response<ResponseBody> responseBodyResponse, Exception e) {
+                        //http请求失败响应
                         if (httpResponse != null) {
                             httpResponse.netOnFailure(responseBodyResponse.code(), responseBodyResponse.message(), e);
                         }
                         if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
+                            //设置如果提示错误消息则提示错误
                             Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
                         }
+                        //debug模式下打印错误信息
                         if (Http.getHttp().isDebugMode()) {
                             e.printStackTrace();
                         }
@@ -313,9 +330,12 @@ public class HttpRequest {
 
         if (subscribe != null) {
             if (loadingDialog != null) {
+                //设置对话框返回键监听取消网络请求
                 loadingDialog.setOnKeyListener(new DialogOnKeyListener(loadingDialog, canCancel));
+                //设置对话框小时监听取消网络请求
                 loadingDialog.setOnDismissListener(new DialogOnDismissListener(subscribe));
             } else {
+                //监听当前请求的页面生命周期,销毁后取消网络请求
                 addLifeCycle(context, subscribe);
             }
         }

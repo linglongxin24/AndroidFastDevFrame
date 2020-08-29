@@ -53,7 +53,10 @@ public class LoadingDialog implements LifecycleListener {
         try {
             tv_text = (TextView) dialog.findViewById(R.id.tv_text);
             if (tv_text != null && !TextUtils.isEmpty(loadingMessage)) {
+                tv_text.setVisibility(View.VISIBLE);
                 tv_text.setText(loadingMessage);
+            }else{
+                tv_text.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();

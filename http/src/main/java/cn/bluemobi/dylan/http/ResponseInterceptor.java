@@ -26,12 +26,13 @@ public interface ResponseInterceptor {
     /**
      * 响应拦截器
      *
-     * @param context 当前请求的上下文
-     * @param status  状态码
-     * @param msg     消息
-     * @param data    数据
-     * @param url     请求地址
+     * @param context  当前请求的上下文
+     * @param httpCode http请求状态码
+     * @param status   状态码
+     * @param msg      消息
+     * @param data     数据
+     * @param url      请求地址
      * @return 如果返回true则停止往下执行，否则继续向下执行
      */
-    boolean onResponse(Context context, int status, String msg, Map<String, Object> data, String url);
+    boolean onResponse(Context context, int httpCode, int status, String msg, Map<String, Object> data, String url);
 }
