@@ -10,6 +10,12 @@ import java.util.Map;
  * @author lenovo
  */
 public interface ResponseInterceptor {
+    /**
+     * 请求异常
+     *
+     * @param e 异常信息
+     */
+    public void onError(Throwable e);
 
     /**
      * 响应拦截器

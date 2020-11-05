@@ -92,6 +92,7 @@ public class HttpRequest {
         RetrofitManager.getRetrofitManager().setTimeout(timeout, unit);
         return this;
     }
+
     /**
      * 【第三步】设置访问的几口接口
      *
@@ -157,7 +158,7 @@ public class HttpRequest {
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                if(activity.isDestroyed()){
+                if (activity.isDestroyed()) {
                     return null;
                 }
             }
@@ -211,6 +212,9 @@ public class HttpRequest {
                         if (Http.getHttp().isDebugMode()) {
                             e.printStackTrace();
                         }
+                        if (responseInterceptor != null) {
+                            responseInterceptor.onError(e);
+                        }
                         if (isShowFailMessage) {
                             if (e instanceof SocketTimeoutException) {
                                 Toast.makeText(context, "网络连接超时,请重新再试", Toast.LENGTH_SHORT).show();
@@ -235,16 +239,15 @@ public class HttpRequest {
                         try {
                             if (!isSuccessful) {
                                 responseString = responseBodyResponse.errorBody().string();
-                                if (responseInterceptor != null) {
-                                    Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                    boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
-                                    if (isInterceptor) {
-                                        return;
-                                    }
-                                }
                             } else {
-
                                 responseString = responseBodyResponse.body().string();
+                            }
+                            if (responseInterceptor != null) {
+                                Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                                boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                if (isInterceptor) {
+                                    return;
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -397,16 +400,16 @@ public class HttpRequest {
                         try {
                             if (!isSuccessful) {
                                 responseString = responseBodyResponse.errorBody().string();
-                                if (responseInterceptor != null) {
-                                    Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                    boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
-                                    if (isInterceptor) {
-                                        return;
-                                    }
-                                }
                             } else {
 
                                 responseString = responseBodyResponse.body().string();
+                            }
+                            if (responseInterceptor != null) {
+                                Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                                boolean isInterceptor = responseInterceptor.onResponseStart(context.get(), responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                                if (isInterceptor) {
+                                    return;
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
