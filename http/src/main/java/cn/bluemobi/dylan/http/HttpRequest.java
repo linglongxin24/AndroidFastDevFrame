@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONException;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
@@ -219,7 +221,7 @@ public class HttpRequest {
                             if (e instanceof SocketTimeoutException) {
                                 Toast.makeText(context, "网络连接超时,请重新再试", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "网络连接错误,错误码：-2", Toast.LENGTH_SHORT).show();
                             }
                         }
                         if (httpResponse != null) {
@@ -236,29 +238,30 @@ public class HttpRequest {
                         }
                         String responseString = "";
                         boolean isSuccessful = responseBodyResponse.isSuccessful();
-                        try {
-                            if (!isSuccessful) {
-                                responseString = responseBodyResponse.errorBody().string();
-                            } else {
-                                responseString = responseBodyResponse.body().string();
-                            }
-                            if (responseInterceptor != null) {
-                                Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                                boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
-                                if (isInterceptor) {
-                                    return;
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-//
-//                        if (result instanceof ProgressResponseBody) {
-//
-//                        }
                         ArrayMap<String, Object> jsonBean;
-                        try {
-                            if (isSuccessful) {
+                        if (!isSuccessful) {
+                            try {
+                                responseString = responseBodyResponse.errorBody().string();
+                            } catch (IOException e) {
+                                showErrorMessage("读取数据错误，错误码：0", e);
+                            }
+                        } else {
+                            try {
+                                responseString = responseBodyResponse.body().string();
+                            } catch (IOException e) {
+                                showErrorMessage("读取数据错误，错误码：0", e);
+                            }
+                        }
+                        if (responseInterceptor != null) {
+                            Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
+                            boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                            if (isInterceptor) {
+                                return;
+                            }
+                        }
+                        if (isSuccessful) {
+                            //200
+                            try {
                                 jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
                                 String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
                                 int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
@@ -269,7 +272,6 @@ public class HttpRequest {
                                         return;
                                     }
                                 }
-
                                 if (code == JsonParse.getJsonParse().getSuccessCode()) {
                                     if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
                                         if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
@@ -291,24 +293,40 @@ public class HttpRequest {
                                         httpResponse.netOnOtherStatus(code, msg, data);
                                     }
                                 }
-                            } else {
-                                if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                    Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
-                                }
-                                if (httpResponse != null) {
-                                    httpResponse.netOnSuccessServerError(responseBodyResponse.code(), responseBodyResponse.message());
-                                }
+                            } catch (JSONException e) {
+                                showErrorMessage("数据解析错误，错误码：1", e);
+                            } catch (NumberFormatException e) {
+                                showErrorMessage("数据格式错误，错误码：2", e);
+                            } catch (Exception e) {
+                                showErrorMessage("其他错误，错误码：-1", e);
                             }
-                        } catch (Exception e) {
+                        } else {
                             if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
-                                Toast.makeText(context, network_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "连接服务器错误,错误码：" + responseBodyResponse.code(), Toast.LENGTH_SHORT).show();
                             }
                             if (httpResponse != null) {
-                                httpResponse.netOnFailure(e);
+                                httpResponse.netOnSuccessServerError(responseBodyResponse.code(), responseBodyResponse.message());
                             }
-                            if (Http.getHttp().isDebugMode()) {
-                                e.printStackTrace();
-                            }
+                        }
+                    }
+
+                    /**
+                     * 显示错误信息
+                     * @param errorMessage 错误信息
+                     * @param e 异常
+                     */
+                    private void showErrorMessage(String errorMessage, Exception e) {
+                        if (responseInterceptor != null) {
+                            responseInterceptor.onError(e);
+                        }
+                        if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                        if (httpResponse != null) {
+                            httpResponse.netOnFailure(e);
+                        }
+                        if (Http.getHttp().isDebugMode()) {
+                            e.printStackTrace();
                         }
                     }
                 });
