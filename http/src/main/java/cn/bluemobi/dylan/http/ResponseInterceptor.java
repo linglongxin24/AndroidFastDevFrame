@@ -15,7 +15,7 @@ public interface ResponseInterceptor {
      *
      * @param e 异常信息
      */
-    public void onError(Throwable e);
+    public void onError(Context context,Throwable e);
 
     /**
      * 响应拦截器

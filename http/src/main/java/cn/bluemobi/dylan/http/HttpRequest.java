@@ -215,7 +215,7 @@ public class HttpRequest {
                             e.printStackTrace();
                         }
                         if (responseInterceptor != null) {
-                            responseInterceptor.onError(e);
+                            responseInterceptor.onError(context,e);
                         }
                         if (isShowFailMessage) {
                             if (e instanceof SocketTimeoutException) {
@@ -254,7 +254,7 @@ public class HttpRequest {
                         }
                         if (responseInterceptor != null) {
                             Map<String, Object> requestParameter = getRequestParement(responseBodyResponse.raw().request());
-                            boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
+                            boolean isInterceptor = responseInterceptor.onResponseStart(context, responseBodyResponse.raw().request().url().toString(), requestParameter, responseString, responseBodyResponse.raw().code());
                             if (isInterceptor) {
                                 return;
                             }
@@ -317,7 +317,7 @@ public class HttpRequest {
                      */
                     private void showErrorMessage(String errorMessage, Exception e) {
                         if (responseInterceptor != null) {
-                            responseInterceptor.onError(e);
+                            responseInterceptor.onError(context,e);
                         }
                         if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
