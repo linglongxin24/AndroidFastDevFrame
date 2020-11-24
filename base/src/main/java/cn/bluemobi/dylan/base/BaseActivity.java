@@ -4,6 +4,7 @@ package cn.bluemobi.dylan.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -92,6 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         viewContent = (FrameLayout) findViewById(R.id.viewContent);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //初始化设置 Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -382,8 +384,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
         new ActPermissionRequest(this).requestPermission(permissions, callback);
     }
+
     public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
-        new ActResultRequest(this).startForResult(intent,callback);
+        new ActResultRequest(this).startForResult(intent, callback);
     }
 
     /**
