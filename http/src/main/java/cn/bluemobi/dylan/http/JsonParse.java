@@ -144,8 +144,8 @@ public class JsonParse {
         for (String s : keys2) {
             //data之外的数据
             if (!s.equals(dataStrKey)) {
-                if(rrData.containsKey(s)){
-                    s+="2";
+                if (rrData.containsKey(s)) {
+                    s += "2";
                 }
                 rrData.put(s, arrayMap.get(s));
             }
@@ -216,14 +216,14 @@ public class JsonParse {
             return defaultValue;
         } else if (map.containsKey(key)) {
             Object data = map.get(key);
-            if (data instanceof String) {
-                if (isNull2((String) map.get(key))) {
-                    return defaultValue;
-                } else {
-                    return map.get(key).toString();
-                }
+            if (data == null) {
+                return "";
+            }
+            String value = String.valueOf(data);
+            if (isNull(value)) {
+                return defaultValue;
             } else {
-                return String.valueOf(map.get(key));
+                return map.get(key).toString();
             }
 
         } else {

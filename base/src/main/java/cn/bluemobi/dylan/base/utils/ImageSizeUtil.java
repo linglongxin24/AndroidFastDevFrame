@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import java.lang.reflect.Field;
 
 /**
- * http://blog.csdn.net/lmj623565791/article/details/41874561
- * @author zhy
  *
  */
 public class ImageSizeUtil

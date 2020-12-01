@@ -3,6 +3,7 @@ package com.dylanfastdev;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
@@ -20,9 +21,12 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 import cn.bluemobi.dylan.base.utils.Tools;
+import cn.bluemobi.dylan.http.JsonParse;
 
 public class WebViewActivity extends BaseActivity {
     private InsideWebChromeClient mInsideWebChromeClient;
@@ -80,8 +84,75 @@ public class WebViewActivity extends BaseActivity {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            setting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 //        }
-
+        String json="{\n" +
+                "    \"data\": {\n" +
+                "        \"list\": [\n" +
+                "            {\n" +
+                "                \"associated\": null,\n" +
+                "                \"connection\": null,\n" +
+                "                \"creatime\": \"2020-11-25 11:11:47\",\n" +
+                "                \"equ_adderss\": \"陕西省西安市未央区未央路2号\",\n" +
+                "                \"equ_code\": \"6666666\",\n" +
+                "                \"equ_id\": 15,\n" +
+                "                \"equ_image\": \"00ea32d0-2ed0-11eb-bc63-244bfe7a1b42.jpg\",\n" +
+                "                \"equ_name\": \"西门口\",\n" +
+                "                \"equ_start\": false,\n" +
+                "                \"equ_type\": 4,\n" +
+                "                \"equ_type_name\": \"电气火灾\",\n" +
+                "                \"equ_unit\": 31,\n" +
+                "                \"evacuation\": \"zjjsjsks\",\n" +
+                "                \"isdisable\": false,\n" +
+                "                \"latitude\": \"34.29476\",\n" +
+                "                \"longitude\": \"108.94666\",\n" +
+                "                \"manufacturer\": null,\n" +
+                "                \"manufacturer_name\": null,\n" +
+                "                \"offline\": \"999\",\n" +
+                "                \"reportime\": null,\n" +
+                "                \"serialport\": \"djnzkss\",\n" +
+                "                \"transmission\": 21,\n" +
+                "                \"transmission_name\": \"网关\",\n" +
+                "                \"unit_name\": \"大智慧123456\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"associated\": null,\n" +
+                "                \"connection\": null,\n" +
+                "                \"creatime\": \"2020-11-24 10:11:20\",\n" +
+                "                \"equ_adderss\": \"陕西省西安市未央区未央路2号\",\n" +
+                "                \"equ_code\": \"q\",\n" +
+                "                \"equ_id\": 14,\n" +
+                "                \"equ_image\": \"\",\n" +
+                "                \"equ_name\": \"A\",\n" +
+                "                \"equ_start\": true,\n" +
+                "                \"equ_type\": 17,\n" +
+                "                \"equ_type_name\": \"视频监控\",\n" +
+                "                \"equ_unit\": 30,\n" +
+                "                \"evacuation\": \"008\",\n" +
+                "                \"isdisable\": false,\n" +
+                "                \"latitude\": \"34.29476\",\n" +
+                "                \"longitude\": \"108.94666\",\n" +
+                "                \"manufacturer\": null,\n" +
+                "                \"manufacturer_name\": null,\n" +
+                "                \"offline\": \"90\",\n" +
+                "                \"reportime\": null,\n" +
+                "                \"serialport\": \"009\",\n" +
+                "                \"transmission\": 23,\n" +
+                "                \"transmission_name\": \"oceanConnect\",\n" +
+                "                \"unit_name\": \"大智慧1233\"\n" +
+                "            },\n" +
+                "    \n" +
+                "        ],\n" +
+                "        \"recordcount\": 10\n" +
+                "    },\n" +
+                "    \"msg\": \"查询成功\",\n" +
+                "    \"status\": \"1\"";
+        ArrayMap<String, Object> stringObjectArrayMap = JsonParse.jsonToMap(json.trim());
+        Logger.d(stringObjectArrayMap.toString());
+        Map<String, Object> data = JsonParse.getMap(stringObjectArrayMap, "data");
+        List<Map<String, Object>> list = JsonParse.getList(data, "list");
+        Logger.d(JsonParse.getString(list.get(0),"evacuation"));
+        Logger.d(JsonParse.getString(list.get(0),"connection"));
     }
+
 
     @Override
     public void addListener() {

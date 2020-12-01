@@ -21,9 +21,7 @@ import java.util.concurrent.Semaphore;
 
 /**
  * 图片加载类
- * http://blog.csdn.net/lmj623565791/article/details/41874561
- * @author zhy
- * 
+ *
  */
 public class ImageLoader
 {

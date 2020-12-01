@@ -14,9 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * http://blog.csdn.net/lmj623565791/article/details/41874561
- *
- * @author zhy
  */
 public class DownloadImgUtils {
 
