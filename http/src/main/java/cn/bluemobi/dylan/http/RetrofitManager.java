@@ -17,6 +17,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +36,7 @@ import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -255,6 +257,8 @@ public class RetrofitManager {
             /**添加打印日志拦截器**/
             okhttpBuilder.addInterceptor(httpInterceptor);
         }
+        /**设置http协议**/
+        okhttpBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
         /**设置证书**/
         if (overlockCard) {
             okhttpBuilder.sslSocketFactory(new Tls12SocketFactory(overlockCard().getSocketFactory()))
