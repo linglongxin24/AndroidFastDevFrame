@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -66,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 上下文
      */
     protected Context mContext;
-    protected Activity mActivity;
+    protected FragmentActivity mActivity;
 
     /**
      * 获取中间布局

@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.dylanfastdev"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0" // 控制日志Log 输出打印
         buildConfigField("boolean", "enableLog", "true")
@@ -30,6 +31,10 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    packagingOptions {
+        exclude 'META-INF/requestPermission_debug.kotlin_module'
+        exclude 'META-INF/startActivityForRestult_debug.kotlin_module'
+    }
 }
 //    productFlavors {
 //        arm {
@@ -44,8 +49,12 @@ repositories {
             {
                 dirs 'libs'
             }
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
 }
 dependencies {
+    implementation project(path: ':startActivityForRestult')
+    implementation project(path: ':requestPermission')
     compile fileTree(include: ['*.jar'], dir: 'libs')
 //    compile project(':fastdev')
 //    compile project(':httputils')
@@ -55,4 +64,5 @@ dependencies {
     compile project(':http')
     compile project(':base')
     compile project(':pay')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

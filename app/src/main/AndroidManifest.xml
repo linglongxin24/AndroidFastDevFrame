@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".Myapplication"
@@ -23,7 +24,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".WebViewActivity" android:hardwareAccelerated="true">
+        <activity android:name=".StartActivityForResultActivity" android:hardwareAccelerated="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -34,6 +35,7 @@
         </activity>
         <activity android:name=".TextActivity" />
         <activity android:name=".BActivity" />
+        <activity android:name=".ReturnResultActivity" />
     </application>
 
 

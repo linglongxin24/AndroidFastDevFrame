@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+def mavenVersionCode = 1
+def mavenVersionName = "0.0.1"
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 30
+        versionCode mavenVersionCode
+        versionName mavenVersionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'requestPermission'
+
+    publishedGroupId = 'cn.bjtsn.dylan'
+    libraryName = 'requestPermission'
+    artifact = 'requestPermission'
+
+    libraryDescription = 'This is a lightweight Android fast develop framework about Android dynamic permission request Library'
+
+    siteUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame/requestPermission'
+    gitUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame'
+
+    libraryVersion = mavenVersionName
+
+    developerId = 'linglongxin24'
+    developerName = 'DylanAndroid'
+    developerEmail = 'linglongxin24@163.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+// Place it at the end of the file
+
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: '../install.gradle'
+apply from: '../bintray.gradle'

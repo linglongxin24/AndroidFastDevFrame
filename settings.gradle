@@ -1,1 +1,3 @@
+include ':requestPermission'
+include ':startActivityForRestult'
 include ':app', ':fastdev', ':httputils', ':uncaughtexception', ':photoview', ':smartwebview', ':base', ':http', ':pay'
