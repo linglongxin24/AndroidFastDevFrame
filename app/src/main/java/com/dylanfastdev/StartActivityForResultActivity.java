@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
 import com.bjtsn.dylan.startactivityforresult.StartActivityForResult;
 import com.orhanobut.logger.Logger;
 
@@ -58,7 +60,7 @@ public class StartActivityForResultActivity extends BaseActivity {
                                 if (data != null) {
                                     Bundle extras = data.getExtras();
                                     for (String s : extras.keySet()) {
-                                        Logger.d(s+"=" + extras.get(s));
+                                        Logger.d(s + "=" + extras.get(s));
                                     }
                                 }
                                 Toast.makeText(mContext, "resultCode=" + resultCode, Toast.LENGTH_SHORT).show();
@@ -70,7 +72,37 @@ public class StartActivityForResultActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        new LifecycleObserver(this).observer(new LifecycleCallback() {
+            @Override
+            public void onCreate() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onCreate");
+            }
 
+            @Override
+            public void onStart() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onStart");
+            }
+
+            @Override
+            public void onResume() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onResume");
+            }
+
+            @Override
+            public void onPause() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onPause");
+            }
+
+            @Override
+            public void onStop() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onStop");
+            }
+
+            @Override
+            public void onDestroy() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onDestroy");
+            }
+        });
     }
 
     @Override

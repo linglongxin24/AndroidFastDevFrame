@@ -1,15 +1,13 @@
 package com.dylanfastdev;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.dylanfastdev.R;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
 import com.orhanobut.logger.Logger;
 
 import cn.bluemobi.dylan.base.BaseActivity;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 
 public class AActivity extends BaseActivity {
     @Override
@@ -29,7 +27,7 @@ public class AActivity extends BaseActivity {
     @Override
     public void initData() {
         new TTSManager(this);
-        LifecycleDetector.getInstance().observer(this, new LifecycleListener() {
+        new LifecycleObserver(mActivity).observer(new LifecycleCallback() {
             @Override
             public void onStart() {
                 Logger.d("AActivity=============onStart");

@@ -1,10 +1,18 @@
 package com.dylanfastdev;
 
 import android.Manifest;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
+import com.orhanobut.logger.Logger;
+
+import java.util.Objects;
+
 import cn.bluemobi.dylan.base.BaseFragment;
+import cn.bluemobi.dylan.http.dialog.LoadingDialog;
 
 /**
  * @author dylan
@@ -25,6 +33,44 @@ public class TestFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        new LoadingDialog(mContext).show("测试生命周期");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Objects.requireNonNull(getActivity()).finish();
+            }
+        },2000);
+        new LifecycleObserver(this).observer(new LifecycleCallback() {
+            @Override
+            public void onCreate() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onCreate");
+            }
+
+            @Override
+            public void onStart() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onStart");
+            }
+
+            @Override
+            public void onResume() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onResume");
+            }
+
+            @Override
+            public void onPause() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onPause");
+            }
+
+            @Override
+            public void onStop() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onStop");
+            }
+
+            @Override
+            public void onDestroy() {
+                Logger.d(TestFragment.this.getClass().getSimpleName() + "onDestroy");
+            }
+        });
 //        Http.with(mContext)
 //                .setObservable(
 //                        Http.getApiService(ApiService.class)

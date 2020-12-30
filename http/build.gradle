@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 
-def mavenVersionCode = 236
-def mavenVersionName = "2.3.6"
+def mavenVersionCode = 237
+def mavenVersionName = "2.3.7"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
 
     defaultConfig {
         minSdkVersion 14
@@ -21,14 +21,15 @@ android {
 }
 
 dependencies {
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.orhanobut:logger:1.8'
-    compile 'com.alibaba:fastjson:1.2.33'
-    compile 'com.android.support:support-v4:25.0.0'
+    api 'com.squareup.retrofit2:retrofit:2.1.0'
+    api 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    api 'com.squareup.okhttp3:okhttp:3.11.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    api 'io.reactivex:rxandroid:1.2.0'
+    api 'com.orhanobut:logger:1.8'
+    api 'com.alibaba:fastjson:1.2.33'
+    api 'cn.bjtsn.dylan:lifecycleObserver:0.0.1'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
 }
 
 //

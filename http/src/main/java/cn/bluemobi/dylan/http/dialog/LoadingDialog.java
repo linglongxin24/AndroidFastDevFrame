@@ -8,15 +8,18 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
+
 import cn.bluemobi.dylan.http.Http;
 import cn.bluemobi.dylan.http.R;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 
 
 /**
@@ -25,7 +28,7 @@ import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
  * Date: 2014-12-29
  * Time: 13:34
  */
-public class LoadingDialog implements LifecycleListener {
+public class LoadingDialog {
     protected Dialog dialog;
     protected Context context;
     private TextView tv_text;
@@ -162,31 +165,18 @@ public class LoadingDialog implements LifecycleListener {
     }
 
     private void addLifeCycle(Context mContext) {
-        if (mContext instanceof Activity) {
-            Activity activity = (Activity) mContext;
-            LifecycleDetector.getInstance().observer(activity, this);
+        if (mContext instanceof FragmentActivity) {
+            FragmentActivity activity = (FragmentActivity) mContext;
+            new LifecycleObserver(activity).observer(new LifecycleCallback() {
+                @Override
+                public void onDestroy() {
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    super.onDestroy();
+                }
+            });
         }
-
-    }
-
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onStop() {
-    }
-
-    @Override
-    public void onDestroy() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
-    @Override
-    public void onResume() {
 
     }
 }

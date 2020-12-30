@@ -3,6 +3,7 @@ package com.dylanfastdev;
 import android.app.Application;
 
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 
@@ -52,7 +53,12 @@ public class Myapplication extends Application {
         Http.getHttp().setShowMessageModel(MessageManager.MessageModel.All);
         Http.getHttp().setErrorMessage("网络开小差了");
 //        AppConfig.setAppLeftResId(R.drawable.pub_arrow_back_write);
-
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
     }
 }

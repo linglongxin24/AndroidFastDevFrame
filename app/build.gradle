@@ -54,16 +54,20 @@ repositories {
 dependencies {
 //    implementation project(path: ':startActivityForResult')
 //    implementation project(path: ':requestPermission')
+//    implementation project(path: ':lifecycleObserver')
     compile fileTree(include: ['*.jar'], dir: 'libs')
 //    compile project(':fastdev')
 //    compile project(':httputils')
     compile project(':uncaughtexception')
     compile project(':photoview')
     compile project(':smartwebview')
-    compile project(':http')
+    implementation project(':http')
     compile project(':base')
     compile project(':pay')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'cn.bjtsn.dylan:requestPermission:0.0.1'
     implementation 'cn.bjtsn.dylan:startActivityForResult:0.0.2'
+    implementation 'cn.bjtsn.dylan:lifecycleObserver:0.0.1'
+    //检测内存泄漏
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 }

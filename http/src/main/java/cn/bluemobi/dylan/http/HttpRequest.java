@@ -3,10 +3,13 @@ package cn.bluemobi.dylan.http;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.ArrayMap;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -21,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 import cn.bluemobi.dylan.http.dialog.DialogOnDismissListener;
 import cn.bluemobi.dylan.http.dialog.DialogOnKeyListener;
 import cn.bluemobi.dylan.http.dialog.LoadingDialog;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -215,7 +216,7 @@ public class HttpRequest {
                             e.printStackTrace();
                         }
                         if (responseInterceptor != null) {
-                            responseInterceptor.onError(context,e);
+                            responseInterceptor.onError(context, e);
                         }
                         if (isShowFailMessage) {
                             if (e instanceof SocketTimeoutException) {
@@ -317,7 +318,7 @@ public class HttpRequest {
                      */
                     private void showErrorMessage(String errorMessage, Exception e) {
                         if (responseInterceptor != null) {
-                            responseInterceptor.onError(context,e);
+                            responseInterceptor.onError(context, e);
                         }
                         if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowFailMessage) {
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
@@ -462,29 +463,15 @@ public class HttpRequest {
     }
 
     private void addLifeCycle(Context mContext, final Subscription subscribe) {
-        if (mContext instanceof Activity) {
-            Activity activity = (Activity) mContext;
-            LifecycleDetector.getInstance().observer(activity, new LifecycleListener() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onStop() {
-
-                }
-
+        if (mContext instanceof FragmentActivity) {
+            FragmentActivity activity = (FragmentActivity) mContext;
+            new LifecycleObserver(activity).observer(new LifecycleCallback() {
                 @Override
                 public void onDestroy() {
                     if (subscribe != null && !subscribe.isUnsubscribed()) {
                         subscribe.unsubscribe();
                     }
-                }
-
-                @Override
-                public void onResume() {
-
+                    super.onDestroy();
                 }
             });
         }

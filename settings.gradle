@@ -1,3 +1,4 @@
+include ':lifecycleObserver'
 include ':requestPermission'
 include ':startActivityForResult'
 include ':app', ':fastdev', ':httputils', ':uncaughtexception', ':photoview', ':smartwebview', ':base', ':http', ':pay'

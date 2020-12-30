@@ -1,9 +1,12 @@
 package com.dylanfastdev;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
+import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
+import com.orhanobut.logger.Logger;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 
@@ -37,7 +40,38 @@ public class ReturnResultActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        new LifecycleObserver(this).observer(new LifecycleCallback() {
+            @Override
+            public void onCreate() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onCreate");
+            }
 
+            @Override
+            public void onStart() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onStart");
+            }
+
+            @Override
+            public void onResume() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onResume");
+            }
+
+            @Override
+            public void onPause() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onPause");
+            }
+
+            @Override
+            public void onStop() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onStop");
+            }
+
+            @Override
+            public void onDestroy() {
+                Logger.d(mActivity.getClass().getSimpleName()+"onDestroy");
+            }
+        });
+        getSupportFragmentManager().beginTransaction().add(R.id.ll_root,new TestFragment()).commitAllowingStateLoss();
     }
 
     @Override
