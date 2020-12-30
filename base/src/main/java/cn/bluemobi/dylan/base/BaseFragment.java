@@ -2,9 +2,7 @@ package cn.bluemobi.dylan.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -18,8 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bluemobi.dylan.base.utils.AppManager;
-import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
-import cn.bluemobi.dylan.base.utils.activityresult.ActResultRequest;
 
 /**
  * cn.bluemobi.dylan.fastdev.base.BaseFragment
@@ -108,14 +104,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         isLoad = false;
 
     }
-
-    public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
-        new ActResultRequest(this).startForResult(intent, callback);
-    }
-    public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
-        new ActPermissionRequest(this).requestPermission(permissions, callback);
-    }
-
     /**
      * 设置Fragment要显示的布局
      *

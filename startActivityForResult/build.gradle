@@ -3,8 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
-def mavenVersionCode = 1
-def mavenVersionName = "0.0.1"
+def mavenVersionCode = 2
+def mavenVersionName = "0.0.2"
 android {
     compileSdkVersion 27
 
@@ -37,13 +37,13 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'startActivityForRestult'
+    bintrayName = 'startActivityForResult'
 
     publishedGroupId = 'cn.bjtsn.dylan'
-    libraryName = 'startActivityForRestult'
-    artifact = 'startActivityForRestult'
+    libraryName = 'startActivityForResult'
+    artifact = 'startActivityForResult'
 
-    libraryDescription = 'This is a lightweight Android fast develop framework about Android startActivityForRestult easy callBack'
+    libraryDescription = 'This is a lightweight Android fast develop framework about Android startActivityForResult easy callBack'
 
     siteUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame/requestPermission'
     gitUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame'

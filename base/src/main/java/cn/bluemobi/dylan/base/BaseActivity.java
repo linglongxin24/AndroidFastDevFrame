@@ -1,13 +1,10 @@
 package cn.bluemobi.dylan.base;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bluemobi.dylan.base.utils.AppManager;
-import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
-import cn.bluemobi.dylan.base.utils.activityresult.ActResultRequest;
 
 
 /**
@@ -380,14 +375,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
-    }
-
-    public void onRequestPermissionsResult(@NonNull String[] permissions, ActPermissionRequest.PermissionCheckCallBack callback) {
-        new ActPermissionRequest(this).requestPermission(permissions, callback);
-    }
-
-    public void startActivityForResult(Intent intent, ActResultRequest.Callback callback) {
-        new ActResultRequest(this).startForResult(intent, callback);
     }
 
     /**

@@ -1,21 +1,10 @@
 package com.dylanfastdev;
 
 import android.Manifest;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.orhanobut.logger.Logger;
-
-import java.util.Map;
-
 import cn.bluemobi.dylan.base.BaseFragment;
-import cn.bluemobi.dylan.base.utils.activitypermission.ActPermissionRequest;
-import cn.bluemobi.dylan.base.utils.activityresult.ActResultRequest;
-import cn.bluemobi.dylan.http.Http;
-import cn.bluemobi.dylan.http.HttpCallBack;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleDetector;
-import cn.bluemobi.dylan.http.lifecycle.LifecycleListener;
 
 /**
  * @author dylan
@@ -67,22 +56,6 @@ public class TestFragment extends BaseFragment {
 //            Manifest.permission.ACCESS_COARSE_LOCATION,
 //            Manifest.permission.ACCESS_FINE_LOCATION,
         };
-        onRequestPermissionsResult(PERMISSIONS, new ActPermissionRequest.PermissionCheckCallBack() {
-            @Override
-            public void onSucceed() {
-                Logger.d("同意");
-            }
-
-            @Override
-            public void onReject(String... permission) {
-                Logger.d("拒绝");
-            }
-
-            @Override
-            public void onRejectAndNoAsk(String... permission) {
-                Logger.d("不再询问");
-            }
-        });
 //        LifecycleDetector.getInstance().observer(getActivity(), new LifecycleListener() {
 //
 //            @Override
@@ -105,12 +78,6 @@ public class TestFragment extends BaseFragment {
 //                Logger.d("LifecycleDetector---onResume");
 //            }
 //        });
-        startActivityForResult(new Intent(mContext, TextActivity.class), new ActResultRequest.Callback() {
-            @Override
-            public void onActivityResult(int resultCode, Intent data) {
-
-            }
-        });
     }
 
     @Override

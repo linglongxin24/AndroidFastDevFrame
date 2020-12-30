@@ -1,4 +1,4 @@
-package com.bjtsn.dylan.startactivityforrestult
+package com.bjtsn.dylan.startactivityforresult
 
 import android.content.Intent
 import android.os.Bundle
@@ -31,7 +31,7 @@ class EventDispatcherFragment : Fragment() {
         return number.toInt()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mCallbacks.get(requestCode)?.onActivityResult(resultCode, data)
         mCallbacks.remove(requestCode)

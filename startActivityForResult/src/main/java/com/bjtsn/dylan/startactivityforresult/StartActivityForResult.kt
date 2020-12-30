@@ -1,4 +1,4 @@
-package com.bjtsn.dylan.startactivityforrestult
+package com.bjtsn.dylan.startactivityforresult
 
 import android.content.Intent
 import android.support.v4.app.Fragment
@@ -48,7 +48,7 @@ class StartActivityForResult {
     }
 
     interface CallBack {
-        fun onActivityResult(resultCode: Int, data: Intent)
+        fun onActivityResult(resultCode: Int, data: Intent?)
     }
 
 }
