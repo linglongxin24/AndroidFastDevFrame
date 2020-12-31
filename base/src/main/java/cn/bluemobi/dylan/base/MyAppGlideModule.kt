@@ -9,9 +9,8 @@ import com.bumptech.glide.module.AppGlideModule;
  */
 
 @GlideModule
-public class MyAppGlideModule extends AppGlideModule {
-    @Override
-    public boolean isManifestParsingEnabled() {
-        return false;
+class MyAppGlideModule : AppGlideModule() {
+    override fun isManifestParsingEnabled(): Boolean {
+        return false
     }
 }

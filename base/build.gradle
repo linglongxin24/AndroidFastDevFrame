@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 def mavenVersionCode = 169
 def mavenVersionName = "1.6.9"
@@ -26,6 +27,7 @@ android {
 repositories {
     google()
     mavenCentral()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -37,6 +39,7 @@ dependencies {
         exclude group: "com.android.support"
     })
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 /** 以下开始是将Android Library上传到jcenter的相关配置**/

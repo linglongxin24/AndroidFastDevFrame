@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 def mavenVersionCode = 16
 def mavenVersionName = "1.6"
@@ -33,6 +34,7 @@ dependencies {
         exclude group: "com.android.support"
     })
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    compile 'com.github.chrisbanes:PhotoView'
 //    compile 'com.github.chrisbanes.photoview.1.2.2'
 
@@ -68,9 +70,10 @@ ext {
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 apply from: '../install.gradle'
 apply from: '../bintray.gradle'
-
-
-
+repositories {
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
+}
 
 
 //
