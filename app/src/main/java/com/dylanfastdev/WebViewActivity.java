@@ -59,7 +59,8 @@ public class WebViewActivity extends BaseActivity {
     public void initData() {
 //        if (null == getIntent().getExtras()) return;
 //        url = getIntent().getExtras().getString("url");
-        url = "https://player.bilibili.com/player.html?aid=582731140&bvid=BV1S64y1u7bL&cid=174633886&page=1";
+//        url = "https://player.bilibili.com/player.html?aid=582731140&bvid=BV1S64y1u7bL&cid=174633886&page=1";
+        url = "https://www.baidu.com/";
         mInsideWebChromeClient = new InsideWebChromeClient();
         InsideWebViewClient mInsideWebViewClient = new InsideWebViewClient();
         webview.setWebViewClient(mInsideWebViewClient);//IE内核
