@@ -158,7 +158,7 @@ public class SmartWebView extends RelativeLayout {
                 if (url.startsWith("http://") || url.startsWith("https://")) {
                     view.loadUrl(url);
                     return true;
-                }else if("bilibili".equalsIgnoreCase(Uri.parse(url).getScheme())){
+                } else if ("bilibili".equalsIgnoreCase(Uri.parse(url).getScheme())) {
                     return true;
                 }
                 return false;
@@ -185,8 +185,9 @@ public class SmartWebView extends RelativeLayout {
                     if (progressBar_circle != null) {
                         progressBar_circle.setVisibility(View.GONE);
                     }
-                    if (loadCallBack != null)
+                    if (loadCallBack != null) {
                         loadCallBack.onLoaded(view.getUrl());
+                    }
                 } else {
                     if (mProgressStyle == ProgressStyle.Horizontal.ordinal()) {
                         progressBar.setVisibility(View.VISIBLE);
