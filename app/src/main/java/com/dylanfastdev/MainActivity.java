@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity {
 //                });
 
         /**设置网络请求**/
-        Http.getHttp().init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
+        Http.INSTANCE.init(ApiService.class, ApiService.baseUrl, "status", "data", "msg", 0);
 
         Http.with(this)
                 .setTimeout(1, TimeUnit.MINUTES)
@@ -562,7 +562,7 @@ public class MainActivity extends BaseActivity {
 //                Logger.d("不再询问");
 //            }
 //        });
-        getSupportFragmentManager().beginTransaction().add(R.id.fm, new TestFragment()).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.fm, new TestFragment()).commit();
 
 
 //        testPay();

@@ -25,7 +25,7 @@
             android:value="1334"
             tools:replace="android:value" />
 
-        <activity android:name=".SmartWebViewActivity" android:hardwareAccelerated="true">
+        <activity android:name=".BActivity" android:hardwareAccelerated="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -35,7 +35,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".TextActivity" />
-        <activity android:name=".BActivity" />
         <activity android:name=".ReturnResultActivity" />
     </application>
 
