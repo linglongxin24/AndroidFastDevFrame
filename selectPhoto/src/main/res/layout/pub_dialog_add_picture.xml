@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5.0dip"
+    android:layout_marginRight="5.0dip"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="拍照"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:layout_width="1022px"
+            android:layout_height="1dp"
+            android:background="#666666" />
+
+        <TextView
+            android:id="@+id/tv_gallery"
+            android:text="从相册选择"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="10dp"
+        android:text="取消"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="#666666"
+        android:textSize="16dp" />
+
+</LinearLayout>

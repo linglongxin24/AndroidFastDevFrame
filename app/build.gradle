@@ -63,6 +63,7 @@ dependencies {
     compile project(':uncaughtexception')
     compile project(':photoview')
     compile project(':smartwebview')
+    compile project(':selectPhoto')
     implementation project(':http')
     compile project(':base')
     compile project(':pay')
