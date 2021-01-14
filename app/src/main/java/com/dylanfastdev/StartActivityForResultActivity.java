@@ -1,5 +1,6 @@
 package com.dylanfastdev;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,10 +8,13 @@ import android.widget.Toast;
 
 import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
 import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
+import com.bjtsn.dylan.requestpermission.RequestPermission;
 import com.bjtsn.dylan.startactivityforresult.StartActivityForResult;
 import com.orhanobut.logger.Logger;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
 
 import cn.bluemobi.dylan.base.BaseActivity;
 
@@ -35,24 +39,24 @@ public class StartActivityForResultActivity extends BaseActivity {
         findViewById(R.id.bt_start_activity_for_result).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                new RequestPermission(mActivity).requestPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        .setPermissionCheckCallBack(new RequestPermission.PermissionCheckCallBack() {
-//                            @Override
-//                            public void onSucceed() {
-//                                Toast.makeText(mContext, "已同意权限", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onReject(String[] strings) {
-//                                Toast.makeText(mContext, "拒绝权限" + Arrays.toString(strings), Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onRejectAndNoAsk(String[] strings) {
-//                                Toast.makeText(mContext, "拒绝不再询问权限" + Arrays.toString(strings), Toast.LENGTH_SHORT).show();
-//
-//                            }
-//                        });
+                new RequestPermission(mActivity).requestPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .setPermissionCheckCallBack(new RequestPermission.PermissionCheckCallBack() {
+                            @Override
+                            public void onSucceed() {
+                                Toast.makeText(mContext, "已同意权限", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onReject(String[] strings) {
+                                Toast.makeText(mContext, "拒绝权限" + Arrays.toString(strings), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onRejectAndNoAsk(String[] strings) {
+                                Toast.makeText(mContext, "拒绝不再询问权限" + Arrays.toString(strings), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                 new StartActivityForResult(mActivity).startActivityForResult(new Intent(mContext, ReturnResultActivity.class))
                         .setOnActivityResultCallBack(new StartActivityForResult.CallBack() {
                             @Override

@@ -1,53 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Android 5.0 进度条效果 -->
-    <declare-styleable name="ProgressWheel">
-        <attr name="matProg_progressIndeterminate" format="boolean" />
-        <attr name="matProg_barColor" format="color" />
-        <attr name="matProg_rimColor" format="color" />
-        <attr name="matProg_rimWidth" format="dimension" />
-        <attr name="matProg_spinSpeed" format="float" />
-        <attr name="matProg_barSpinCycleTime" format="integer" />
-        <attr name="matProg_circleRadius" format="dimension" />
-        <attr name="matProg_fillRadius" format="boolean" />
-        <attr name="matProg_barWidth" format="dimension" />
-        <attr name="matProg_linearProgress" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="WebViewWithProgress">
         <attr name="progressStyle" format="enum">
             <enum name="horizontal" value="0" />
             <enum name="circle" value="1" />
         </attr>
         <attr name="barHeight" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="NumberPicker">
-        <attr name="normalTextColor" format="color" />
-        <attr name="normalTextSize" format="dimension" />
-        <attr name="selecredTextColor" format="color" />
-        <attr name="selecredTextSize" format="dimension" />
-        <attr name="unitHight" format="dimension" />
-        <attr name="itemNumber" format="integer" />
-        <attr name="lineColor" format="color" />
-        <attr name="maskHight" format="dimension" />
-        <attr name="noEmpty" format="boolean" />
-        <attr name="isEnable" format="boolean" />
-    </declare-styleable>
-
-    <!-- TAG布局 -->
-    <declare-styleable name="TagFlowLayout">
-        <attr name="auto_select_effect" format="boolean"></attr>
-        <attr name="max_select" format="integer"></attr>
-    </declare-styleable>
-    <!--圆形头像-->
-    <declare-styleable name="CircleImageView">
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
-    </declare-styleable>
-    <declare-styleable name="SwipeMenuLayout">
-        <attr name="swipeEnable" format="boolean"/>
-        <attr name="ios" format="boolean"/>
-        <attr name="leftSwipe" format="boolean"/>
     </declare-styleable>
 </resources>

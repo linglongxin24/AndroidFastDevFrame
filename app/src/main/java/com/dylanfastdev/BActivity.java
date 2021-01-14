@@ -3,6 +3,8 @@ package com.dylanfastdev;
 import android.os.Bundle;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 
 import cn.bluemobi.dylan.base.BaseActivity;
@@ -26,7 +28,7 @@ public class BActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        Http.INSTANCE.init(ApiService.class,"https://www.travel-network.xin/","status","data","message",200);
+        Http.getHttp().init(ApiService.class,"https://www.travel-network.xin/","status","data","message",200);
         Http.with(mContext)
                 .setObservable(
                         Http.getApiService(ApiService.class)
@@ -45,6 +47,12 @@ public class BActivity extends BaseActivity {
                         super.netOnFinish();
                     }
                 });
+        new MyListen().setCallBack(new MyListen.CallBack() {
+            @Override
+            public void open(@NotNull Map<String, ? extends Object> data) {
+
+            }
+        });
     }
 
     @Override
