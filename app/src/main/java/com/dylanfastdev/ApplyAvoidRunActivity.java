@@ -136,7 +136,7 @@ public class ApplyAvoidRunActivity extends BaseActivity {
      */
     public void showDialog() {
         View localView = LayoutInflater.from(mContext).inflate(
-                R.layout.pub_dialog_add_picture, null);
+                R.layout.dialog_add_picture, null);
         TextView tv_camera = (TextView) localView.findViewById(R.id.tv_camera);
         TextView tv_gallery = (TextView) localView.findViewById(R.id.tv_gallery);
         TextView tv_cancel = (TextView) localView.findViewById(R.id.tv_cancel);

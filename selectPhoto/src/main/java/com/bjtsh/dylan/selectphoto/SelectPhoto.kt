@@ -10,9 +10,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
@@ -41,7 +43,7 @@ class SelectPhoto {
         this.mContext = fragment.requireContext()
     }
 
-    fun selectPhoto() {
+    fun selectPhoto() :SelectPhoto{
         if (mActivity != null) {
             RequestPermission(mActivity!!).requestPermission(Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -56,12 +58,14 @@ class SelectPhoto {
                         }
 
                         override fun onSucceed() {
+
                             showDialog()
                         }
 
                     })
 
         }
+        return this
     }
 
     fun setCallBack(callBack: CallBack) {
@@ -73,7 +77,7 @@ class SelectPhoto {
      */
     private fun showDialog() {
         val localView = LayoutInflater.from(mContext).inflate(
-                R.layout.pub_dialog_add_picture, null)
+                R.layout.dialog_add_picture, null)
         val tv_camera = localView.findViewById(R.id.tv_camera) as TextView
         val tv_gallery = localView.findViewById(R.id.tv_gallery) as TextView
         val tv_cancel = localView.findViewById(R.id.tv_cancel) as TextView
@@ -94,12 +98,10 @@ class SelectPhoto {
         tv_camera.setOnClickListener {
             dialog.dismiss()
             /** 拍照 */
-            /** 拍照 */
             camera()
         }
         tv_gallery.setOnClickListener {
             dialog.dismiss()
-            /** 从系统相册选取照片 */
             /** 从系统相册选取照片 */
             gallery()
         }
@@ -108,7 +110,7 @@ class SelectPhoto {
     /**
      * 拍照
      */
-    fun camera() {
+    fun camera() :SelectPhoto{
         /**判断存储卡是否可以用，可用进行存储 */
         if (hasSdcard()) {
             var dir: File? = null
@@ -134,7 +136,7 @@ class SelectPhoto {
             val uri = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 Uri.fromFile(tempFile)
             } else {
-                FileProvider.getUriForFile(mContext, mContext.applicationInfo.packageName, tempFile!!)
+                FileProvider.getUriForFile(mContext, mContext.applicationInfo.packageName+ ".provider", tempFile)
             }
             val intent = Intent()
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
@@ -146,7 +148,9 @@ class SelectPhoto {
                 override fun onActivityResult(resultCode: Int, data: Intent?) {
                     /**从相机返回的数据**/
                     if (resultCode == Activity.RESULT_OK && hasSdcard()) {
-                        val fileUri = Uri.fromFile(File(tempFile.path))
+                        var file = File(tempFile.path)
+                        val fileUri = Uri.fromFile(file)
+                        compressWithLuban(file)
                     } else {
                         Toast.makeText(mContext, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show()
                     }
@@ -161,12 +165,13 @@ class SelectPhoto {
         } else {
             Toast.makeText(mContext, "未找到存储卡，无法拍照！", Toast.LENGTH_SHORT).show()
         }
+        return this
     }
 
     /**
      * 从相册获取
      */
-    fun gallery() {
+    fun gallery() :SelectPhoto{
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         val callBack = object : StartActivityForResult.CallBack {
             override fun onActivityResult(resultCode: Int, data: Intent?) {
@@ -192,6 +197,7 @@ class SelectPhoto {
                         val path = cursor.getString(column_index)
                         val file = File(path)
                         val fileUri = Uri.fromFile(file)
+                        compressWithLuban(file)
                     }
                 }
 
@@ -203,6 +209,7 @@ class SelectPhoto {
             StartActivityForResult(mFragment!!).startActivityForResult(intent).setOnActivityResultCallBack(callBack)
 
         }
+        return this
     }
 
     /**
