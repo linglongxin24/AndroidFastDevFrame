@@ -3,8 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
-def mavenVersionCode = 1
-def mavenVersionName = "0.0.1"
+def mavenVersionCode = 3
+def mavenVersionName = "0.0.3"
 android {
     compileSdkVersion 29
 
@@ -38,11 +38,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.0'
     //startActivityForResult快捷回调
-    implementation 'cn.bjtsn.dylan:startActivityForResult:0.0.2'
+    api 'cn.bjtsn.dylan:startActivityForResult:0.0.2'
     //动态请求权限
-    implementation'cn.bjtsn.dylan:requestPermission:0.0.1'
+    api'cn.bjtsn.dylan:requestPermission:0.0.1'
     //图片压缩鲁班
-    implementation 'top.zibin:Luban:1.1.2'
+    api 'top.zibin:Luban:1.1.2'
 }
 
 ext {
@@ -55,8 +55,8 @@ ext {
 
     libraryDescription = 'This is a lightweight Android fast develop framework about Android select photo  Library'
 
-    siteUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame/selectPhoto'
-    gitUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame'
+    siteUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame/tree/old/selectPhoto'
+    gitUrl = 'https://github.com/linglongxin24/AndroidFastDevFrame/tree/old'
 
     libraryVersion = mavenVersionName
 

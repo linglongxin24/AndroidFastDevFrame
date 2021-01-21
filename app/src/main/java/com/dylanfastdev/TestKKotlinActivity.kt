@@ -1,5 +1,7 @@
 package com.dylanfastdev
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import cn.bluemobi.dylan.base.BaseActivity
@@ -35,12 +37,16 @@ class TestKKotlinActivity : BaseActivity() {
     override fun addListener() {
         bt_start_activity_for_result.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                SelectPhoto(mActivity).gallery().setCallBack(object :SelectPhoto.CallBack{
-                    override fun onSelectPhoto(file: File) {
-                        Logger.d("文件大小${convertFileSize(file.length())}")
-                        Glide.with(mContext).load(file).into(iv)
-                    }
-                })
+//                SelectPhoto(mActivity).gallery().setCallBack(object :SelectPhoto.CallBack{
+//                    override fun onSelectPhoto(file: File) {
+//                        Logger.d("文件大小${convertFileSize(file.length())}")
+//                        Glide.with(mContext).load(file).into(iv)
+//                    }
+//                })
+                val intent = Intent(Intent.ACTION_VIEW,
+//                        Uri.parse("bjtsn://com.bxkj.student:8888/running"))
+                        Uri.parse("keep://running"))
+                startActivity(intent)
             }
 
         })
