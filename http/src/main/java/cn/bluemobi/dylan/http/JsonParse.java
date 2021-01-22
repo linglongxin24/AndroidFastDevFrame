@@ -18,7 +18,7 @@ import java.util.Set;
  * Created by yuandl on 2017-03-31.
  */
 
-public class JsonParse {
+public class JsonParse implements HttpJsonKey {
     private static volatile JsonParse jsonParse = null;
 
     private JsonParse() {
@@ -50,7 +50,7 @@ public class JsonParse {
     /**
      * 请求接口成功的响应码
      */
-    private int successCode = 1;
+    private int successCode = -1;
 
     public JsonParse setCode(String code) {
         this.code = code;
@@ -72,18 +72,22 @@ public class JsonParse {
         return this;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public String getMsg() {
         return msg;
     }
 
+    @Override
     public String getData() {
         return data;
     }
 
+    @Override
     public int getSuccessCode() {
         return successCode;
     }
@@ -106,16 +110,29 @@ public class JsonParse {
     /**
      * Json解析
      *
-     * @param json
-     * @return
-     * @throws JSONException
+     * @param json 要解析的字符串
+     * @return ArrayMap对象
+     * @throws JSONException json解析异常
      */
     public ArrayMap<String, Object> jsonParse(String json) throws JSONException {
+        return jsonParse(json, getCode(), getData(), getMsg());
+    }
+
+    /**
+     * Json解析
+     *
+     * @param json       要解析的字符串
+     * @param codeStrKey 要解析的json字符串中的code字段
+     * @param dataStrKey 要解析的json字符串中的data字段
+     * @param msgStrKey  要解析的json字符串中的msg字段
+     * @return ArrayMap对象
+     * @throws JSONException json解析异常
+     */
+    public ArrayMap<String, Object> jsonParse(String json, String codeStrKey, String dataStrKey, String msgStrKey) throws JSONException {
         ArrayMap<String, Object> arrayMap = JSON.parseObject(json, new TypeReference<ArrayMap<String, Object>>() {
         }.getType());
-        ArrayMap<String, Object> returnData = new ArrayMap<String, Object>();
+        ArrayMap<String, Object> returnData = new ArrayMap<>();
         ArrayMap<String, Object> rrData = new ArrayMap<>();
-        String dataStrKey = data;
         if (arrayMap.containsKey(dataStrKey)) {
             Object data = arrayMap.get(dataStrKey);
             if (data instanceof String
@@ -151,9 +168,11 @@ public class JsonParse {
             }
         }
         returnData.put(dataStrKey, rrData);
-
-        returnData.put(code, getString(arrayMap, code));
-        returnData.put(msg, getString(arrayMap, msg));
+        if (!arrayMap.containsKey(codeStrKey)) {
+            throw new JSONException();
+        }
+        returnData.put(codeStrKey, getInt(arrayMap, codeStrKey));
+        returnData.put(msgStrKey, getString(arrayMap, msgStrKey));
         return returnData;
     }
 

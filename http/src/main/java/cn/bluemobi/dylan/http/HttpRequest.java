@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
@@ -79,6 +80,7 @@ public class HttpRequest {
      */
     public HttpRequest(Context context) {
         this.context = new WeakReference<Context>(context);
+        httpJsonKey = JsonParse.getJsonParse();
     }
 
     /**
@@ -150,6 +152,13 @@ public class HttpRequest {
         return this;
     }
 
+    private HttpJsonKey httpJsonKey;
+
+    public HttpRequest setHttpJsonKey(HttpJsonKey httpJsonKey) {
+        this.httpJsonKey = httpJsonKey;
+        return this;
+    }
+
     /**
      * 【第四步】设置访问接口的返回监听
      *
@@ -167,8 +176,6 @@ public class HttpRequest {
             }
         }
         String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
-        final String network_error = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  error" : MessageManager.getMessageManager().getErrorMessage();
-
         if (!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             if (httpResponse != null) {
@@ -263,19 +270,20 @@ public class HttpRequest {
                         if (isSuccessful) {
                             //200
                             try {
-                                jsonBean = JsonParse.getJsonParse().jsonParse(responseString);
-                                String msg = JsonParse.getString(jsonBean, JsonParse.getJsonParse().getMsg());
-                                int code = Integer.parseInt(JsonParse.getString(jsonBean, JsonParse.getJsonParse().getCode()));
-                                Map<String, Object> data = (Map<String, Object>) jsonBean.get(JsonParse.getJsonParse().getData());
+                                jsonBean = JsonParse.getJsonParse().jsonParse(responseString, httpJsonKey.getCode(), httpJsonKey.getData(), httpJsonKey.getMsg());
+                                String msg = JsonParse.getString(jsonBean, httpJsonKey.getMsg());
+                                int code = JsonParse.getInt(jsonBean, httpJsonKey.getCode());
+                                Map<String, Object> data = JsonParse.getMap(jsonBean, httpJsonKey.getData());
                                 if (responseInterceptor != null) {
                                     boolean isInterceptor = responseInterceptor.onResponse(context, code, msg, data, responseBodyResponse.raw().request().url().url().toString());
                                     if (isInterceptor) {
                                         return;
                                     }
                                 }
-                                if (code == JsonParse.getJsonParse().getSuccessCode()) {
+                                boolean msgIsNotNull = (!TextUtils.isEmpty(msg) && !"null".equalsIgnoreCase(msg));
+                                if (code == httpJsonKey.getSuccessCode()) {
                                     if (MessageManager.getMessageManager().getShowMessageModel() == MessageManager.MessageModel.All && isShowSuccessMessage) {
-                                        if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                        if (msgIsNotNull) {
                                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -285,7 +293,7 @@ public class HttpRequest {
                                     }
                                 } else {
                                     if (MessageManager.getMessageManager().getShowMessageModel() != MessageManager.MessageModel.NO && isShowOtherStatusMessage) {
-                                        if (msg != null && !msg.isEmpty() && !"null".equalsIgnoreCase(msg)) {
+                                        if (msgIsNotNull) {
                                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -295,9 +303,7 @@ public class HttpRequest {
                                     }
                                 }
                             } catch (JSONException e) {
-                                showErrorMessage("数据解析错误，错误码：1", e);
-                            } catch (NumberFormatException e) {
-                                showErrorMessage("数据格式错误，错误码：2", e);
+                                showErrorMessage("服务器数据错误，错误码：1", e);
                             } catch (Exception e) {
                                 showErrorMessage("其他错误，错误码：-1", e);
                             }
