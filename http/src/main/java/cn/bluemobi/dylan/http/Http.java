@@ -2,7 +2,10 @@ package cn.bluemobi.dylan.http;
 
 import android.content.Context;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +48,12 @@ public class Http {
      * @return
      */
     public <T> Http init(Class<T> apiService, String baseUrl, String code, String data, String msg, int successCode) {
-        Logger.init(TAG);
+        //日志
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .tag("HTTP")
+                .build();
+        //日志
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
         RetrofitManager.getRetrofitManager().initRetrofit(apiService, baseUrl);
         JsonParse.getJsonParse().initJson(code, data, msg, successCode);
         return http;
