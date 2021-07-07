@@ -26,7 +26,6 @@ public class Myapplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        x.Ext.init(this);
-        Logger.init("yanhao");
         CustomActivityOnCrash.install(this);
         CustomActivityOnCrash.setDebugMode(BuildConfig.DEBUG);
         //http请求初始化设置
