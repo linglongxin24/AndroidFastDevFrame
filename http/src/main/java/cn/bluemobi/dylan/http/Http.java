@@ -48,12 +48,6 @@ public class Http {
      * @return
      */
     public <T> Http init(Class<T> apiService, String baseUrl, String code, String data, String msg, int successCode) {
-        //日志
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .tag("HTTP")
-                .build();
-        //日志
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
         RetrofitManager.getRetrofitManager().initRetrofit(apiService, baseUrl);
         JsonParse.getJsonParse().initJson(code, data, msg, successCode);
         return http;

@@ -2,8 +2,8 @@ package com.bjtsn.dylan.startactivityforresult
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.SparseArray
+import androidx.fragment.app.Fragment
 
 /**
  * @author YDL
@@ -18,17 +18,9 @@ class EventDispatcherFragment : Fragment() {
     }
 
     fun startActivityForResult(intent: Intent, callback: StartActivityForResult.CallBack) {
-        val key = randomRequestCode()
+        val key = mCallbacks.size() + 1
         mCallbacks.put(key, callback)
         startActivityForResult(intent, key)
-    }
-
-    private fun randomRequestCode(): Int {
-        var number = (Math.random() * 100) + 1
-        while (mCallbacks.indexOfKey(number.toInt()) != -1) {
-            number = (Math.random() * 100) + 1
-        }
-        return number.toInt()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

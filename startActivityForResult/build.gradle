@@ -3,8 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
-def mavenVersionCode = 2
-def mavenVersionName = "0.0.2"
+def mavenVersionCode = 3
+def mavenVersionName = "0.0.3"
 android {
     compileSdkVersion 27
 
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

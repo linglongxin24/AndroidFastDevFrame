@@ -2,10 +2,10 @@ package com.bjtsn.dylan.requestpermission
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.util.SparseArray
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 /**
  * @author YDL
@@ -19,19 +19,10 @@ class PermissionDispatcherFragment : Fragment() {
         retainInstance = true
     }
 
-
-    private fun randomRequestCode(): Int {
-        var number = (Math.random() * 100).toInt() + 1
-        while (mCallbacks.indexOfKey(number) != -1) {
-            number = (Math.random() * 100).toInt() + 1
-        }
-        return number
-    }
-
     fun requestPermissions(permissions: Array<out String>, callBack: RequestPermission.PermissionCheckCallBack) {
         val checkMorePermissions = checkMorePermissions(permissions)
         if (checkMorePermissions.isNotEmpty()) {
-            val key = randomRequestCode()
+            val key = mCallbacks.size() + 1
             mCallbacks.put(key, callBack)
             requestPermissions(permissions, key)
         } else {
