@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.base.view;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -29,9 +30,11 @@ public class iOSTwoButtonDialog extends Dialog {
     private LeftButtonOnClick lefttButtonOnClick;
     private RightButtonOnClick rightButtonOnClick;
     private boolean isClickAutoCancel = true;
+    private final Context mContext;
 
     public iOSTwoButtonDialog(@NonNull Context context) {
         super(context, R.style.ios_dialog_theme);
+        this.mContext=context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ios_dialog_two_bt);
 
@@ -123,5 +126,14 @@ public class iOSTwoButtonDialog extends Dialog {
     public iOSTwoButtonDialog setTitleLineVisiBility(int visibility) {
         line_title.setVisibility(visibility);
         return this;
+    }
+    @Override
+    public void show() {
+        if (mContext instanceof Activity){
+            Activity activity = (Activity) this.mContext;
+            if(!activity.isFinishing()){
+                super.show();
+            }
+        }
     }
 }

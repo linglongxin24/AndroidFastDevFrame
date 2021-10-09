@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.base.view;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -27,9 +28,11 @@ public class iOSOneButtonDialog extends Dialog {
     private final View line_title;
     private View.OnClickListener onClickListener;
     private boolean isClickAutoCancel = true;
+    private final Context mContext;
 
     public iOSOneButtonDialog(@NonNull Context context) {
         super(context, R.style.ios_dialog_theme);
+        this.mContext=context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ios_dialog_one_bt);
 
@@ -44,7 +47,7 @@ public class iOSOneButtonDialog extends Dialog {
         btn_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isClickAutoCancel){
+                if (isClickAutoCancel) {
                     dismiss();
                 }
                 if (onClickListener != null) {
@@ -93,5 +96,15 @@ public class iOSOneButtonDialog extends Dialog {
     public iOSOneButtonDialog setTitleLineVisiBility(int visibility) {
         line_title.setVisibility(visibility);
         return this;
+    }
+
+    @Override
+    public void show() {
+        if (mContext instanceof Activity){
+            Activity activity = (Activity) this.mContext;
+            if(!activity.isFinishing()){
+                super.show();
+            }
+        }
     }
 }
