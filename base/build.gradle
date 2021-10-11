@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-def mavenVersionCode = 170
-def mavenVersionName = "1.7.0"
+def mavenVersionCode = 171
+def mavenVersionName = "1.7.1"
 android {
     compileSdkVersion 27
 

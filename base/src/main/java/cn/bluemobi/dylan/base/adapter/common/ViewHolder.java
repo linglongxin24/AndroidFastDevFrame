@@ -27,20 +27,18 @@ import cn.bluemobi.dylan.base.utils.MyImageLoader;
 
 public class ViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
-    private int mPosition;
     private View mConvertView;
     private Context mContext;
     private int mLayoutId;
 
     public int getMyPosition() {
-        return mPosition;
+        return getAdapterPosition();
     }
 
-    public ViewHolder(Context context, View itemView, ViewGroup parent, int position) {
+    public ViewHolder(Context context, View itemView, ViewGroup parent) {
         super(itemView);
         mContext = context;
         mConvertView = itemView;
-        mPosition = position;
         mViews = new SparseArray<View>();
         mConvertView.setTag(this);
 
@@ -48,16 +46,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
 
     public static ViewHolder get(Context context, View convertView,
-                                 ViewGroup parent, int layoutId, int position) {
+                                 ViewGroup parent, int layoutId) {
         if (convertView == null) {
             View itemView = LayoutInflater.from(context).inflate(layoutId, parent,
                     false);
-            ViewHolder holder = new ViewHolder(context, itemView, parent, position);
+            ViewHolder holder = new ViewHolder(context, itemView, parent);
             holder.mLayoutId = layoutId;
             return holder;
         } else {
             ViewHolder holder = (ViewHolder) convertView.getTag();
-            holder.mPosition = position;
             return holder;
         }
     }
@@ -339,10 +336,6 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         View view = getView(viewId);
         view.setOnLongClickListener(listener);
         return this;
-    }
-
-    public void updatePosition(int position) {
-        mPosition = position;
     }
 
     public int getLayoutId() {

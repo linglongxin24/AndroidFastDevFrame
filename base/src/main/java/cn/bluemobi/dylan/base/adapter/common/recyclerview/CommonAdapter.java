@@ -40,7 +40,7 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        ViewHolder viewHolder = ViewHolder.get(mContext, null, parent, mLayoutId, -1);
+        ViewHolder viewHolder = ViewHolder.get(mContext, null, parent, mLayoutId);
         setListener(parent, viewHolder, viewType);
         return viewHolder;
     }
@@ -59,33 +59,36 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
     }
 
     protected void setListener(final ViewGroup parent, final ViewHolder viewHolder, int viewType) {
-        if (!isEnabled(viewType)) return;
-        viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null) {
-                    int position = getPosition(viewHolder);
-                    mOnItemClickListener.onItemClick(parent, v, mDatas.get(position), position);
+            if (!isEnabled(viewType)) return;
+            viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        int position = getPosition(viewHolder);
+                        if(position!=-1&&mDatas!=null&&position<mDatas.size()){
+                            mOnItemClickListener.onItemClick(parent, v, mDatas.get(position), position);
+                        }
+                    }
                 }
-            }
-        });
+            });
 
 
-        viewHolder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (onItemLongClickClickListener != null) {
-                    int position = getPosition(viewHolder);
-                    return onItemLongClickClickListener.onItemLongClick(parent, v, mDatas.get(position), position);
+            viewHolder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (onItemLongClickClickListener != null) {
+                        int position = getPosition(viewHolder);
+                        if(position!=-1&&mDatas!=null&&position<mDatas.size()){
+                            return onItemLongClickClickListener.onItemLongClick(parent, v, mDatas.get(position), position);
+                        }
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.updatePosition(position);
         convert(holder, mDatas.get(position));
     }
 
