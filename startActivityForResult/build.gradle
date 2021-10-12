@@ -3,8 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
-def mavenVersionCode = 3
-def mavenVersionName = "0.0.3"
+def mavenVersionCode = 4
+def mavenVersionName = "0.0.4"
 android {
     compileSdkVersion 27
 

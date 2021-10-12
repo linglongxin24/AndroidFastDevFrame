@@ -18,14 +18,16 @@ class EventDispatcherFragment : Fragment() {
     }
 
     fun startActivityForResult(intent: Intent, callback: StartActivityForResult.CallBack) {
-        val key = mCallbacks.size() + 1
+        val key = mCallbacks.size()
         mCallbacks.put(key, callback)
         startActivityForResult(intent, key)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mCallbacks.get(requestCode)?.onActivityResult(resultCode, data)
-        mCallbacks.remove(requestCode)
+        mCallbacks.get(requestCode)?.apply {
+            mCallbacks.remove(requestCode)
+            onActivityResult(resultCode, data)
+        }
     }
 }

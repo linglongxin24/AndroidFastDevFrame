@@ -36,42 +36,18 @@ public class ReturnResultActivity extends BaseActivity {
             setResult(RESULT_OK);
             finish();
         });
+        findViewById(R.id.bt_fail).setOnClickListener(v -> {
+//            Intent intent = new Intent();
+//            intent.putExtra("code", 1001);
+//            intent.putExtra("msg", "回传成功");
+//            setResult(RESULT_OK,intent);
+            setResult(0x00AA);
+            finish();
+        });
     }
 
     @Override
     public void initData() {
-        new LifecycleObserver(this).observer(new LifecycleCallback() {
-            @Override
-            public void onCreate() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onCreate");
-            }
-
-            @Override
-            public void onStart() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onStart");
-            }
-
-            @Override
-            public void onResume() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onResume");
-            }
-
-            @Override
-            public void onPause() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onPause");
-            }
-
-            @Override
-            public void onStop() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onStop");
-            }
-
-            @Override
-            public void onDestroy() {
-                Logger.d(mActivity.getClass().getSimpleName()+"onDestroy");
-            }
-        });
-        getSupportFragmentManager().beginTransaction().add(R.id.ll_root,new TestFragment()).commitAllowingStateLoss();
     }
 
     @Override
