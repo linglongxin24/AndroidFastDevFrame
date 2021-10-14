@@ -303,7 +303,7 @@ public class HttpRequest {
                                     }
                                 }
                             } catch (JSONException e) {
-                                showErrorMessage("服务器数据错误，错误码：1", e);
+                                showErrorMessage("服务器数据错误，错误码：1", new JSONException(responseString));
                             } catch (Exception e) {
                                 showErrorMessage("其他错误，错误码：-1", e);
                             }
