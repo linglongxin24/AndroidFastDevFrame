@@ -95,7 +95,7 @@ open class SmartWebView : RelativeLayout {
         webSettings.setBlockNetworkImage(false);//解决图片不显示
         webSettings.setDefaultTextEncodingName("utf-8");
         //设置可以访问文件
-        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccess(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.getSettings().setDatabaseEnabled(true);
@@ -111,9 +111,9 @@ open class SmartWebView : RelativeLayout {
         // 设置缩放工具的显示
         webSettings.setBuiltInZoomControls(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webSettings.setAllowUniversalAccessFromFileURLs(true);
-            webSettings.setAllowFileAccessFromFileURLs(true);
-        }
+            webSettings.setAllowUniversalAccessFromFileURLs(false)
+            webSettings.setAllowFileAccessFromFileURLs(false);
+        };
         webSettings.setSupportZoom(false);
 
         this.addView(mWebView, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
