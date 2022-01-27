@@ -24,7 +24,7 @@
             android:name="design_height"
             android:value="1334"
             tools:replace="android:value" />
-        <activity android:name=".StartActivityForResultActivity" android:hardwareAccelerated="true">
+        <activity android:name=".SmartWebViewActivity" android:hardwareAccelerated="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import cn.bluemobi.dylan.base.BaseActivity
+import cn.bluemobi.dylan.smartwebview.SmartWebView
 import kotlinx.android.synthetic.main.ac_smart_webview.*
 
 /**
@@ -31,7 +32,15 @@ class SmartWebViewActivity : BaseActivity() {
             override fun open(data: Map<String, Any>) {
             }
         })
+        with(smartWebView) {
+            MyListen().setCallBack(object : MyListen.CallBack {
+                override fun open(data: Map<String, Any>) {
+                }
+            })
+            setWebChromeClient(object : SmartWebView.BaseWebChromeClient() {
 
+            })
+        }
     }
 
     override fun initData() {
