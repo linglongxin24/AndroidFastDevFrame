@@ -109,7 +109,7 @@ open class SmartWebView : RelativeLayout {
                 loadWithOverviewMode = true
                 savePassword = false
                 blockNetworkImage = false//解决图片不显示
-                defaultTextEncodingName = "utf-8"
+                defaultTextEncodingName = "UTF-8"
                 //设置可以访问文件
                 allowFileAccess = false
                 cacheMode = WebSettings.LOAD_NO_CACHE
@@ -164,9 +164,9 @@ open class SmartWebView : RelativeLayout {
         if (!TextUtils.isEmpty(url)) {
             mWebView.loadUrl(url)
         } else if (!TextUtils.isEmpty(baseUrl)) {
-            mWebView.loadDataWithBaseURL(baseUrl, data, "text/html charset=UTF-8", null, baseUrl)
+            mWebView.loadDataWithBaseURL(baseUrl, data, "text/html", "UTF-8", baseUrl)
         } else if (!TextUtils.isEmpty(data)) {
-            mWebView.loadData(data, "text/html charset=UTF-8", null)
+            mWebView.loadData(data, "text/html", "UTF-8")
         }
     }
 
