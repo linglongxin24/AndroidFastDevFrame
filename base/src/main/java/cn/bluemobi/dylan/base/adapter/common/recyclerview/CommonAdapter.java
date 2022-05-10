@@ -89,6 +89,7 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.setMyPosition(position);
         convert(holder, mDatas.get(position));
     }
 

@@ -30,9 +30,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     private View mConvertView;
     private Context mContext;
     private int mLayoutId;
+    private int myPosition=getLayoutPosition();
 
     public int getMyPosition() {
-        return getAdapterPosition();
+        return myPosition;
+    }
+
+    public ViewHolder setMyPosition(int myPosition) {
+        this.myPosition = myPosition;
+        return this;
     }
 
     public ViewHolder(Context context, View itemView, ViewGroup parent) {
