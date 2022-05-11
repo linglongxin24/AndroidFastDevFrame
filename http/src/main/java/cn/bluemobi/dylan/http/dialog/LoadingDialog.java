@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.bjtsn.dylan.lifecycleobserver.LifecycleCallback;
 import com.bjtsn.dylan.lifecycleobserver.LifecycleObserver;
 
@@ -68,10 +67,9 @@ public class LoadingDialog {
             //if the Context used here was an activity AND it hasn't been finished or destroyed
             //then dismiss it
             if (context instanceof Activity) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (!((Activity) context).isFinishing()) {
-                        dialog.show();
-                    }
+                Activity activity = (Activity) this.context;
+                if (!activity.isFinishing() && !activity.isDestroyed()) {
+                    dialog.show();
                 }
             } else {
                 //if the Context used wasnt an Activity, then dismiss it too

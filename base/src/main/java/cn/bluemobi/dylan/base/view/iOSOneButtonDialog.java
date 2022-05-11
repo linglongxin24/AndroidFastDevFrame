@@ -102,7 +102,7 @@ public class iOSOneButtonDialog extends Dialog {
     public void show() {
         if (mContext instanceof Activity){
             Activity activity = (Activity) this.mContext;
-            if(!activity.isFinishing()){
+            if(!activity.isFinishing()&&!activity.isDestroyed()){
                 super.show();
             }
         }
