@@ -31,12 +31,13 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return  mDatas==null?0:mDatas.size();
+        return mDatas == null ? 0 : mDatas.size();
     }
 
     public List<T> getDatas() {
         return mDatas;
     }
+
     @Override
     public T getItem(int position) {
         return mDatas.get(position);
@@ -51,6 +52,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = ViewHolder.get(mContext, convertView, parent,
                 layoutId);
+        holder.setMyPosition(position);
         convert(holder, getItem(position));
         return holder.getConvertView();
     }
