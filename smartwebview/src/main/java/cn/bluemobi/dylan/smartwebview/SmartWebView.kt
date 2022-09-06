@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.smartwebview
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.net.Uri
 import android.net.http.SslError
@@ -8,6 +9,7 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.*
 import android.widget.ProgressBar
@@ -30,6 +32,8 @@ open class SmartWebView : RelativeLayout {
      * 水平进度条高度
      */
     private var mBarHeight = DEFAULT_BAR_HEIGHT
+
+    private var baseWebViewClient: BaseWebViewClient? = null
 
     companion object {
         /**
@@ -79,19 +83,20 @@ open class SmartWebView : RelativeLayout {
             setScale(mWebView)
             //让缩放显示的最小值为起始
             mWebView.setInitialScale(3)
-            addView(mWebView, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT)
+            addView(mWebView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             if (mProgressStyle == ProgressStyle.Horizontal.ordinal) {
                 progressBar = LayoutInflater.from(context)
                     .inflate(R.layout.ac_progress_horizontal, null) as ProgressBar
                 progressBar?.max = 100
                 progressBar?.progress = 0
-                addView(progressBar, LayoutParams.FILL_PARENT, mBarHeight)
+                addView(progressBar, LayoutParams.MATCH_PARENT, mBarHeight)
             } else {
                 progressBarCircle = LayoutInflater.from(context)
                     .inflate(R.layout.ac_progress_circle, null) as RelativeLayout
-                addView(progressBarCircle, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT)
+                addView(progressBarCircle, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             }
-            mWebView.webViewClient = BaseWebViewClient()
+            baseWebViewClient = BaseWebViewClient()
+            mWebView.webViewClient = baseWebViewClient
             mWebView.webChromeClient = BaseWebChromeClient()
             val webSettings = mWebView.settings
             webSettings.apply {
@@ -185,10 +190,12 @@ open class SmartWebView : RelativeLayout {
      * @param webViewClient
      */
     fun setWebViewClient(webViewClient: BaseWebViewClient) {
+        baseWebViewClient = webViewClient
         mWebView.webViewClient = webViewClient
+        errorView?.let { setErrorPage(it) }
     }
 
-    open class BaseWebViewClient : WebViewClient() {
+    open class BaseWebViewClient() : WebViewClient() {
         override fun onReceivedSslError(
             view: WebView?,
             handler: SslErrorHandler?,
@@ -198,6 +205,45 @@ open class SmartWebView : RelativeLayout {
             // super.onReceivedSslError(view, handler, error)
             // 接受所有网站的证书，忽略SSL错误，执行访问网页
             handler?.proceed()
+        }
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        override fun onReceivedError(
+            webView: WebView?,
+            webResourceRequest: WebResourceRequest,
+            webResourceError: WebResourceError?
+        ) {
+            super.onReceivedError(webView, webResourceRequest, webResourceError)
+            if (webResourceRequest.isForMainFrame) {
+                isError = true
+                showErrorPage(webView)
+            }
+        }
+
+        private var isError = false
+        private var errorView: View? = null
+        fun setErrorPage(errorView: View) {
+            this.errorView = errorView
+        }
+
+        private fun showErrorPage(view: WebView?) {
+            errorView?.visibility = View.VISIBLE
+            view?.visibility = View.GONE
+        }
+
+        private fun showNormalPage(view: WebView?) {
+            errorView?.visibility = View.GONE
+            view?.visibility = View.VISIBLE
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            if (isError) {
+                showErrorPage(view)
+            } else {
+                showNormalPage(view)
+            }
+            isError = false
         }
 
         override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
@@ -210,6 +256,21 @@ open class SmartWebView : RelativeLayout {
             }
             return false
         }
+    }
+
+    fun refresh() {
+        mWebView.reload()
+    }
+
+    private var errorView: View? = null
+    fun setErrorPage(errorView: View) {
+        this.errorView = errorView
+        errorView.visibility = GONE
+        if (errorView.parent != null) {
+            (errorView.parent as ViewGroup).removeView(errorView)
+        }
+        addView(errorView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        baseWebViewClient?.setErrorPage(errorView)
     }
 
     /**
@@ -236,7 +297,7 @@ open class SmartWebView : RelativeLayout {
                 progressBar?.visibility = View.GONE
                 progressBarCircle?.visibility = View.GONE
             } else {
-                if (mProgressStyle == ProgressStyle.Horizontal.ordinal) {
+                if (mProgressStyle == SmartWebView.ProgressStyle.Horizontal.ordinal) {
                     progressBar?.visibility = View.VISIBLE
                     progressBar?.progress = newProgress
                 } else {
