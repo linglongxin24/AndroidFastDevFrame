@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.*
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 
@@ -130,7 +131,12 @@ open class SmartWebView : RelativeLayout {
                 webSettings.allowUniversalAccessFromFileURLs = false
                 webSettings.allowFileAccessFromFileURLs = false
                 setSupportZoom(false)
-
+                val errorPageView =
+                    LayoutInflater.from(context).inflate(R.layout.default_error_page, null)
+                errorPageView.findViewById<Button>(R.id.bt_error_retry).setOnClickListener {
+                    refresh()
+                }
+                setErrorPage(errorPageView)
             }
         }
     }
@@ -215,7 +221,6 @@ open class SmartWebView : RelativeLayout {
         ) {
             super.onReceivedError(webView, webResourceRequest, webResourceError)
             if (webResourceRequest.isForMainFrame) {
-                isError = true
                 showErrorPage(webView)
             }
         }
@@ -226,18 +231,30 @@ open class SmartWebView : RelativeLayout {
             this.errorView = errorView
         }
 
-        private fun showErrorPage(view: WebView?) {
-            errorView?.visibility = View.VISIBLE
-            view?.visibility = View.GONE
+        private fun showErrorPage(webView: WebView?) {
+            isError = true
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webView?.evaluateJavascript(
+                    "javascript:document.open();document.write('');document.close();",
+                    null
+                )
+            }
+            errorView?.let {
+                errorView?.visibility = View.VISIBLE
+                webView?.visibility = View.GONE
+            }
         }
 
         private fun showNormalPage(view: WebView?) {
-            errorView?.visibility = View.GONE
-            view?.visibility = View.VISIBLE
+            errorView?.let {
+                errorView?.visibility = View.GONE
+                view?.visibility = View.VISIBLE
+            }
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
+            progressBar?.postDelayed({ progressBar?.visibility = View.GONE }, 10)
             if (isError) {
                 showErrorPage(view)
             } else {
@@ -290,18 +307,21 @@ open class SmartWebView : RelativeLayout {
             super.onGeolocationPermissionsShowPrompt(origin, callback)
             callback.invoke(origin, true, false)
         }
-
         override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             if (newProgress == 100) {
-                progressBar?.visibility = View.GONE
-                progressBarCircle?.visibility = View.GONE
+                progressBar?.postDelayed({ progressBar?.visibility = View.GONE }, 10)
+                progressBarCircle?.postDelayed({ progressBarCircle?.visibility = View.GONE }, 10)
             } else {
-                if (mProgressStyle == SmartWebView.ProgressStyle.Horizontal.ordinal) {
-                    progressBar?.visibility = View.VISIBLE
-                    progressBar?.progress = newProgress
+                if (mProgressStyle == ProgressStyle.Horizontal.ordinal) {
+                    progressBar?.apply {
+                        progress = newProgress
+                        takeIf { visibility== GONE }?.apply {
+                            progressBar?.visibility = View.VISIBLE
+                        }
+                    }
                 } else {
-                    progressBarCircle?.visibility = View.VISIBLE
+                    progressBarCircle?.postDelayed({ progressBarCircle?.visibility = View.VISIBLE }, 10)
                 }
             }
         }
