@@ -131,6 +131,33 @@ public class HttpRequest {
         return this;
     }
 
+    public boolean isShowSuccessMessage() {
+        return isShowSuccessMessage;
+    }
+
+    public HttpRequest setShowSuccessMessage(boolean showSuccessMessage) {
+        isShowSuccessMessage = showSuccessMessage;
+        return this;
+    }
+
+    public boolean isShowOtherStatusMessage() {
+        return isShowOtherStatusMessage;
+    }
+
+    public HttpRequest setShowOtherStatusMessage(boolean showOtherStatusMessage) {
+        isShowOtherStatusMessage = showOtherStatusMessage;
+        return this;
+    }
+
+    public boolean isShowFailMessage() {
+        return isShowFailMessage;
+    }
+
+    public HttpRequest setShowFailMessage(boolean showFailMessage) {
+        isShowFailMessage = showFailMessage;
+        return this;
+    }
+
     private boolean canCancel = true;
 
     public HttpRequest setCanCancel(boolean canCancel) {
@@ -152,6 +179,10 @@ public class HttpRequest {
         return this;
     }
 
+    private  CustomResponse customResponse;
+    public void setCustomResponse(CustomResponse customResponse){
+        this.customResponse=customResponse;
+    }
     private HttpJsonKey httpJsonKey;
 
     public HttpRequest setHttpJsonKey(HttpJsonKey httpJsonKey) {
@@ -171,12 +202,13 @@ public class HttpRequest {
             Activity activity = (Activity) context;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 if (activity.isDestroyed()) {
+                    httpResponse.netOnFinish();
                     return null;
                 }
             }
         }
         String network_unusual = MessageManager.getMessageManager().isUseEnglishLanguage() ? "Network  unusual" : "网络不可用";
-        if (!NetworkUtil.isNetworkAvailable(context)) {
+        if (customResponse==null&&!NetworkUtil.isNetworkAvailable(context)) {
             Toast.makeText(context, network_unusual, Toast.LENGTH_SHORT).show();
             if (httpResponse != null) {
                 httpResponse.netOnFailure(new Exception(network_unusual));
@@ -222,6 +254,11 @@ public class HttpRequest {
                         if (Http.getHttp().isDebugMode()) {
                             e.printStackTrace();
                         }
+                        onCompleted();
+                        if(customResponse!=null){
+                            customResponse.onError(context,HttpRequest.this,httpResponse,e);
+                            return;
+                        }
                         if (responseInterceptor != null) {
                             responseInterceptor.onError(context, e);
                         }
@@ -235,7 +272,6 @@ public class HttpRequest {
                         if (httpResponse != null) {
                             httpResponse.netOnFailure(e);
                         }
-                        onCompleted();
 
                     }
 
@@ -243,6 +279,10 @@ public class HttpRequest {
                     public void onNext(Response<ResponseBody> responseBodyResponse) {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
+                        }
+                        if(customResponse!=null){
+                            customResponse.onNext(context,HttpRequest.this,httpResponse,responseBodyResponse);
+                            return;
                         }
                         String responseString = "";
                         boolean isSuccessful = responseBodyResponse.isSuccessful();

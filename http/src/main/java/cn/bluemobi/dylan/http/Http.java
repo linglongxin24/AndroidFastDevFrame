@@ -171,6 +171,9 @@ public class Http {
         if (responseInterceptor != null) {
             httpRequest.setResponseInterceptor(responseInterceptor);
         }
+        if (customResponse != null) {
+            httpRequest.setCustomResponse(customResponse);
+        }
         return httpRequest;
     }
 
@@ -178,6 +181,10 @@ public class Http {
 
     public void setResponseInterceptor(ResponseInterceptor responseInterceptor) {
         Http.responseInterceptor = responseInterceptor;
+    }
+    private static CustomResponse customResponse;
+    public void setCustomResponse(CustomResponse customResponse){
+        Http.customResponse =customResponse;
     }
 
 }

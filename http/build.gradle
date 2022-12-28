@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-def mavenVersionCode = 242
-def mavenVersionName = "2.4.2"
+def mavenVersionCode = 243
+def mavenVersionName = "2.4.3"
 
 android {
     compileSdkVersion 27
@@ -24,8 +24,8 @@ android {
 dependencies {
     api 'com.squareup.retrofit2:retrofit:2.1.0'
     api 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    api 'com.squareup.okhttp3:okhttp:3.11.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    api 'com.squareup.okhttp3:okhttp:3.12.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     api 'io.reactivex:rxandroid:1.2.0'
     api 'com.orhanobut:logger:2.2.0'
     api 'com.alibaba:fastjson:1.2.33'

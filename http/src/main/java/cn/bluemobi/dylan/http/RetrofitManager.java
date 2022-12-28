@@ -1,5 +1,6 @@
 package cn.bluemobi.dylan.http;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -256,39 +257,41 @@ public class RetrofitManager {
             /**添加打印日志拦截器**/
             okhttpBuilder.addInterceptor(httpInterceptor);
         }
-        /**设置证书**/
-        final X509TrustManager trustManager = new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-            }
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[0];
-            }
-        };
 
         try {
-            SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            if (overlockCard) {
-                okhttpBuilder.sslSocketFactory(sslSocketFactory,trustManager)
-                        .hostnameVerifier(new HostnameVerifier() {
-                            @Override
-                            public boolean verify(String hostname, SSLSession session) {
-                                return true;
-                            }
-                        });
-            } else {
-                if (factory != null) {
-                    okhttpBuilder.sslSocketFactory(factory,trustManager);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                /**设置证书**/
+                final X509TrustManager trustManager = new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                };
+                SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+                SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                if (overlockCard) {
+                    okhttpBuilder.sslSocketFactory(sslSocketFactory, trustManager)
+                            .hostnameVerifier(new HostnameVerifier() {
+                                @Override
+                                public boolean verify(String hostname, SSLSession session) {
+                                    return true;
+                                }
+                            });
+                } else {
+                    if (factory != null) {
+                        okhttpBuilder.sslSocketFactory(factory, trustManager);
+                    }
                 }
             }
 
